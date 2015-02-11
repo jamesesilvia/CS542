@@ -1,0 +1,5 @@
+# Ignore build
+build
+
+# Ignore MAC specific files
+.DS_Store
