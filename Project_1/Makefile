@@ -1,17 +1,11 @@
-#
-# 
-#
- 
-CC := g++
 SRCDIR := src
-BUILDDIR := build
 TARGET := build
- 
-SRCEXT := cpp
-INC := -I include
+INCLUDE := -I include
 
-# Clean
+default:
+	mkdir -p $(TARGET)
+	g++ $(SRCDIR)/client.cpp $(SRCDIR)/helpers.cpp $(INCLUDE) -o $(TARGET)/client -w
+	g++ $(SRCDIR)/database_server.cpp $(SRCDIR)/helpers.cpp $(INCLUDE) -o $(TARGET)/server -lpthread -w
+
 clean:
-
-# Tests
-tester:
+	rm -rf $(TARGET)
