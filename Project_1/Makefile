@@ -2,10 +2,26 @@ SRCDIR := src
 TARGET := build
 INCLUDE := -I include
 
+CLIENT = \
+	$(SRCDIR)/client.cpp \
+	$(SRCDIR)/helpers.cpp
+
+SERVER = \
+	$(SRCDIR)/database_server.cpp \
+	$(SRCDIR)/helpers.cpp
+
 default:
 	mkdir -p $(TARGET)
-	g++ $(SRCDIR)/client.cpp $(SRCDIR)/helpers.cpp $(INCLUDE) -o $(TARGET)/client -w
-	g++ $(SRCDIR)/database_server.cpp $(SRCDIR)/helpers.cpp $(INCLUDE) -o $(TARGET)/server -lpthread -w
+	g++ $(CLIENT) $(INCLUDE) -o $(TARGET)/client -w
+	g++ $(SERVER) $(INCLUDE) -o $(TARGET)/server -w -lpthread
+
+client:
+	mkdir -p $(TARGET)
+	g++ $(CLIENT) $(INCLUDE) -o $(TARGET)/client -w
+
+server:
+	mkdir -p $(TARGET)
+	g++ $(SERVER) $(INCLUDE) -o $(TARGET)/client -w
 
 clean:
 	rm -rf $(TARGET)
