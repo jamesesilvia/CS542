@@ -1,3 +1,13 @@
+/**********************************************************************
+ *
+ * CS542 Database Management Systems
+ *
+ * Written by: Tyler Carroll, James Silvia, Tom Strott
+ * In completion of: CS557 Project 1
+ *
+ * helpers.cpp
+ *
+ **********************************************************************/
 
 #include "helpers.hpp"
 #include "dirent.h"

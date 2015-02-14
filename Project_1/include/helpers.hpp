@@ -1,3 +1,14 @@
+/**********************************************************************
+ *
+ * CS542 Database Management Systems
+ *
+ * Written by: Tyler Carroll, James Silvia, Tom Strott
+ * In completion of: CS557 Project 1
+ *
+ * helpers.hpp
+ *
+ **********************************************************************/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
