@@ -21,7 +21,7 @@ client:
 
 server:
 	mkdir -p $(TARGET)
-	g++ $(SERVER) $(INCLUDE) -o $(TARGET)/client -w
+	g++ $(SERVER) $(INCLUDE) -o $(TARGET)/server -w -lpthread
 
 clean:
 	rm -rf $(TARGET)

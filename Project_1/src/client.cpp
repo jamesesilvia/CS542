@@ -71,6 +71,8 @@ int main(int argc, char *argv[]) {
         //Handle user interaction
         string to_send = handle_user_interaction(sock);
 
+        cout << "Sending: " << to_send << endl;
+
         //Send the data
         int len = write(sock, to_send.c_str(), to_send.length());
         if (len != to_send.length())
@@ -109,6 +111,11 @@ string handle_user_interaction(int sock) {
     bool done;
 
     while (true) {
+
+        //Clear Everything
+        str.clear();
+        cmd.clear();
+        to_send.clear();
         
         //Print out a command line
         cout << "-> "; 

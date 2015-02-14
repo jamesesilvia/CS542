@@ -57,6 +57,10 @@ bool handleclient(const int socket) {
     string cmd, index, to_send;
 
     while (true) {
+
+        //Clear receive buffer
+        memset(buffer, 0, sizeof(buffer));
+        
         //Shall we get some data?
         len = read(socket, buffer, BUFFER_LEN);
 
