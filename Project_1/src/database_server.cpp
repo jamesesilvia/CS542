@@ -52,11 +52,13 @@ void printv(char *format, ...) {
 
 // Handles a client connection
 bool handleclient(const int socket) {
+    char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
+    int len;
+    string cmd, index, to_send;
 
     while (true) {
         //Shall we get some data?
-        char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
-        int len = read(socket, buffer, BUFFER_LEN);
+        len = read(socket, buffer, BUFFER_LEN);
 
         //Some sort of error
         if (len < 0) {
@@ -70,34 +72,34 @@ bool handleclient(const int socket) {
             break;
         }
 
-        string cmd(buffer);
-
-        //The client send an invalid command!
-        if (cmd.empty())
+        printv("Received: %s\n", buffer);
+        //Stringstream of received data
+        stringstream strstr(buffer);
+        if (!(strstr >> cmd))
             continue;
 
-        /* Determine client command, execute, and respond */
-        string str;
+        /* Put request received */
         if (cmd == "put") {
-            //Put the entry
-            cout << "Put the entry" << endl;
-            str = "We got your PUT request brah";
-        } else if (cmd == "get") {
+            to_send = "We got your PUT request brah";
+        } 
+        /* Get request received */
+        else if (cmd == "get") {
             //Get the entry
-            cout << "Get the entry" << endl;
-            str = "We got your GET request brah";
-        } else if (cmd == "remove") {
+            to_send = "We got your GET request brah";
+        } 
+        /* Remove request received */
+        else if (cmd == "remove") {
            //Remove the entry
-           cout << "Removing the entry" << endl;
-           str = "We got your REMOVE request brah";
-        } else {
-            //What?!?!
+           to_send = "We got your REMOVE request brah";
+        } 
+        /* Junk catch all */
+        else {
             continue;
         }
 
         //Send the data
-        len = write(socket, str.c_str(), str.length());
-        if (len != str.length())
+        len = write(socket, to_send.c_str(), to_send.length());
+        if (len != to_send.length())
             error("Unable to send the data!");
     }
 

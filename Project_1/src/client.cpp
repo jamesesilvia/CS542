@@ -27,6 +27,8 @@
 //The buffer length for receiving commands
 #define BUFFER_LEN 1024
 
+string handle_user_interaction(int sock);
+
 //Main function
 int main(int argc, char *argv[]) {
 
@@ -64,50 +66,14 @@ int main(int argc, char *argv[]) {
     //Connect to the target
     if (connect(sock, (struct sockaddr *)&cli_addr, sizeof(cli_addr)) < 0)
         error("Unable to connect to target address!");
-    
-    while (true) {
-        string str, cmd;
-        
-        //Print out a command line
-        cout << "-> "; 
-        cout.flush();
-        getline(cin, str); //Get a full line of text
 
-        //Grab the command portion
-        stringstream strstr(str);
-        if (!(strstr >> cmd))
-            continue;
-
-        if (cmd == "put") {
-            cout << "put bitch" << endl;
-            //Get info to send data
-            str.clear();
-            str = cmd;
-        } else if (cmd == "get") {
-            cout << "get bitch" << endl;
-            //Get info to send data
-            str.clear();
-            str = cmd;
-        } else if (cmd == "remove") {
-            cout << "remove bitch" << endl;
-            //Get info to send data
-            str.clear();
-            str = cmd;
-        } else if (cmd == "quit") {
-            close(sock);
-            return 0;
-        } else {
-            cout << "Acceptable commands are:" << endl;
-            cout << "   put" << endl;
-            cout << "   get" << endl;
-            cout << "   remove" << endl;
-            cout << "   quit" << endl;
-            continue;
-        }
+    while(true) {
+        //Handle user interaction
+        string to_send = handle_user_interaction(sock);
 
         //Send the data
-        int len = write(sock, str.c_str(), str.length());
-        if (len != str.length())
+        int len = write(sock, to_send.c_str(), to_send.length());
+        if (len != to_send.length())
             error("Unable to send the data!");
 
         //Get the response
@@ -124,7 +90,141 @@ int main(int argc, char *argv[]) {
 
         //Print the response
         cout << buffer << endl;
+
     }
 
     return 0;
+}
+
+/*
+ * hander_user_interaction()
+ * 
+ * Gather user request to send to server
+ *
+ * Return string to send
+ * or exit the connection and application
+ */
+string handle_user_interaction(int sock) {
+    string str, cmd, to_send;
+    bool done;
+
+    while (true) {
+        
+        //Print out a command line
+        cout << "-> "; 
+        cout.flush();
+        getline(cin, str); //Get a full line of text
+
+        //Grab the command portion
+        stringstream strstr(str);
+        if (!(strstr >> cmd))
+            continue;
+        
+        /* Put command */
+        if (cmd == "put") {
+            // Get key to store data
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter key to store data: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+                to_send = cmd + " " + str;
+                done = true;
+            }
+            // Get data to store
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Do you want to send a file [y/n] ? ";
+                cout.flush();
+                getline(cin, str);
+                // Get data from file
+                if (str == "y") {
+                    string filename;
+                    while (filename.empty()) {
+                        cout << "Please enter the file name: ";
+                        cout.flush();
+                        getline(cin, filename);
+                    }
+                    // Do crazy shit with a file that idk yet
+                    to_send = to_send + " " + filename;
+                    done = true;
+                }
+                // Get data from command line
+                else if (str == "n") {
+                    string data;
+                    while (data.empty()) {
+                        cout << "Please enter the data to store: ";
+                        cout.flush();
+                        getline(cin, data);
+                    }
+                    // Build string to send
+                    to_send = to_send + " " + data;
+                    done = true;
+                }
+                // Do it again...
+                else {
+                    continue;
+                }
+            }
+            // All done
+            break;
+        } 
+        /* Get command */
+        else if (cmd == "get") {
+            // Get key to retrieve data
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter key to retrieve data: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+                to_send = cmd + " " + str;
+                done = true;
+            }
+            // All done
+            break;
+        }
+        /* Remove command */
+        else if (cmd == "remove") {
+            // Get key to retrieve data
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter key to remove data: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+                to_send = cmd + " " + str;
+                done = true;
+            }
+            // All done
+            break;
+        } 
+        /* User wants to close the applcation */
+        else if (cmd == "quit") {
+            close(sock);
+            exit(0);
+        } 
+        /* Print Help */
+        else {
+            cout << "Acceptable commands are:" << endl;
+            cout << "   put     - store data" << endl;
+            cout << "   get     - retrieve data" << endl;
+            cout << "   remove  - delete data" << endl;
+            cout << "   quit    - exit the application" << endl;
+            continue;
+        }
+
+    }
+    return to_send;
 }
