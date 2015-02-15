@@ -8,6 +8,7 @@ CLIENT = \
 
 SERVER = \
 	$(SRCDIR)/database_server.cpp \
+	$(SRCDIR)/memory_manager.cpp \
 	$(SRCDIR)/helpers.cpp
 
 default:
