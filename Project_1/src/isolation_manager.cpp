@@ -22,9 +22,15 @@
  * Return 0 on success, 1 on failure.
  *
  */
-int put_request_for_service(request_t req)
+int put_request_for_service(int key,
+                            string data,
+                            int client,
+                            int action)
 {
     int ret = 0;
+
+    // Create req
+    request_t req = { key, data, client, action };
 
     // Get mutex
     pthread_mutex_lock(&q_lock);

@@ -47,5 +47,8 @@ static list<request_t> queue;
 pthread_mutex_t q_lock = PTHREAD_MUTEX_INITIALIZER;
 
 // Manage request functions
-int put_request_for_service(request_t req);
+int put_request_for_service(int key,
+                            string data,
+                            int client,
+                            int action);
 const request_t *get_request_for_service();
