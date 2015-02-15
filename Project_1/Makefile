@@ -8,7 +8,8 @@ CLIENT = \
 
 SERVER = \
 	$(SRCDIR)/database_server.cpp \
-	$(SRCDIR)/helpers.cpp
+	$(SRCDIR)/helpers.cpp \
+        $(SRCDIR)/isolation_manager.cpp
 
 default:
 	mkdir -p $(TARGET)
