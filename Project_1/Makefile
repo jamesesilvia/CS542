@@ -9,6 +9,7 @@ CLIENT = \
 SERVER = \
 	$(SRCDIR)/database_server.cpp \
 	$(SRCDIR)/helpers.cpp \
+	$(SRCDIR)/memory_manager.cpp \
         $(SRCDIR)/isolation_manager.cpp
 
 default:
