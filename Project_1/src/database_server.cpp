@@ -9,23 +9,7 @@
  *
  **********************************************************************/
 
-#include <iostream>
-#include <unistd.h>
-#include <sys/types.h> 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <string.h>
-#include <string>
-#include <list>
-#include <sstream>
-#include <fstream>
-#include <iomanip>
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <stdarg.h>
+#include "database_server.hpp"
 
 #include "memory_manager.hpp"
 #include "helpers.hpp"
@@ -55,12 +39,17 @@ void printv(char *format, ...) {
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len;
-    string cmd, index, to_send;
+    string cmd, key, data, to_send;
 
     while (true) {
 
         //Clear receive buffer
         memset(buffer, 0, sizeof(buffer));
+        //Clear strings
+        cmd.clear();
+        key.clear();
+        data.clear();
+        to_send.clear();
         
         //Shall we get some data?
         len = read(socket, buffer, BUFFER_LEN);
@@ -85,18 +74,54 @@ bool handleclient(const int socket) {
 
         /* Put request received */
         if (cmd == "put") {
+            // Let's get the info we need
+            strstr >> key;
+            while (strstr >> data) {
+                // Get all data in
+                (to_send.empty()) ?
+                    to_send = data :
+                    to_send = to_send + " " + data;
+            }
+            // TODO: Add FD for comms
+            table.put(atoi(key.c_str()), to_send, 0);
+            to_send.clear();
+            //Put the entry
             to_send = "We got your PUT request brah";
         } 
         /* Get request received */
         else if (cmd == "get") {
+            // Let's get the info we need
+            strstr >> key;
+            // TODO: Add FD for comms
+            table.get(atoi(key.c_str()), 0);
             //Get the entry
             to_send = "We got your GET request brah";
         } 
         /* Remove request received */
         else if (cmd == "remove") {
+            // Let's get the info we need
+            strstr >> key;
+            // TODO: Add FD for comms
+            table.remove(atoi(key.c_str()), 0);
            //Remove the entry
            to_send = "We got your REMOVE request brah";
-        } 
+        }
+        /* Smoothly close socket, will slam all clients */
+        else if (cmd == "close") {
+            // Server close?
+            strstr >> data;
+            // Yes, lets exit.
+            if (data == "server") {
+                cout << "Received force close, EXIT" << endl;
+                close(socket);
+                exit(1);
+            }
+        }
+        /* Print queue - verbose only */
+        else if (cmd == "print" && verbose) {
+            table.print_queue();
+            to_send = "We got your PRINT request brah";
+        }
         /* Junk catch all */
         else {
             continue;

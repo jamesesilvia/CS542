@@ -10,33 +10,63 @@
  **********************************************************************/
 
 #include <iostream>
-#include <unistd.h>
-#include <sys/types.h> 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 #include <string.h>
 #include <string>
-#include <list>
 #include <sstream>
-#include <fstream>
-#include <iomanip>
 #include <stdio.h>
-#include <stdlib.h>
 #include <pthread.h>
-#include <stdarg.h>
+#include <list>
 
 using namespace std;
 
+// Actions for queue
+#define PUT     1
+#define GET     2
+#define REMOVE  3
+
+/* User request item placed on queue */
+typedef struct request
+{
+    int key;
+    string data;
+    int client;
+    int action;
+
+    string print() const
+    {
+        stringstream ss;
+        ss << "Key: " << key << " Data: " << data 
+            << " Client: " << client << " Action: " << action;
+        return ss.str();
+
+    }
+} request_t;
+
 /* Table object that puts requests on queue */
 class Relation {
+public:
     /* functions */
-    Relation(string table_name);	//constructor to create new relation
-    int queue_command(string command);		//put command on isolation manager's queue    
+    Relation(string _tablename);
+    int put(int key, string data, int client);
+    int get(int key, int client);
+    int remove(int key, int client);
+    request_t get_req_for_service(pthread_mutex_t lock);
+    int check_if_queue_empty();
+    bool isolation_manager();
+    void print_queue();
+    /* queue */
+    list <request_t> queue;
 
+private:
     /* variables */
-    string name;
-    
+    string tablename;
+    int key;
+    string data;
+    int client;
+    pthread_mutex_t q_lock;
+    pthread_t thread;
+    void spawn_isolation_manager();
+    list<request_t>::const_iterator iter;
 };
+
 
