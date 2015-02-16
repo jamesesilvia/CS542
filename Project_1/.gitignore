@@ -6,3 +6,6 @@ build
 
 # No swap
 *.swp
+
+# No database
+*.dat
