@@ -15,115 +15,206 @@ using namespace std;
 
 Relation::Relation(string _tablename) {
     tablename = _tablename;
-    pthread_mutex_init(&q_lock, NULL);
+    // init locks
+    pthread_mutex_init(&s_lock, NULL);
+    pthread_mutex_init(&d_lock, NULL);
+    // spawn isolation manager
     spawn_isolation_manager();
 }
 
-int Relation::put(int key, string data, int client) {
 
-    int ret = 0;
+bool Relation::put(int key, string data, int client) {
+
+    int ret = false;
 
     // Create req
     request_t req = { key, data, client, PUT };
 
-    // Get mutex
-    pthread_mutex_lock(&q_lock);
-
-    // Add to end of list
-    queue.push_back(req);
-
-    // Did that fail?
-    if (queue.empty())
-        ret = 1;
-
-    // Release mutex
-    pthread_mutex_unlock(&q_lock);
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        ret = true;
 
     return ret;
 }
 
 
-int Relation::get(int key, int client) {
+bool Relation::get(int key, int client) {
     
-    int ret = 0;
+    int ret = false;
 
     // Create req
     request_t req = { key, "", client, GET };
-
-    // Get mutex
-    pthread_mutex_lock(&q_lock);
-
-    // Add to end of list
-    queue.push_back(req);
-
-    // Did that fail?
-    if (queue.empty())
-        ret = 1;
-
-    // Release mutex
-    pthread_mutex_unlock(&q_lock);
+    
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        ret = true;
 
     return ret;
 }
 
 
-int Relation::remove(int key, int client) {
+bool Relation::remove(int key, int client) {
  
-    int ret = 0;
+    int ret = false;
 
     // Create req
     request_t req = { key, "", client, REMOVE };
 
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        ret = true;    
+    
+    return ret;
+}
+
+bool Relation::add_to_queue(pthread_mutex_t *lock, 
+                                        request_t req,
+                                        list <request_t> *queue) {
+    bool ret = true;
+
     // Get mutex
-    pthread_mutex_lock(&q_lock);
+    pthread_mutex_lock(lock);
 
     // Add to end of list
-    queue.push_back(req);
+    queue->push_back(req);
 
     // Did that fail?
-    if (queue.empty())
-        ret = 1;
+    if (queue->empty())
+        ret = false;
 
     // Release mutex
-    pthread_mutex_unlock(&q_lock);
+    pthread_mutex_unlock(lock);
+
+    return ret;
+
+}
+
+request_t Relation::remove_from_queue(pthread_mutex_t *lock,
+                                        list <request_t> *queue) {
+    request_t req;
+    req.action = 0;
+
+    // Get mutex
+    pthread_mutex_lock(lock);
+
+    // Get first request and pop it
+    if (!queue->empty()) {
+        req = queue->front();
+        queue->pop_front();
+    }
+
+    // Release mutex
+    pthread_mutex_unlock(lock);
+
+    return req;
+}
+
+
+request_t Relation::remove_req_by_key(int key,
+                                    pthread_mutex_t *lock,
+                                    list <request_t> *queue) {
+    request_t req;
+    req.action = 0;
+
+    // Get mutex
+    pthread_mutex_lock(lock);
+
+    for (iter = queue->begin();
+                iter != queue->end();  ++iter) {
+        if (key == iter->key) {
+            req = *iter;
+            queue->erase(iter);
+        }
+    }
+
+    // Release mutex
+    pthread_mutex_unlock(lock);
+
+    return req;
+}
+
+
+bool Relation::check_if_queue_empty(pthread_mutex_t *lock, 
+                                        list <request_t> *queue) {
+    bool ret = false;
+    
+    // Get mutex
+    pthread_mutex_lock(lock);
+
+    // Is it empty?
+    if (queue->empty())
+        ret = true;
+
+    // Release mutex
+    pthread_mutex_unlock(lock);
+
+    return false;
+}
+
+request_t Relation::get_req_for_service() {
+
+    // Create req
+    request_t req;
+
+    // Remove item for service
+    req = remove_from_queue(&s_lock, &service_queue);
+
+    return req;
+}
+
+
+bool Relation::req_service_done(request_t req) {
+    int ret = false;
+
+    // Add to done queue
+    if (!add_to_queue(&d_lock, req, &done_queue))
+        ret = true;
 
     return ret;
 }
 
 
-request_t Relation::get_req_for_service(pthread_mutex_t lock) {
 
-    // Create req
+string Relation::wait_for_service(int key) {
+    
     request_t req;
+    stringstream to_send;
 
-    // Get mutex
-    pthread_mutex_lock(&q_lock);
-
-    // Get first request and pop it
-    if (!queue.empty()) {
-        req = queue.front();
-        queue.pop_front();
+    /* Poll done queue for our request */
+    while(true) {
+        if (!done_queue.empty()){
+            req = remove_req_by_key(key, &d_lock, &done_queue);
+            
+            /* Respond to user */
+            switch (req.action) {
+                case(PUT):
+                    to_send << "Stored key: " << req.key <<
+                                " with data: " << req.data << endl;
+                    break;
+                case(GET):
+                    to_send << "Got key: " << req.key <<
+                                " with data: " << req.data << endl;
+                    break;
+                case(REMOVE):
+                    to_send << "Removed key: " << req.key <<
+                                " with data: " << req.data << endl;
+                    break;
+                // Wrong key, do it again.
+                default:
+                    continue;
+            }
+            break;
+        }
     }
-
-    // Release mutex
-    pthread_mutex_unlock(&q_lock);
-
-    return req;
+    return to_send.str();
 }
-
-int Relation::check_if_queue_empty() {
-    if (queue.empty())
-        return 1;
-    return 0;
-}
-
 
 /*
  * isolation_manager()
  *
- * Gets requests from queue and services them.
- * 
- * Uses pipes to talk back to client handler
+ * Gets requests from service queue
+ * Services request to memory manager
+ * Places request on done queue when complete
  *
  * Should not return. False on failure.
  */
@@ -131,14 +222,12 @@ bool Relation::isolation_manager() {
     request_t req;
     while(true) {
         // Do stuff if queue not empty
-        if (!check_if_queue_empty()) {
-            // Clear req.action
-            req.action = 0;
+        if (!service_queue.empty()) {
             // Get the request at front of queue
-            req = get_req_for_service(q_lock);
+            req = get_req_for_service();
 
             /* Handle request from user */
-            switch(req.action){
+            switch(req.action ){
                 case(PUT):
                     break;
                 case(GET):
@@ -148,6 +237,9 @@ bool Relation::isolation_manager() {
                 default:
                     continue;
             }
+            // Request handled
+            if (req_service_done(req))
+                cout << "Failed to put on done queue" << endl;
         }
     }
     return false;
@@ -179,15 +271,22 @@ void Relation::spawn_isolation_manager(void) {
     }
 }
 
-void Relation::print_queue() {
-    cout << "********** QUEUED REQUESTS **********" << endl; 
+void Relation::print_queues() {
+    cout << "*************** SERVICE QUEUE **************" << endl; 
     // Iter list and print queue
-    for (iter = queue.begin(); iter != queue.end(); ++iter) {
+    for (iter = service_queue.begin(); iter != service_queue.end(); ++iter) {
         cout << "Key: " << (*iter).key
             << " Data: " << (*iter).data
             << " Client: " << (*iter).client
             << " Action: " << (*iter).action << endl;
     }
-    cout << "*************************************" << endl;
-
+    cout << "**************** DONE QUEUE ****************" << endl; 
+    // Iter list and print queue
+    for (iter = done_queue.begin(); iter != done_queue.end(); ++iter) {
+        cout << "Key: " << (*iter).key
+            << " Data: " << (*iter).data
+            << " Client: " << (*iter).client
+            << " Action: " << (*iter).action << endl;
+    }
+    cout << "********************************************" << endl;
 }

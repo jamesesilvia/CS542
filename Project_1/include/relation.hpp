@@ -47,15 +47,14 @@ class Relation {
 public:
     /* functions */
     Relation(string _tablename);
-    int put(int key, string data, int client);
-    int get(int key, int client);
-    int remove(int key, int client);
-    request_t get_req_for_service(pthread_mutex_t lock);
-    int check_if_queue_empty();
+    bool put(int key, string data, int client);
+    bool get(int key, int client);
+    bool remove(int key, int client);
+    string wait_for_service(int key);
+    void print_queues();
     bool isolation_manager();
-    void print_queue();
-    /* queue */
-    list <request_t> queue;
+
+
 
 private:
     /* variables */
@@ -63,10 +62,28 @@ private:
     int key;
     string data;
     int client;
-    pthread_mutex_t q_lock;
+    pthread_mutex_t s_lock;
+    pthread_mutex_t d_lock;
     pthread_t thread;
-    void spawn_isolation_manager();
     list<request_t>::const_iterator iter;
+    /* functions */
+    bool add_to_queue(pthread_mutex_t *lock,
+                                request_t req,
+                                list <request_t> *queue);
+    request_t remove_from_queue(pthread_mutex_t *lock, 
+                                list <request_t> *queue);
+    request_t remove_req_by_key(int key,
+                                pthread_mutex_t *lock,
+                                list <request_t> *queue);
+    bool check_if_queue_empty(pthread_mutex_t *lock,
+                                list <request_t> *queue);
+    request_t get_req_for_service();
+    bool req_service_done(request_t req);
+    
+    void spawn_isolation_manager();
+    /* queues */
+    list <request_t> service_queue;
+    list <request_t> done_queue;
 };
 
 

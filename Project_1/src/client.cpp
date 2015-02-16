@@ -220,6 +220,7 @@ string handle_user_interaction(int sock) {
             to_send = cmd;
             break;
         }
+        /* Force close server, slams clients */
         else if (cmd == "close_server") {
             to_send = "close server";
             break;

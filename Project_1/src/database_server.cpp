@@ -79,29 +79,31 @@ bool handleclient(const int socket) {
                     to_send = data :
                     to_send = to_send + " " + data;
             }
-            // TODO: Add FD for comms
+            // Put the entry
             table.put(atoi(key.c_str()), to_send, 0);
             to_send.clear();
-            //Put the entry
-            to_send = "We got your PUT request brah";
+            // Wait for service
+            to_send = table.wait_for_service(atoi(key.c_str()));
         } 
         /* Get request received */
         else if (cmd == "get") {
             // Let's get the info we need
             strstr >> key;
-            // TODO: Add FD for comms
+            // Get the entry
             table.get(atoi(key.c_str()), 0);
-            //Get the entry
-            to_send = "We got your GET request brah";
+            to_send.clear();
+            // Wait for service
+            to_send = table.wait_for_service(atoi(key.c_str()));
         } 
         /* Remove request received */
         else if (cmd == "remove") {
             // Let's get the info we need
             strstr >> key;
-            // TODO: Add FD for comms
+            // Remove the entry
             table.remove(atoi(key.c_str()), 0);
-           //Remove the entry
-           to_send = "We got your REMOVE request brah";
+            to_send.clear();
+           // Wait for service
+           to_send = table.wait_for_service(atoi(key.c_str()));
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
@@ -111,12 +113,13 @@ bool handleclient(const int socket) {
             if (data == "server") {
                 cout << "Received force close, EXIT" << endl;
                 close(socket);
-                exit(1);
+                exit(0);
             }
+            to_send = "We got your phony CLOSE request brah";
         }
         /* Print queue - verbose only */
         else if (cmd == "print" && verbose) {
-            table.print_queue();
+            table.print_queues();
             to_send = "We got your PRINT request brah";
         }
         /* Junk catch all */
