@@ -214,7 +214,12 @@ string handle_user_interaction(int sock) {
             }
             // All done
             break;
-        } 
+        }
+        /* Remove command, debug only */
+        else if (cmd == "print") {
+            to_send = cmd;
+            break;
+        }
         /* User wants to close the applcation */
         else if (cmd == "quit") {
             close(sock);

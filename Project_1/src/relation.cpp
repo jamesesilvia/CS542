@@ -9,95 +9,176 @@
  *
  **********************************************************************/
 
-#include <iostream>
-#include <unistd.h>
-#include <sys/types.h> 
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <fcntl.h>
-#include <string.h>
-#include <string>
-#include <list>
-#include <sstream>
-#include <fstream>
-#include <iomanip>
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <stdarg.h>
+#include "relation.hpp"
 
 using namespace std;
 
-#include "relation.hpp"
-#include "isolation_manager.hpp"
-
-Relation::Relation(string table_name) {
-    name = table_name;
+Relation::Relation(string _tablename) {
+    tablename = _tablename;
+    pthread_mutex_init(&q_lock, NULL);
 }
 
-int Relation::queue_command(string command) {
+int Relation::put(int key, string data, int client) {
+
+    int ret = 0;
+
+    // Create req
+    request_t req = { key, data, client, PUT };
+
+    cout << req.data << endl;
+
+    // Get mutex
+    pthread_mutex_lock(&q_lock);
+
+    // Add to end of list
+    queue.push_back(req);
+
+    // Did that fail?
+    if (queue.empty())
+        ret = 1;
+
+    // Release mutex
+    pthread_mutex_unlock(&q_lock);
+
+    return ret;
+}
+
+
+int Relation::get(int key, int client) {
     
-    //initialize variables
-    int key;
-    string data;
-    int client;
-    int action = 3;	//set action to an invalid number assuming that it will become valid later
-    bool dataExists;
+    int ret = 0;
 
-    stringstream ss(command);
-    string buffer;
+    // Create req
+    request_t req = { key, "", client, GET };
 
-    //pull first substring off of command, this one is the action
-    ss >> buffer;
-	
-    //put case
-    if (buffer == "put")
-    {
-	action = 0;
-	dataExists = true;
+    // Get mutex
+    pthread_mutex_lock(&q_lock);
+
+    // Add to end of list
+    queue.push_back(req);
+
+    // Did that fail?
+    if (queue.empty())
+        ret = 1;
+
+    // Release mutex
+    pthread_mutex_unlock(&q_lock);
+
+    return ret;
+}
+
+
+int Relation::remove(int key, int client) {
+ 
+    int ret = 0;
+
+    // Create req
+    request_t req = { key, "", client, REMOVE };
+
+    // Get mutex
+    pthread_mutex_lock(&q_lock);
+
+    // Add to end of list
+    queue.push_back(req);
+
+    // Did that fail?
+    if (queue.empty())
+        ret = 1;
+
+    // Release mutex
+    pthread_mutex_unlock(&q_lock);
+
+    return ret;
+}
+
+
+request_t Relation::get_req_for_service(pthread_mutex_t lock) {
+
+    // Create req
+    request_t req;
+
+    // Get mutex
+    pthread_mutex_lock(&q_lock);
+
+    // Get first request and pop it
+    if (!queue.empty()) {
+        req = queue.front();
+        queue.pop_front();
     }
 
-    //get case
-    if (buffer == "get")
-    {
-	action = 1;
-	dataExists = false;
+    // Release mutex
+    pthread_mutex_unlock(&q_lock);
+
+    return req;
+}
+
+int Relation::check_if_queue_empty() {
+    if (queue.empty())
+        return 1;
+}
+
+
+/*
+ * isolation_manager()
+ *
+ * Gets requests from queue and services them.
+ * 
+ * Uses pipes to talk back to client handler
+ *
+ * Should not return. False on failure.
+ */
+bool Relation::isolation_manager() {
+    request_t req;
+    while(true) {
+        // Do stuff if queue not empty
+        if (!check_if_queue_empty()) {
+            // Clear req.action
+            req.action = 0;
+            // Get the request at front of queue
+            req = get_req_for_service(q_lock);
+
+            /* Handle request from user */
+            switch(req.action){
+                case(PUT):
+                    break;
+                case(GET):
+                    break;
+                case(REMOVE):
+                    break;
+                default:
+                    continue;
+            }
+        }
     }
+    return false;
+}
 
-    //remove case
-    if (buffer == "remove")
-    {
-	action = 2;
-	dataExists = false;
+
+/*
+ * start_isolation_manager()
+ *
+ * Used to initialize the Isolation Manager
+ * 
+ * If fails, exits server. 
+ */
+void *Relation::start_isolation_manager() {
+    if (!isolation_manager()) {
+        // Failed to start
+        cout << "Isolation Manager failed to start, exiting..." << endl;
+        exit(1);
     }
+}
 
-    //pull next substring off of command, this one is the key
-    ss >> buffer;
-	
-    //convert to int
-    key = atoi(buffer.c_str());
 
-    //third substring only exists in put case
-    if (dataExists)
-    {
-	ss >> buffer;
-	    
-	data = buffer;
-    }
+void Relation::print_queue() {
+    // Iter list and print queue
+    for (iter = queue.begin(); iter != queue.end(); ++iter) {
+        cout << "trying to iter the list" << endl;
+        cout << "Key: " << (*iter).key
+            << " Data: " << (*iter).data
+            << " Client: " << (*iter).client
+            << " Action: " << (*iter).action << endl;
 
-    //TODO: Where does the int for client come from?
-
-    if (action != 3)
-    {
-	cout << "Adding item to queue!" << endl;
-	put_request_for_service(key, data, client, action);
-	return 0;
-    }
-
-    else
-    {
-	cout << "Unable to add item to queue!" << endl;
-	return 1;
     }
 
 }
