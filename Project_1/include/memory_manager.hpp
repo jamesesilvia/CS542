@@ -9,6 +9,9 @@
  *
  **********************************************************************/
 
+#ifndef MEMORY_MANAGER_H
+#define MEMORY_MANAGER_H
+
 #include <iostream>
 #include <unistd.h>
 #include <sys/types.h> 
@@ -78,3 +81,4 @@ private:
 
 };
 
+#endif

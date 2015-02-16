@@ -9,6 +9,9 @@
  *
  **********************************************************************/
 
+#ifndef DATABASE_SERVER_H
+#define DATABASE_SERVER_H
+
 #include <iostream>
 #include <unistd.h>
 #include <sys/types.h> 
@@ -29,8 +32,12 @@
 
 #include "helpers.hpp"
 #include "relation.hpp"
+#include "memory_manager.hpp"
 
 #define PORT 1433
 
 /***********THE TABLE***********/ 
 extern Relation table("my table");
+extern Memory_manager memory_manager("database");
+
+#endif

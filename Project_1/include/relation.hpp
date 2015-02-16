@@ -9,6 +9,9 @@
  *
  **********************************************************************/
 
+#ifndef RELATION_H
+#define RELATION_H
+
 #include <iostream>
 #include <string.h>
 #include <string>
@@ -86,4 +89,4 @@ private:
     list <request_t> done_queue;
 };
 
-
+#endif

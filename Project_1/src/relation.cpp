@@ -115,15 +115,16 @@ request_t Relation::remove_req_by_key(int key,
                                     list <request_t> *queue) {
     request_t req;
     req.action = 0;
+    list <request_t>::iterator i;
 
     // Get mutex
     pthread_mutex_lock(lock);
 
-    for (iter = queue->begin();
-                iter != queue->end();  ++iter) {
-        if (key == iter->key) {
+    while (i != queue->end()) {
+        if (i->key == key) {
             req = *iter;
-            queue->erase(iter);
+            queue->erase(i);
+            break;
         }
     }
 

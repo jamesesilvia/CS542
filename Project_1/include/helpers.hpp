@@ -9,6 +9,9 @@
  *
  **********************************************************************/
 
+#ifndef HELPERS_H
+#define HELPERS_H
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -22,3 +25,5 @@ using namespace std;
 void error(const char * str);
 int hostname_to_ip(const char * hostname , char* ip);
 void printv(char *format, ...);
+
+#endif

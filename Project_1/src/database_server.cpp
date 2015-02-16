@@ -10,7 +10,6 @@
  **********************************************************************/
 
 #include "database_server.hpp"
-
 #include "memory_manager.hpp"
 #include "helpers.hpp"
 
@@ -159,7 +158,6 @@ int main(int argc, char *argv[])
     pthread_t thread;
 
     //Create memory manager for database
-    Memory_manager memory_manager("database");
     int current_size = memory_manager.load_memory_map();
     memory_manager.map_to_memory(current_size);
 
