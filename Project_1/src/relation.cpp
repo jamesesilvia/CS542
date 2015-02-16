@@ -171,14 +171,14 @@ void *Relation::start_isolation_manager() {
 
 
 void Relation::print_queue() {
+    cout << "********** QUEUED REQUESTS **********" << endl; 
     // Iter list and print queue
     for (iter = queue.begin(); iter != queue.end(); ++iter) {
-        cout << "trying to iter the list" << endl;
         cout << "Key: " << (*iter).key
             << " Data: " << (*iter).data
             << " Client: " << (*iter).client
             << " Action: " << (*iter).action << endl;
-
     }
+    cout << "*************************************" << endl;
 
 }
