@@ -53,7 +53,6 @@ public:
     request_t get_req_for_service(pthread_mutex_t lock);
     int check_if_queue_empty();
     bool isolation_manager();
-    void *start_isolation_manager();
     void print_queue();
     /* queue */
     list <request_t> queue;
@@ -65,6 +64,8 @@ private:
     string data;
     int client;
     pthread_mutex_t q_lock;
+    pthread_t thread;
+    void spawn_isolation_manager();
     list<request_t>::const_iterator iter;
 };
 

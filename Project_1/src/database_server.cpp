@@ -102,7 +102,18 @@ bool handleclient(const int socket) {
             table.remove(atoi(key.c_str()), 0);
            //Remove the entry
            to_send = "We got your REMOVE request brah";
-        } 
+        }
+        /* Smoothly close socket, will slam all clients */
+        else if (cmd == "close") {
+            // Server close?
+            strstr >> data;
+            // Yes, lets exit.
+            if (data == "server") {
+                cout << "Received force close, EXIT" << endl;
+                close(socket);
+                exit(1);
+            }
+        }
         /* Print queue - verbose only */
         else if (cmd == "print" && verbose) {
             table.print_queue();

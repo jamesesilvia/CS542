@@ -16,6 +16,7 @@ using namespace std;
 Relation::Relation(string _tablename) {
     tablename = _tablename;
     pthread_mutex_init(&q_lock, NULL);
+    spawn_isolation_manager();
 }
 
 int Relation::put(int key, string data, int client) {
@@ -24,8 +25,6 @@ int Relation::put(int key, string data, int client) {
 
     // Create req
     request_t req = { key, data, client, PUT };
-
-    cout << req.data << endl;
 
     // Get mutex
     pthread_mutex_lock(&q_lock);
@@ -115,6 +114,7 @@ request_t Relation::get_req_for_service(pthread_mutex_t lock) {
 int Relation::check_if_queue_empty() {
     if (queue.empty())
         return 1;
+    return 0;
 }
 
 
@@ -161,14 +161,23 @@ bool Relation::isolation_manager() {
  * 
  * If fails, exits server. 
  */
-void *Relation::start_isolation_manager() {
-    if (!isolation_manager()) {
+void *start_isolation_manager(void *ptr) {
+    Relation *spawn = (Relation*)ptr; 
+    if (!spawn->isolation_manager()) {
         // Failed to start
-        cout << "Isolation Manager failed to start, exiting..." << endl;
+        cout << "Isolation Manager returned, exiting..." << endl;
         exit(1);
     }
 }
 
+
+void Relation::spawn_isolation_manager(void) {
+    if (pthread_create(&thread, NULL, 
+                start_isolation_manager, this) < 0) {
+        cout << "Failed to spawn Isolaton Manager." << endl;
+        exit(1);
+    }
+}
 
 void Relation::print_queue() {
     cout << "********** QUEUED REQUESTS **********" << endl; 

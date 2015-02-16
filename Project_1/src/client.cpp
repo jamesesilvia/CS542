@@ -220,6 +220,10 @@ string handle_user_interaction(int sock) {
             to_send = cmd;
             break;
         }
+        else if (cmd == "close_server") {
+            to_send = "close server";
+            break;
+        }
         /* User wants to close the applcation */
         else if (cmd == "quit") {
             close(sock);
