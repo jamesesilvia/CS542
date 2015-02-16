@@ -396,9 +396,7 @@ void Memory_manager::print_memory_map() {
 void Memory_manager::save_memory_map() {
     ofstream text_map;
     
-    if (remove(map_loc.c_str()) != 0) {
-        cout << __func__ << "(): failed to remove previous text map" << endl;
-    }
+    remove(map_loc.c_str());
 
     text_map.open(map_loc.c_str());
     if (!text_map) {

@@ -250,7 +250,7 @@ bool Relation::isolation_manager() {
                                                         req.key,
                                                         req.data.length());
                     // Response based on ret
-                    if (ret = -1)
+                    if (ret == -1)
                         req.data = "\nFAILURE: That key already exists";
                     req.action = PUT;
                     free(buffer);
@@ -286,7 +286,7 @@ bool Relation::isolation_manager() {
                     if (ret == -1)
                         req.data = "\nREAD FAILED (REMOVE).";
                     // Now remove it
-                    ret = memory_manager->remove_index(key);
+                    ret = memory_manager->remove_index(req.key);
                     if (ret == -1)
                         req.data = "\n" + req.data + "REMOVE FAILED.";
                     // Update done item
