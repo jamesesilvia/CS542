@@ -30,10 +30,13 @@ using namespace std;
 
 #include "memory_manager.hpp"
 
-Memory_manager::Memory_manager(string file) {
-    filename = file;
+Memory_manager::Memory_manager(string table) {
+    name = table;
+    filename = table + ".dat";
+    map_loc = table + ".txt";
     map = NULL;
     size = 0;
+    filled = 0;
 }
 
 int Memory_manager::map_to_memory() {
@@ -223,7 +226,6 @@ list<value>::iterator Memory_manager::write_to_table(int index, int offset, int 
     list<value>::iterator i;
 
     if (table.empty()) {
-        cout << __func__ << "(): table is empty, adding to front" << endl;
         table.push_front(val);
         return table.begin();
     }
@@ -311,8 +313,30 @@ int Memory_manager::write_index(char *buffer, int index, int len) {
 
         left_to_write -= free_block_size;
         buffer_offset += free_block_size;
+        filled += free_block_size;
         fragment += 1;
 
+    }
+
+    return 0;
+}
+
+int Memory_manager::remove_index(int index) {
+    list<value>::iterator i;
+    
+    if (!index_exist(index)) {
+        return -1;
+    }
+
+    /* remove from table */
+    i = table.begin();
+    while (i != table.end()) {
+        if ((*i).index == index) {
+            filled -= (*i).length;
+            i = table.erase(i);
+        } else {
+            ++i;
+        }
     }
 
     return 0;
@@ -321,6 +345,9 @@ int Memory_manager::write_index(char *buffer, int index, int len) {
 void Memory_manager::print_memory_map() {
     
     cout << "********** Memory Map **********" << endl;
+    cout << "Current size: " << size << ", bytes filled: " << filled << endl;
+    float fill_percent = ((float)filled)/((float)size);
+    cout << "Percentage filled: " << fill_percent << endl;
 
     for (iter = table.begin(); iter != table.end(); ++iter) {
         cout << "Index: " << (*iter).index
@@ -332,3 +359,83 @@ void Memory_manager::print_memory_map() {
     
     cout << "********************************" << endl;
 }
+
+void Memory_manager::save_memory_map() {
+    ofstream text_map;
+    text_map.open(map_loc.c_str());
+    if (!text_map) {
+        cout << __func__ << "(): unable to open text map" << endl;
+        return;
+    }
+
+    for (iter = table.begin(); iter != table.end(); ++iter) {
+        text_map << (*iter).index << ","
+                 << (*iter).fragment << ","
+                 << (*iter).offset << ","
+                 << (*iter).length
+                 << endl;
+    }
+
+    text_map.close();
+}
+
+void Memory_manager::load_memory_map() {
+    string line;
+    string val;
+    int index;
+    int offset;
+    int length;
+    int fragment;
+    ifstream text_map;
+    text_map.open(map_loc.c_str());
+    if (!text_map) {
+        cout << __func__ << "(): unable to open text map" << endl;
+        return;
+    }
+   
+    if (!table.empty()) {
+        cout << __func__ << "(): table is not empty" << endl;
+    }
+
+    while (getline(text_map, line)) {
+        stringstream ss(line);
+        getline(ss, val, ',');
+        index = atoi(val.c_str());
+        getline(ss, val, ',');
+        fragment = atoi(val.c_str());
+        getline(ss, val, ',');
+        offset = atoi(val.c_str());
+        getline(ss, val, ',');
+        length = atoi(val.c_str());
+        filled += length;
+        write_to_table(index,offset,length,fragment,NULL);
+    }
+
+    text_map.close();
+
+    rebuild_links();
+}
+
+void Memory_manager::rebuild_links() {
+    list<value>::iterator i;
+    value *ptr = NULL;
+    value *ptr_next = NULL;
+    bool found;
+
+    for (iter = table.begin(); iter != table.end(); ++iter) {
+        
+        for (i = table.begin(); i != table.end(); ++i) {
+
+            if ((*iter).index == (*i).index && (*iter).fragment+1 == (*i).fragment) {
+                cout << "found link idx: " << (*iter).index << ", frag: " << (*iter).fragment << endl;
+                ptr = (value *)&(*iter);
+                ptr_next = (value *)&(*i);
+                ptr->next_frag = ptr_next;
+            }
+        }
+    }
+}
+
+
+
+

@@ -29,7 +29,7 @@
 using namespace std;
 
 #define MAX_TABLE_SIZE      2000000000  /* 2GB */
-#define START_TABLE_SIZE    1000        /* 1000 Bytes */
+#define START_TABLE_SIZE    30        /* 1000 Bytes */
 
 /* structure to hold index */
 struct value {
@@ -44,7 +44,7 @@ struct value {
 class Memory_manager {
 public:
     /* functions */
-    Memory_manager(string file);
+    Memory_manager(string table);
     int map_to_memory();
     int unmap_from_memory();
     int read(char *buffer, int offset, int len);
@@ -55,15 +55,21 @@ public:
     list<value>::iterator write_to_table(int index, int offset, int length, int fragment, value *next_frag);
     int read_index(char *buffer, int index);
     int write_index(char *buffer, int index, int len);
+    int remove_index(int index);
     void print_memory_map();
-
+    void save_memory_map();
+    void load_memory_map();
+    void rebuild_links();
 
 private:
     /* variables */
+    string name;
     string filename;
+    string map_loc;
     struct stat filestat;
     char *map;
     int size;
+    int filled;
     list<value> table;
     list<value>::const_iterator iter;
 
