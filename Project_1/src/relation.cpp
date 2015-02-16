@@ -10,6 +10,7 @@
  **********************************************************************/
 
 #include "relation.hpp"
+#include "memory_manager.hpp"
 
 using namespace std;
 
@@ -110,22 +111,25 @@ request_t Relation::remove_from_queue(pthread_mutex_t *lock,
 }
 
 
-request_t Relation::remove_req_by_key(int key,
-                                    pthread_mutex_t *lock,
-                                    list <request_t> *queue) {
-    request_t req;
-    req.action = 0;
-    list <request_t>::iterator i;
+request_t *Relation::remove_req_by_key(int key,
+                                        pthread_mutex_t *lock,
+                                        list <request_t> *queue) {
+    request_t *req = new request_t;
+    req->action = 0;
+    list <request_t>::iterator i = queue->begin();
 
     // Get mutex
     pthread_mutex_lock(lock);
 
     while (i != queue->end()) {
         if (i->key == key) {
-            req = *iter;
+            req->key = i->key;
+            req->data = i->data;
+            req->action = i->action;
             queue->erase(i);
             break;
         }
+        i++;
     }
 
     // Release mutex
@@ -178,32 +182,35 @@ bool Relation::req_service_done(request_t req) {
 
 string Relation::wait_for_service(int key) {
     
-    request_t req;
+    request_t *req = NULL;
     stringstream to_send;
 
     /* Poll done queue for our request */
     while(true) {
         if (!done_queue.empty()){
+            to_send.str("");
             req = remove_req_by_key(key, &d_lock, &done_queue);
             
             /* Respond to user */
-            switch (req.action) {
+            switch (req->action) {
                 case(PUT):
-                    to_send << "Stored key: " << req.key <<
-                                " with data: " << req.data << endl;
+                    to_send << "Storing key: " << req->key <<
+                                " with data... " << req->data << endl;
                     break;
                 case(GET):
-                    to_send << "Got key: " << req.key <<
-                                " with data: " << req.data << endl;
+                    to_send << "Getting key: " << req->key <<
+                                " with data..." << req->data << endl;
                     break;
                 case(REMOVE):
-                    to_send << "Removed key: " << req.key <<
-                                " with data: " << req.data << endl;
+                    to_send << "Removing key: " << req->key <<
+                                " with data..." << req->data << endl;
                     break;
-                // Wrong key, do it again.
+                // Bogus key, do it again.
                 default:
                     continue;
             }
+            // OK, we got it.
+            free(req);
             break;
         }
     }
@@ -220,7 +227,10 @@ string Relation::wait_for_service(int key) {
  * Should not return. False on failure.
  */
 bool Relation::isolation_manager() {
+    int ret = 0;
     request_t req;
+    Memory_manager *memory_manager = Memory_manager::instance();
+
     while(true) {
         // Do stuff if queue not empty
         if (!service_queue.empty()) {
@@ -230,11 +240,60 @@ bool Relation::isolation_manager() {
             /* Handle request from user */
             switch(req.action ){
                 case(PUT):
+                // Need brackets for scope
+                {
+                    char *buffer = (char *)malloc(req.data.length()+1);
+                    memset(buffer, 0, sizeof(buffer));
+                    strcpy(buffer, req.data.c_str());
+                    // Store data in database
+                    ret = memory_manager->write_index(buffer, 
+                                                        req.key,
+                                                        req.data.length());
+                    // Response based on ret
+                    if (ret = -1)
+                        req.data = "\nFAILURE: That key already exists";
+                    req.action = PUT;
+                    free(buffer);
                     break;
+                }
                 case(GET):
+                // Need brackets for scope
+                {
+                    int buffer_size = memory_manager->get_index_length(req.key);
+                    char *buffer = (char *)malloc(buffer_size+1);
+                    memset(buffer, 0, sizeof(buffer));
+                    // Read data from database
+                    ret = memory_manager->read_index(buffer,
+                                                        req.key);
+                    // Reponse based on ret
+                    (ret == -1) ?
+                        req.data = "\nREAD FAILED" :
+                        req.data = string(buffer);
+                        
+                    req.action = GET;
+                    free(buffer);
                     break;
+                }
                 case(REMOVE):
+                // Need brackets for scope
+                {
+                    int buffer_size = memory_manager->get_index_length(req.key);
+                    char *buffer = (char *)malloc(buffer_size+1);
+                    memset(buffer, 0, sizeof(buffer));
+                    // Read from database
+                    ret = memory_manager->read_index(buffer,
+                                                        req.key);
+                    if (ret == -1)
+                        req.data = "\nREAD FAILED (REMOVE).";
+                    // Now remove it
+                    ret = memory_manager->remove_index(key);
+                    if (ret == -1)
+                        req.data = "\n" + req.data + "REMOVE FAILED.";
+                    // Update done item
+                    req.data = req.data + string(buffer);
+                    req.action = REMOVE;
                     break;
+                }
                 default:
                     continue;
             }

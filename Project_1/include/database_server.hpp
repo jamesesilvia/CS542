@@ -36,8 +36,4 @@
 
 #define PORT 1433
 
-/***********THE TABLE***********/ 
-extern Relation table("my table");
-extern Memory_manager memory_manager("database");
-
 #endif

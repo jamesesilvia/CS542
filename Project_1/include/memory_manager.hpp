@@ -67,8 +67,14 @@ public:
     int get_free_space();
     int expand_database(double request_size);
 
+    static Memory_manager *instance() {
+        if (!s_instance)
+            s_instance = new Memory_manager("database");
+        return s_instance;
+    }
 private:
     /* variables */
+    static Memory_manager *s_instance;
     string name;
     string filename;
     string map_loc;

@@ -10,7 +10,6 @@
  **********************************************************************/
 
 #include "database_server.hpp"
-#include "memory_manager.hpp"
 #include "helpers.hpp"
 
 //The backlog for listening
@@ -18,6 +17,10 @@
 
 //The buffer length for receiving commands
 #define BUFFER_LEN 1024
+
+/* Singleton of each class */
+Relation *Relation::s_instance = NULL;
+Memory_manager *Memory_manager::s_instance = NULL;
 
 //Set to false to disable
 bool verbose = true;
@@ -39,6 +42,8 @@ bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len;
     string cmd, key, data, to_send;
+
+    Relation *table = Relation::instance();
 
     while (true) {
 
@@ -82,30 +87,30 @@ bool handleclient(const int socket) {
                     to_send = to_send + " " + data;
             }
             // Put the entry
-            table.put(atoi(key.c_str()), to_send, 0);
+            table->put(atoi(key.c_str()), to_send, 0);
             to_send.clear();
             // Wait for service
-            to_send = table.wait_for_service(atoi(key.c_str()));
+            to_send = table->wait_for_service(atoi(key.c_str()));
         } 
         /* Get request received */
         else if (cmd == "get") {
             // Let's get the info we need
             strstr >> key;
             // Get the entry
-            table.get(atoi(key.c_str()), 0);
+            table->get(atoi(key.c_str()), 0);
             to_send.clear();
             // Wait for service
-            to_send = table.wait_for_service(atoi(key.c_str()));
+            to_send = table->wait_for_service(atoi(key.c_str()));
         } 
         /* Remove request received */
         else if (cmd == "remove") {
             // Let's get the info we need
             strstr >> key;
             // Remove the entry
-            table.remove(atoi(key.c_str()), 0);
+            table->remove(atoi(key.c_str()), 0);
             to_send.clear();
            // Wait for service
-           to_send = table.wait_for_service(atoi(key.c_str()));
+           to_send = table->wait_for_service(atoi(key.c_str()));
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
@@ -121,7 +126,7 @@ bool handleclient(const int socket) {
         }
         /* Print queue - verbose only */
         else if (cmd == "print" && verbose) {
-            table.print_queues();
+            table->print_queues();
             to_send = "We got your PRINT request brah";
         }
         /* Junk catch all */
@@ -158,8 +163,9 @@ int main(int argc, char *argv[])
     pthread_t thread;
 
     //Create memory manager for database
-    int current_size = memory_manager.load_memory_map();
-    memory_manager.map_to_memory(current_size);
+    Memory_manager *memory_manager = Memory_manager::instance();
+    int current_size = memory_manager->load_memory_map();
+    memory_manager->map_to_memory(current_size);
 
     //Create the sock handle
     printv("Creating socket\n");
@@ -202,6 +208,6 @@ int main(int argc, char *argv[])
     }
 
     //All done.
-    memory_manager.unmap_from_memory();
+    memory_manager->unmap_from_memory();
     return 0;
 }

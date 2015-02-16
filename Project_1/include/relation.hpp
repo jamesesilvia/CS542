@@ -57,10 +57,15 @@ public:
     void print_queues();
     bool isolation_manager();
 
-
+    static Relation *instance() {
+        if (!s_instance)
+            s_instance = new Relation("my table");
+        return s_instance;
+    }
 
 private:
     /* variables */
+    static Relation *s_instance;
     string tablename;
     int key;
     string data;
@@ -75,7 +80,7 @@ private:
                                 list <request_t> *queue);
     request_t remove_from_queue(pthread_mutex_t *lock, 
                                 list <request_t> *queue);
-    request_t remove_req_by_key(int key,
+    request_t *remove_req_by_key(int key,
                                 pthread_mutex_t *lock,
                                 list <request_t> *queue);
     bool check_if_queue_empty(pthread_mutex_t *lock,
