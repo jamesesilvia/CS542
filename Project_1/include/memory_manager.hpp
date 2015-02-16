@@ -28,8 +28,9 @@
 
 using namespace std;
 
-#define MAX_TABLE_SIZE      2000000000  /* 2GB */
-#define START_TABLE_SIZE    30        /* 1000 Bytes */
+#define MAX_TABLE_SIZE      2000000000   /* 2GB */
+#define START_TABLE_SIZE       1000000   /* 1MB */
+#define EXPAND_TABLE_SIZE         1000   /* 1kB */
 
 /* structure to hold index */
 struct value {
@@ -45,7 +46,7 @@ class Memory_manager {
 public:
     /* functions */
     Memory_manager(string table);
-    int map_to_memory();
+    int map_to_memory(int database_size);
     int unmap_from_memory();
     int read(char *buffer, int offset, int len);
     int write(char *buffer, int offset, int len);
@@ -58,8 +59,10 @@ public:
     int remove_index(int index);
     void print_memory_map();
     void save_memory_map();
-    void load_memory_map();
+    int load_memory_map();
     void rebuild_links();
+    int get_free_space();
+    int expand_database(double request_size);
 
 private:
     /* variables */

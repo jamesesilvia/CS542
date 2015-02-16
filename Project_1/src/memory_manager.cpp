@@ -21,6 +21,7 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -30,6 +31,7 @@ using namespace std;
 
 #include "memory_manager.hpp"
 
+/* constructor */
 Memory_manager::Memory_manager(string table) {
     name = table;
     filename = table + ".dat";
@@ -39,7 +41,8 @@ Memory_manager::Memory_manager(string table) {
     filled = 0;
 }
 
-int Memory_manager::map_to_memory() {
+/* map database into memory */
+int Memory_manager::map_to_memory(int database_size) {
 
     /* open database table */
     int fd = open(filename.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IRGRP | S_IROTH);
@@ -56,11 +59,11 @@ int Memory_manager::map_to_memory() {
     size = filestat.st_size;
 
     /* increase file size to starting table size */
-    if (size < START_TABLE_SIZE) {
-        if (ftruncate(fd, START_TABLE_SIZE) == -1) {
+    if (size < database_size) {
+        if (ftruncate(fd, database_size) == -1) {
             cout << __func__ << "(): could not expand database file" << endl;   
         } else {
-            size = START_TABLE_SIZE;
+            size = database_size;
         }
     }
 
@@ -81,6 +84,7 @@ int Memory_manager::map_to_memory() {
     return 0;
 }
 
+/* unmap database from memory */
 int Memory_manager::unmap_from_memory() {
 
     /* unmap file from memory */
@@ -92,6 +96,7 @@ int Memory_manager::unmap_from_memory() {
     return 0;
 }
 
+/* read directly from memory map */
 int Memory_manager::read(char *buffer, int offset, int len) {
 
     /* raw read from memory map */
@@ -105,6 +110,7 @@ int Memory_manager::read(char *buffer, int offset, int len) {
     return 0;
 }
 
+/* write directly to memory map */
 int Memory_manager::write(char *buffer, int offset, int len) {
 
     /* raw write to memory map and sync to file */
@@ -122,6 +128,7 @@ int Memory_manager::write(char *buffer, int offset, int len) {
     return 0;
 }
 
+/* find a free block of memory in the database */
 int Memory_manager::get_free_memory_block(int req_size, int *ret_size) {
    
     int last_offset = -1;
@@ -193,6 +200,7 @@ int Memory_manager::get_free_memory_block(int req_size, int *ret_size) {
     return biggest_offset;
 }
 
+/* get total of all fragmented lengths of a given index */
 int Memory_manager::get_index_length(int index) {
     int total_length = 0;
 
@@ -205,6 +213,7 @@ int Memory_manager::get_index_length(int index) {
     return total_length;
 }
 
+/* check to see if an index exists */
 bool Memory_manager::index_exist(int index) {
 
     /* see if this index exists */
@@ -216,6 +225,7 @@ bool Memory_manager::index_exist(int index) {
     return false;
 }
 
+/* write new index into table that keeps track of what is in the database */
 list<value>::iterator Memory_manager::write_to_table(int index, int offset, int length, int fragment, value *next_frag) {
     value val;
     val.index = index;
@@ -245,6 +255,7 @@ list<value>::iterator Memory_manager::write_to_table(int index, int offset, int 
 
 }
 
+/* read an index from the database */
 int Memory_manager::read_index(char *buffer, int index) {
     int offset = 0;
     value *ptr;
@@ -271,12 +282,14 @@ int Memory_manager::read_index(char *buffer, int index) {
     return -1;
 }
 
+/* write an index to the database */
 int Memory_manager::write_index(char *buffer, int index, int len) {
     int free_block_size;
     int free_block_offset;
     int left_to_write = len;
     int fragment = 1;
     int buffer_offset = 0;
+    int free_space_left;
     list<value>::iterator i;
     list<value>::iterator i_last;
     value *ptr = NULL;
@@ -287,11 +300,19 @@ int Memory_manager::write_index(char *buffer, int index, int len) {
         return -1;
     }
 
+    /* see if we have enough room to write this request */
+    free_space_left = get_free_space();
+    if (free_space_left < len) {
+        if (expand_database(len) == -1) {
+            cout << __func__ << "(): expand failed for request size: " << len
+                 << ", free space left: " << free_space_left << endl;
+        }
+    }
+
     while (left_to_write > 0) {
 
         /* get free block */
         free_block_offset = get_free_memory_block(left_to_write, &free_block_size);
-        cout << __func__ << "(): found block at offset: " << free_block_offset << ", len: " << free_block_size << endl;
        
         /* add block to memory map */
         if (fragment > 1) {
@@ -318,9 +339,16 @@ int Memory_manager::write_index(char *buffer, int index, int len) {
 
     }
 
+    /* save changes to persistent memory map */
+    save_memory_map();
+
     return 0;
 }
 
+/* remove an index from database, it just removes the index from the table,
+ * the data is still in the database itself but it is now marked as free so
+ * it can be overwritten by another write
+ */
 int Memory_manager::remove_index(int index) {
     list<value>::iterator i;
     
@@ -339,9 +367,13 @@ int Memory_manager::remove_index(int index) {
         }
     }
 
+    /* save changes to persistent memory map */
+    save_memory_map();
+
     return 0;
 }
 
+/* print out state of memory map for debug purposes */
 void Memory_manager::print_memory_map() {
     
     cout << "********** Memory Map **********" << endl;
@@ -360,8 +392,14 @@ void Memory_manager::print_memory_map() {
     cout << "********************************" << endl;
 }
 
+/* save memory map to text file */
 void Memory_manager::save_memory_map() {
     ofstream text_map;
+    
+    if (remove(map_loc.c_str()) != 0) {
+        cout << __func__ << "(): failed to remove previous text map" << endl;
+    }
+
     text_map.open(map_loc.c_str());
     if (!text_map) {
         cout << __func__ << "(): unable to open text map" << endl;
@@ -379,7 +417,8 @@ void Memory_manager::save_memory_map() {
     text_map.close();
 }
 
-void Memory_manager::load_memory_map() {
+/* load memory map from text file */
+int Memory_manager::load_memory_map() {
     string line;
     string val;
     int index;
@@ -387,16 +426,23 @@ void Memory_manager::load_memory_map() {
     int length;
     int fragment;
     ifstream text_map;
+    struct stat buffer;
+
+    /* no texp map, return starting table size */
+    if (stat(map_loc.c_str(), &buffer) == -1) {
+        return START_TABLE_SIZE;
+    }
+
     text_map.open(map_loc.c_str());
     if (!text_map) {
-        cout << __func__ << "(): unable to open text map" << endl;
-        return;
+        return START_TABLE_SIZE;
     }
    
     if (!table.empty()) {
         cout << __func__ << "(): table is not empty" << endl;
     }
 
+    /* parse information and fill it into the table */
     while (getline(text_map, line)) {
         stringstream ss(line);
         getline(ss, val, ',');
@@ -414,8 +460,14 @@ void Memory_manager::load_memory_map() {
     text_map.close();
 
     rebuild_links();
+
+    return (filled == 0) ? START_TABLE_SIZE : filled;
 }
 
+/* after loading the table from the text file we need to relink
+ * all the fragments back together, each fragment has a pointer
+ * to the next fragment in line
+ */
 void Memory_manager::rebuild_links() {
     list<value>::iterator i;
     value *ptr = NULL;
@@ -427,7 +479,6 @@ void Memory_manager::rebuild_links() {
         for (i = table.begin(); i != table.end(); ++i) {
 
             if ((*iter).index == (*i).index && (*iter).fragment+1 == (*i).fragment) {
-                cout << "found link idx: " << (*iter).index << ", frag: " << (*iter).fragment << endl;
                 ptr = (value *)&(*iter);
                 ptr_next = (value *)&(*i);
                 ptr->next_frag = ptr_next;
@@ -436,6 +487,27 @@ void Memory_manager::rebuild_links() {
     }
 }
 
+/* get free space left in database */
+int Memory_manager::get_free_space() {
+    return size-filled;
+}
 
+/* expand database to new size */
+int Memory_manager::expand_database(double request_size) {
+    /* we expand the table in blocks, find out how many blocks
+     * we need to be able to service this request */
+    int blocks = (int)ceil(request_size/EXPAND_TABLE_SIZE);
+    int expand_size = EXPAND_TABLE_SIZE * blocks;
 
+    if (unmap_from_memory() == -1) {
+        cout << __func__ << "(): unmap failed" << endl;
+        return -1;
+    }
 
+    if (map_to_memory(size + expand_size) == -1) {
+        cout << __func__ << "(): map failed" << endl;
+        return -1;
+    }
+
+    return 0;
+}

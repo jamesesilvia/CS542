@@ -27,6 +27,7 @@
 #include <pthread.h>
 #include <stdarg.h>
 
+#include "memory_manager.hpp"
 #include "helpers.hpp"
 
 //The backlog for listening
@@ -129,6 +130,11 @@ int main(int argc, char *argv[])
     socklen_t clilen = sizeof(cli_addr);
     pthread_t thread;
 
+    //Create memory manager for database
+    Memory_manager memory_manager("database");
+    int current_size = memory_manager.load_memory_map();
+    memory_manager.map_to_memory(current_size);
+
     //Create the sock handle
     printv("Creating socket\n");
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -170,5 +176,6 @@ int main(int argc, char *argv[])
     }
 
     //All done.
+    memory_manager.unmap_from_memory();
     return 0;
 }
