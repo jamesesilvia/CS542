@@ -53,7 +53,7 @@ public:
     bool put(int key, string data, int client);
     bool get(int key, int client);
     bool remove(int key, int client);
-    string wait_for_service(int key);
+    string wait_for_service(int key, int client);
     void print_queues();
     bool isolation_manager();
 
@@ -81,6 +81,7 @@ private:
     request_t remove_from_queue(pthread_mutex_t *lock, 
                                 list <request_t> *queue);
     request_t *remove_req_by_key(int key,
+                                int client,
                                 pthread_mutex_t *lock,
                                 list <request_t> *queue);
     bool check_if_queue_empty(pthread_mutex_t *lock,

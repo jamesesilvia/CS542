@@ -16,11 +16,14 @@
 #define BACKLOG 5
 
 //The buffer length for receiving commands
-#define BUFFER_LEN 1024
+#define BUFFER_LEN 1024 
 
 /* Singleton of each class */
 Relation *Relation::s_instance = NULL;
 Memory_manager *Memory_manager::s_instance = NULL;
+
+// Request ID for client
+long request_id = 0;
 
 //Set to false to disable
 bool verbose = true;
@@ -87,30 +90,36 @@ bool handleclient(const int socket) {
                     to_send = to_send + " " + data;
             }
             // Put the entry
-            table->put(atoi(key.c_str()), to_send, 0);
+            table->put(atoi(key.c_str()), to_send, request_id);
             to_send.clear();
             // Wait for service
-            to_send = table->wait_for_service(atoi(key.c_str()));
+            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            // Update request ID
+            request_id++;
         } 
         /* Get request received */
         else if (cmd == "get") {
             // Let's get the info we need
             strstr >> key;
             // Get the entry
-            table->get(atoi(key.c_str()), 0);
+            table->get(atoi(key.c_str()), request_id);
             to_send.clear();
             // Wait for service
-            to_send = table->wait_for_service(atoi(key.c_str()));
-        } 
+            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            // Update request ID
+            request_id++;
+        }
         /* Remove request received */
         else if (cmd == "remove") {
             // Let's get the info we need
             strstr >> key;
             // Remove the entry
-            table->remove(atoi(key.c_str()), 0);
+            table->remove(atoi(key.c_str()), request_id);
             to_send.clear();
-           // Wait for service
-           to_send = table->wait_for_service(atoi(key.c_str()));
+            // Wait for service
+            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            // Update request ID
+            request_id++;
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {

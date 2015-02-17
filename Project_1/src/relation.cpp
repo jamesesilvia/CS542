@@ -112,6 +112,7 @@ request_t Relation::remove_from_queue(pthread_mutex_t *lock,
 
 
 request_t *Relation::remove_req_by_key(int key,
+                                        int client,
                                         pthread_mutex_t *lock,
                                         list <request_t> *queue) {
     request_t *req = new request_t;
@@ -122,7 +123,7 @@ request_t *Relation::remove_req_by_key(int key,
     pthread_mutex_lock(lock);
 
     while (i != queue->end()) {
-        if (i->key == key) {
+        if (i->key == key && i->client == client) {
             req->key = i->key;
             req->data = i->data;
             req->action = i->action;
@@ -180,7 +181,7 @@ bool Relation::req_service_done(request_t req) {
 
 
 
-string Relation::wait_for_service(int key) {
+string Relation::wait_for_service(int key, int client) {
     
     request_t *req = NULL;
     stringstream to_send;
@@ -189,7 +190,7 @@ string Relation::wait_for_service(int key) {
     while(true) {
         if (!done_queue.empty()){
             to_send.str("");
-            req = remove_req_by_key(key, &d_lock, &done_queue);
+            req = remove_req_by_key(key, client, &d_lock, &done_queue);
             
             /* Respond to user */
             switch (req->action) {
