@@ -18,7 +18,6 @@
 void error(const char * str)
 {
     cerr << str << endl;
-    exit(1);
 }
 
 //Converting the hostname to an IP address
