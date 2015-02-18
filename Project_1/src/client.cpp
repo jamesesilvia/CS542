@@ -315,7 +315,7 @@ string handle_user_interaction(int sock) {
             done = false;
             while (!done) {
                 str.clear();
-                cout << "Do you want store data in a file [y/n] ? ";
+                cout << "Do you want to store data in a file [y/n] ? ";
                 cout.flush();
                 getline(cin, str);
                 // Get data from file

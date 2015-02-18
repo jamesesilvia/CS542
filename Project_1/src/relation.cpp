@@ -272,10 +272,10 @@ bool Relation::isolation_manager() {
                                                         req.key,
                                                         req.data.length());
                     // Response based on ret
-                    if (ret == -1)
-                        req.data = "PUT FAILED: That key already exists";
+                    (ret == -1) ?
+                        req.data = "PUT FAILED: That key already exists" :
+                        req.data = "SUCCESS";
                     req.action = PUT;
-                    req.data = "SUCCESS";
                     free(buffer);
                     break;
                 }
@@ -304,10 +304,10 @@ bool Relation::isolation_manager() {
                 {
                     // Remove it
                     ret = memory_manager->remove_index(req.key);
-                    if (ret == -1)
-                        req.data = "REMOVE FAILED";
+                    (ret == -1) ?
+                        req.data = "REMOVE FAILED" :
+                        req.data = "SUCCESS";
                     // Update done item
-                    req.data = "SUCCESS";
                     req.action = REMOVE;
                     break;
                 }

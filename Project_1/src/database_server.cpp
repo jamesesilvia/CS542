@@ -99,6 +99,7 @@ bool handleclient(const int socket) {
         } while (len_to_read > BUFFER_LEN);
         /* Put request received */
         if (cmd == "put") {
+            printv("Putting: %s\n", key.c_str());
             // Put the entry
             request_id = table->put(atoi(key.c_str()), to_send);
             to_send.clear();
@@ -107,6 +108,7 @@ bool handleclient(const int socket) {
         } 
         /* Get request received */
         else if (cmd == "get") {
+            printv("Getting: %s\n", key.c_str());
             // Get the entry
             request_id = table->get(atoi(key.c_str()));
             to_send.clear();
@@ -115,6 +117,7 @@ bool handleclient(const int socket) {
         }
         /* Remove request received */
         else if (cmd == "remove") {
+            printv("Removing: %s\n", key.c_str());
             // Remove the entry
             request_id = table->remove(atoi(key.c_str()));
             to_send.clear();
