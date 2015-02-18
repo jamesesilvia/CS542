@@ -10,46 +10,66 @@ To see the full design document, please review the folder "docs".
 
 ## Breakdown
 
-include/ 	- header files
-src/		- source files
-test/		- expect scripts and usage README
-docs/		- design document
+include/
+
+- header files
+
+src
+
+- source files
+
+test/
+
+- expect scripts and usage README
+
+docs/
+
+- design document
 
 ## Usage
 While in Project_1 directory:
 
 make clean
-	removes build/ directory
-	removes database files (all dat and txt files)
+
+- removes build/ directory
+- removes database files (all dat and txt files)
 
 make
-	builds client and server in build/
+
+- builds client and server in build/
 
 make client
+
 make server
-	builds each application individually
+
+- builds each application individually
 
 ./build/server
-	launches the server
+
+- launches the server
 
 ./build/client <server ip>
-	launches the client
+
+- launches the client
 
 ## Client
 The client provides interfaces to the database through the commands:
 	
 put
-	stores key and corresponding data in the database
-	data can be input through command line, or through a file
-	NOTE: Use a file to send data greater than 1KB.
+
+- stores key and corresponding data in the database
+- data can be input through command line, or through a file
+- NOTE: Use a file to send data greater than 1KB.
 
 get
-	retreives data from database based on key
-	NOTE: we recommend storing received data in a file if LARGE
-		otherwise it will be printed directly to terminal
+
+- retreives data from database based on key
+- NOTE: we recommend storing received data in a file if LARGE
+- otherwise it will be printed directly to terminal
 
 remove
-	remove key and data from the database
+
+- remove key and data from the database
 
 ## Server
 The server is currently configured in verbose mode. It will print actions
@@ -70,6 +90,9 @@ additional information.
 - This code has been developed and test on the WPI CCC machines.
 - It is fully functional, and we do not guarantee functionality
 	besides on the machines above.
-- Move forward a
+
+- Enjoy!!
+
+Tyler, James, and Tommy.
 
 
