@@ -155,11 +155,11 @@ bool handleclient(const int socket) {
 //function to handle new client as a new thread
 void *handleclient_thread(void *newsock){
 
-    int *sock = (int *)(newsock);
-    
-    handleclient(*sock);
+    int sock = *((int *)(newsock));
 
-    close(*sock);
+    handleclient(sock);
+
+    close(sock);
 }
 
 
