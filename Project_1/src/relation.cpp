@@ -266,11 +266,13 @@ bool Relation::isolation_manager() {
                     // Read data from database
                     ret = memory_manager->read_index(buffer,
                                                         req.key);
+
+                    buffer[buffer_size] = NULL;
                     // Reponse based on ret
                     (ret == -1) ?
                         req.data = "\nREAD FAILED" :
                         req.data = string(buffer);
-                        
+                    
                     req.action = GET;
                     free(buffer);
                     break;
@@ -284,6 +286,7 @@ bool Relation::isolation_manager() {
                     // Read from database
                     ret = memory_manager->read_index(buffer,
                                                         req.key);
+                    buffer[buffer_size] = NULL;
                     if (ret == -1)
                         req.data = "\nREAD FAILED (REMOVE).";
                     // Now remove it
