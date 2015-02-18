@@ -1,0 +1,28 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+# (*important*) server and client are both on the same CCCWORK machine
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#client shows one get command that fails because there is no data at the specified key
+
+#start the client
+spawn ./../build/client localhost
+
+#remove existing data
+#this may throw a read failed error if there is no existing data
+#this is expected, we're just cleaning up what we intend to use
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "4\r"}
+
+#now get data from index 4
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "4\r"}
+expect "Do you want to store data in a file" {send "n\r"}
+
+#return to user control
+interact

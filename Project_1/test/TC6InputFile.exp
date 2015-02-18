@@ -1,0 +1,34 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+# (*important*) server and client are both on the same CCCWORK machine
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#client shows one put command from file with no error related to put followed by a get command that successfully retrieves "This is data." as data
+
+#start the client
+spawn ./../build/client localhost
+
+#remove existing data
+#this may throw a read failed error if there is no existing data
+#this is expected, we're just cleaning up what we intend to use
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "6\r"}
+
+#put new data into index 6 from text file
+expect ">" {send "put\r"}
+expect "Please enter key to store data:" {send "6\r"}
+expect "Do you want to send a file" {send "y\r"}
+expect "Please enter the file name:" {send "BasicInputFile.txt\r"}
+
+#now get data from index 6
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "6\r"}
+expect "Do you want to store data in a file" {send "n\r"}
+
+#return to user control
+interact
