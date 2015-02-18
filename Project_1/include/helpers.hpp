@@ -18,7 +18,8 @@
 #include <string>
 #include <iostream>
 
-#define PORT 1433
+#define PORT    1433
+#define MAX_KEY 1000000
 
 using namespace std;
 
