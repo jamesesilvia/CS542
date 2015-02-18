@@ -236,7 +236,7 @@ string handle_user_interaction(int sock) {
                     stringstream ss;
                     infile.open(filename.c_str());
                     while (getline(infile, line)){
-                        ss << line;
+                        ss << line << endl;
                     }
                     infile.close();
                     // Is it empty?
