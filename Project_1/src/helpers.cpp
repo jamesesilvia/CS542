@@ -18,6 +18,12 @@
 void error(const char * str)
 {
     cerr << str << endl;
+    exit(1);
+}
+
+void error2(const char * str)
+{
+    cerr << str << endl;
 }
 
 //Converting the hostname to an IP address

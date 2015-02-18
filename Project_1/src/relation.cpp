@@ -19,53 +19,70 @@ Relation::Relation(string _tablename) {
     // init locks
     pthread_mutex_init(&s_lock, NULL);
     pthread_mutex_init(&d_lock, NULL);
+    pthread_mutex_init(&r_lock, NULL);
     // spawn isolation manager
     spawn_isolation_manager();
+    // init request ID to zero
+    request_id = 0;
 }
 
+int Relation::get_next_request_id() {
 
-bool Relation::put(int key, string data, int client) {
+    int ret;
 
-    int ret = false;
+    // Get mutex
+    pthread_mutex_lock(&r_lock);
+    
+    ret = ++request_id;
 
-    // Create req
-    request_t req = { key, data, client, PUT };
-
-    // Add to service queue
-    if (!add_to_queue(&s_lock, req, &service_queue))
-        ret = true;
+    // Give mutex
+    pthread_mutex_unlock(&r_lock);
 
     return ret;
 }
 
+int Relation::put(int key, string data) {
 
-bool Relation::get(int key, int client) {
-    
-    int ret = false;
+    int id = get_next_request_id();
 
     // Create req
-    request_t req = { key, "", client, GET };
-    
+    request_t req = { key, data, id, PUT };
+
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
-        ret = true;
+        return -1;
 
-    return ret;
+    return id;
 }
 
 
-bool Relation::remove(int key, int client) {
- 
-    int ret = false;
+int Relation::get(int key) {
+
+    int id = get_next_request_id();
 
     // Create req
-    request_t req = { key, "", client, REMOVE };
+    request_t req = { key, "", id, GET };
+    
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        return -1;
+
+    return id;
+}
+
+
+int Relation::remove(int key) {
+
+    int id = get_next_request_id();
+
+    // Create req
+    request_t req = { key, "", id, REMOVE };
 
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
-        ret = true;    
+        return -1;    
     
-    return ret;
+    return id;
 }
 
 bool Relation::add_to_queue(pthread_mutex_t *lock, 
@@ -266,11 +283,13 @@ bool Relation::isolation_manager() {
                     // Read data from database
                     ret = memory_manager->read_index(buffer,
                                                         req.key);
+
+                    buffer[buffer_size] = NULL;
                     // Reponse based on ret
                     (ret == -1) ?
                         req.data = "\nREAD FAILED" :
                         req.data = string(buffer);
-                        
+                    
                     req.action = GET;
                     free(buffer);
                     break;
@@ -284,6 +303,7 @@ bool Relation::isolation_manager() {
                     // Read from database
                     ret = memory_manager->read_index(buffer,
                                                         req.key);
+                    buffer[buffer_size] = NULL;
                     if (ret == -1)
                         req.data = "\nREAD FAILED (REMOVE).";
                     // Now remove it

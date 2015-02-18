@@ -19,11 +19,13 @@
 #include <iostream>
 #include <fstream>
 
-#define PORT 1433
+#define PORT    1433
+#define MAX_KEY 1000000
 
 using namespace std;
 
 void error(const char * str);
+void error2(const char * str);
 int hostname_to_ip(const char * hostname , char* ip);
 void printv(char *format, ...);
 bool check_for_file(const char *fileName);

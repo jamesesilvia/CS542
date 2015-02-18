@@ -50,9 +50,10 @@ class Relation {
 public:
     /* functions */
     Relation(string _tablename);
-    bool put(int key, string data, int client);
-    bool get(int key, int client);
-    bool remove(int key, int client);
+    int get_next_request_id();
+    int put(int key, string data);
+    int get(int key);
+    int remove(int key);
     string wait_for_service(int key, int client);
     void print_queues();
     bool isolation_manager();
@@ -72,8 +73,10 @@ private:
     int client;
     pthread_mutex_t s_lock;
     pthread_mutex_t d_lock;
+    pthread_mutex_t r_lock;
     pthread_t thread;
     list<request_t>::const_iterator iter;
+    int request_id;
     /* functions */
     bool add_to_queue(pthread_mutex_t *lock,
                                 request_t req,

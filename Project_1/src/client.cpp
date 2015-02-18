@@ -108,7 +108,8 @@ int main(int argc, char *argv[]) {
  */
 string handle_user_interaction(int sock) {
     string str, cmd, to_send;
-    bool done;
+    bool done, fail;
+    int i, index;
 
     while (true) {
 
@@ -137,6 +138,26 @@ string handle_user_interaction(int sock) {
                 cout.flush();
                 getline(cin, str);
                 if (str.empty()) {
+                    continue;
+                }
+                fail = false;
+                for (i = 0; i < str.length(); i++) {
+                    if (!isdigit(str[i])) {
+                        cout << "Please enter positive integers only!" << endl;
+                        fail = true;
+                        break;
+                    }
+                }
+                if (fail) {
+                    continue;
+                }
+                index = atoi(str.c_str());
+                if (index < 0) {
+                    cout << "Please enter positive integers only!" << endl;
+                    continue;
+                }
+                if (index > MAX_KEY) {
+                    cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
                     continue;
                 }
                 to_send = cmd + " " + str;
@@ -211,6 +232,26 @@ string handle_user_interaction(int sock) {
                 if (str.empty()) {
                     continue;
                 }
+                fail = false;
+                for (i = 0; i < str.length(); i++) {
+                    if (!isdigit(str[i])) {
+                        cout << "Please enter positive integers only!" << endl;
+                        fail = true;
+                        break;
+                    }
+                }
+                if (fail) {
+                    continue;
+                }
+                index = atoi(str.c_str());
+                if (index < 0) {
+                    cout << "Please enter positive integers only!" << endl;
+                    continue;
+                }
+                if (index > MAX_KEY) {
+                    cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
+                    continue;
+                }
                 to_send = cmd + " " + str;
                 done = true;
             }
@@ -227,6 +268,26 @@ string handle_user_interaction(int sock) {
                 cout.flush();
                 getline(cin, str);
                 if (str.empty()) {
+                    continue;
+                }
+                fail = false;
+                for (i = 0; i < str.length(); i++) {
+                    if (!isdigit(str[i])) {
+                        cout << "Please enter positive integers only!" << endl;
+                        fail = true;
+                        break;
+                    }
+                }
+                if (fail) {
+                    continue;
+                }
+                index = atoi(str.c_str());
+                if (index < 0) {
+                    cout << "Please enter positive integers only!" << endl;
+                    continue;
+                }
+                if (index > MAX_KEY) {
+                    cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
                     continue;
                 }
                 to_send = cmd + " " + str;
