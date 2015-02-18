@@ -143,7 +143,7 @@ bool handleclient(const int socket) {
         //Send the data
         len = write(socket, to_send.c_str(), to_send.length());
         if (len != to_send.length())
-            error("Unable to send the data!");
+            error2("Unable to send the data!");
     }
 
     return true;
