@@ -85,10 +85,8 @@ bool handleclient(const int socket) {
                 if (!(strstr >> data_len))
                     continue;
                 len_to_read = atoi(data_len.c_str());
-                string temp;
-                while (getline(strstr, temp)) {
-                    to_send = to_send + temp + "\n";
-                }
+                int pos = strstr.tellg();
+                to_send = strstr.str().substr(pos+1,len_to_read);
                 got_size = true;
             }
             //Get buffer, decrease length of buffer left
@@ -100,7 +98,6 @@ bool handleclient(const int socket) {
         /* Put request received */
         if (cmd == "put") {
             printv("Putting: %s\n", key.c_str());
-            cout << to_send << endl;
             // Put the entry
             request_id = table->put(atoi(key.c_str()), to_send);
             to_send.clear();

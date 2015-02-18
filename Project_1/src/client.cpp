@@ -113,12 +113,8 @@ int main(int argc, char *argv[]) {
                 if (!(strstr >> data_len))
                     continue;
                 len_to_read = atoi(data_len.c_str());
-                string temp;
-                //while(strstr >> temp) {
-                //    data = data + temp + " ";
-                //}
                 int pos = strstr.tellg();
-                data = strstr.str().substr(pos+2,len_to_read-1);
+                data = strstr.str().substr(pos+1,len_to_read);
                 
                 got_size = true;
             }
@@ -135,7 +131,7 @@ int main(int argc, char *argv[]) {
 
         if (print_to_file){
             outfile.open(output_file.c_str());
-            outfile << data << endl;
+            outfile << data;
             outfile.close();
         }
         else {
@@ -238,9 +234,7 @@ string handle_user_interaction(int sock) {
                     string line;
                     stringstream ss;
                     infile.open(filename.c_str());
-                    while (getline(infile, line)){
-                        ss << line << endl;
-                    }
+                    ss << infile.rdbuf();
                     infile.close();
                     // Is it empty?
                     if (ss.str() != "") {
