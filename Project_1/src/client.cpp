@@ -210,6 +210,11 @@ string handle_user_interaction(int sock) {
                 to_send = cmd + " " + str;
                 done = true;
             }
+            cout << "----------------------------------------------------------" << endl;
+            cout << "WARNING: Entering data via command line is limited to 1KB." << endl;
+            cout << endl;
+            cout << "Use a file to send data larger than that, up to 1GB." << endl; 
+            cout << "----------------------------------------------------------" << endl;
             // Get data to store
             done = false;
             while (!done) {
@@ -307,8 +312,11 @@ string handle_user_interaction(int sock) {
                 to_send = cmd + " " + str + " 0 " ;
                 done = true;
             }
-            cout << "WARNING: Could receive lots of data!! "
-                    << "We recommend storing this in a file." << endl;
+            cout << "-----------------------------------------------" << endl;
+            cout << "WARNING: Could receive lots of data!! " << endl;
+            cout << endl;
+            cout << "We recommend storing this in a file." << endl;
+            cout << "-----------------------------------------------" << endl;
             done = false;
             while (!done) {
                 str.clear();
