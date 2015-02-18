@@ -202,28 +202,32 @@ string Relation::wait_for_service(int key, int client) {
     
     request_t *req = NULL;
     stringstream to_send;
+    int data_len;
 
     /* Poll done queue for our request */
     while(true) {
         if (!done_queue.empty()){
             to_send.str("");
             req = remove_req_by_key(key, client, &d_lock, &done_queue);
-            
+            data_len = req->data.length();
             /* Respond to user */
             switch (req->action) {
                 case(PUT):
-                    to_send << "Storing key: " << req->key <<
-                                " with data... " << req->data << endl;
+                    to_send << "Put: " << req->key << 
+                                " " << data_len <<
+                                " " << req->data << endl;
                     break;
                 case(GET):
-                    to_send << "Getting key: " << req->key <<
-                                " with data..." << req->data << endl;
+                    to_send << "Got: " << req->key <<
+                                " " << data_len <<
+                                " " << req->data << endl;
                     break;
                 case(REMOVE):
-                    to_send << "Removing key: " << req->key <<
-                                " with data..." << req->data << endl;
+                    to_send << "Removed: " << req->key <<
+                                " " << data_len <<
+                                " " << req->data << endl;
                     break;
-                // Bogus key, do it again.
+                // Bogus action, do it again.
                 default:
                     continue;
             }

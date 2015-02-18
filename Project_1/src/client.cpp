@@ -80,18 +80,51 @@ int main(int argc, char *argv[]) {
 
         //Get the response
         char buffer[BUFFER_LEN + 1] = {0};
-        len = read(sock, buffer, BUFFER_LEN);
+        bool got_size = false;
+        int len_to_read = BUFFER_LEN;
+        string cmd, key, data_len, data;
 
-        //Some sort of error
-        if (len < 0)
-            error("Unable to read from socket.");
+        do {
+            memset(buffer, 0, sizeof(buffer));
+            
+            //Shall we get some data?
+            len = read(sock, buffer, BUFFER_LEN);
+        
+            //Some sort of error
+            if (len < 0)
+                error("Unable to read from socket.");
 
-        //Disconnected
-        if (len == 0)
-            error("Server disconnected!");
+            //Disconnected
+            if (len == 0)
+                error("Server disconnected!");
+            cout << "Got buffer: " << buffer << endl;
+            if (!got_size) {
+                //Stringstream of received data
+                stringstream strstr(buffer);
+                //Get control data from buffer
+                if (!(strstr >> cmd))
+                    continue;
+                if (!(strstr >> key))
+                    continue;
+                if (!(strstr >> data_len))
+                    continue;
+                cout << cmd << " " << key << " " << data_len << endl;
+                len_to_read = atoi(data_len.c_str());
+                string temp;
+                while(strstr >> temp) {
+                    data = data + " " + temp;
+                }
+                got_size = true;
+            }
+            else {
+                data = data + string(buffer);
+                len_to_read = len_to_read - BUFFER_LEN;
+            }
+        } while(len_to_read > BUFFER_LEN);
 
+        
         //Print the response
-        cout << buffer << endl;
+        cout << cmd << " " << key << " with data..." << data << endl;
 
     }
 

@@ -73,7 +73,6 @@ bool handleclient(const int socket) {
                 return false;
             }
             
-            printv("Received: %s\n", buffer);
             //Get size of incoming data on first buffer
             if (!got_size) {
                 //Stringstream of received data
@@ -86,7 +85,10 @@ bool handleclient(const int socket) {
                 if (!(strstr >> data_len))
                     continue;
                 len_to_read = atoi(data_len.c_str());
-                strstr >> to_send;
+                string temp;
+                while (strstr >> temp) {
+                    to_send = to_send + " " + temp;
+                }
                 got_size = true;
             }
             //Get buffer, decrease length of buffer left
