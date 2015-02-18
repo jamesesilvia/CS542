@@ -186,10 +186,11 @@ string handle_user_interaction(int sock) {
                     // Read data and send it all
                     string line;
                     stringstream ss;
-                    infile.open(filename);
+                    infile.open(filename.c_str());
                     while (getline(infile, line)){
                         ss << line;
                     }
+                    infile.close();
                     // Is it empty?
                     if (ss.str() != "") {
                         stringstream temp;
