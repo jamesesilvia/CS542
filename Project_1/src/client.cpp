@@ -29,6 +29,8 @@
 
 string handle_user_interaction(int sock);
 
+ifstream infile;
+
 //Main function
 int main(int argc, char *argv[]) {
 
@@ -155,9 +157,27 @@ string handle_user_interaction(int sock) {
                         cout.flush();
                         getline(cin, filename);
                     }
-                    // Do crazy shit with a file that idk yet
-                    to_send = to_send + " " + filename;
-                    done = true;
+                    // Is that a file?
+                    if (!check_for_file(filename.c_str())){
+                        cout << "That file does not exist!" << endl;
+                        continue;
+                    }
+                    // Read data and send it all
+                    string line;
+                    stringstream ss;
+                    infile.open(filename);
+                    while (getline(infile, line)){
+                        ss << line;
+                    }
+                    // Is it empty?
+                    if (ss.str() != "") {
+                        to_send = to_send + " " + ss.str();
+                        done = true;
+                    }
+                    else {
+                        cout << "That file is empty!" << endl;
+                        continue;
+                    }
                 }
                 // Get data from command line
                 else if (str == "n") {

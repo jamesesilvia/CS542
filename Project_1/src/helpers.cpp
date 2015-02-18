@@ -41,3 +41,9 @@ int hostname_to_ip(const char * hostname , char* ip)
 
     return 1;
 }
+
+//Check if file exists
+bool check_for_file(const char *fileName) {
+    ifstream infile(fileName);
+    return infile.good();
+}
