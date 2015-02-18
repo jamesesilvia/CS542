@@ -10,7 +10,7 @@ SERVER = \
 	$(SRCDIR)/database_server.cpp \
 	$(SRCDIR)/helpers.cpp \
 	$(SRCDIR)/memory_manager.cpp \
-        $(SRCDIR)/relation.cpp
+		$(SRCDIR)/relation.cpp
 
 default:
 	mkdir -p $(TARGET)
@@ -28,3 +28,4 @@ server:
 clean:
 	rm -rf $(TARGET)
 	rm -rf *.dat
+	rm -rf *.txt

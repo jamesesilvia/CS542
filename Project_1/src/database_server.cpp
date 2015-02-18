@@ -41,51 +41,62 @@ void printv(char *format, ...) {
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len, request_id;
-    string cmd, key, data, to_send;
+    string cmd, key, data_len, data, to_send;
 
     Relation *table = Relation::instance();
 
     while (true) {
-
-        //Clear receive buffer
-        memset(buffer, 0, sizeof(buffer));
         //Clear strings
         cmd.clear();
+        data_len.clear();
         key.clear();
         data.clear();
         to_send.clear();
-        
-        //Shall we get some data?
-        len = read(socket, buffer, BUFFER_LEN);
+        bool got_size = false;
+        int len_to_read = BUFFER_LEN;
+        do {
+            //Clear receive buffer
+            memset(buffer, 0, sizeof(buffer));
+            
+            //Shall we get some data?
+            len = read(socket, buffer, BUFFER_LEN);
 
-        //Some sort of error
-        if (len < 0) {
-            cerr << "Unable to read from client socket!" << endl;
-            break;
-        }
+            //Some sort of error
+            if (len < 0) {
+                cerr << "Unable to read from client socket!" << endl;
+                break;
+            }
 
-        //Disconnected
-        if (len == 0) {
-            cerr << "The client disconnected!" << endl;
-            break;
-        }
-
-        printv("Received: %s\n", buffer);
-        //Stringstream of received data
-        stringstream strstr(buffer);
-        if (!(strstr >> cmd))
-            continue;
-
+            //Disconnected
+            if (len == 0) {
+                cerr << "The client disconnected!" << endl;
+                return false;
+            }
+            
+            printv("Received: %s\n", buffer);
+            //Get size of incoming data on first buffer
+            if (!got_size) {
+                //Stringstream of received data
+                stringstream strstr(buffer);
+                //Get control data from buffer
+                if (!(strstr >> cmd))
+                    continue;
+                if (!(strstr >> key))
+                    continue;
+                if (!(strstr >> data_len))
+                    continue;
+                len_to_read = atoi(data_len.c_str());
+                strstr >> to_send;
+                got_size = true;
+            }
+            //Get buffer, decrease length of buffer left
+            else {
+                to_send = to_send + string(buffer);
+                len_to_read = len_to_read - BUFFER_LEN;
+            }
+        } while (len_to_read > BUFFER_LEN);
         /* Put request received */
         if (cmd == "put") {
-            // Let's get the info we need
-            strstr >> key;
-            while (strstr >> data) {
-                // Get all data in
-                (to_send.empty()) ?
-                    to_send = data :
-                    to_send = to_send + " " + data;
-            }
             // Put the entry
             request_id = table->put(atoi(key.c_str()), to_send);
             to_send.clear();
@@ -94,8 +105,6 @@ bool handleclient(const int socket) {
         } 
         /* Get request received */
         else if (cmd == "get") {
-            // Let's get the info we need
-            strstr >> key;
             // Get the entry
             request_id = table->get(atoi(key.c_str()));
             to_send.clear();
@@ -104,8 +113,6 @@ bool handleclient(const int socket) {
         }
         /* Remove request received */
         else if (cmd == "remove") {
-            // Let's get the info we need
-            strstr >> key;
             // Remove the entry
             request_id = table->remove(atoi(key.c_str()));
             to_send.clear();
@@ -114,10 +121,8 @@ bool handleclient(const int socket) {
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
-            // Server close?
-            strstr >> data;
             // Yes, lets exit.
-            if (data == "server") {
+            if (key == "server") {
                 cout << "Received force close, EXIT" << endl;
                 close(socket);
                 exit(0);

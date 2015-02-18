@@ -157,7 +157,7 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 if (index > MAX_KEY) {
-                    cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
+                    cout << "Please enter an integer less than " << MAX_KEY << "!" << endl;
                     continue;
                 }
                 to_send = cmd + " " + str;
@@ -192,7 +192,10 @@ string handle_user_interaction(int sock) {
                     }
                     // Is it empty?
                     if (ss.str() != "") {
-                        to_send = to_send + " " + ss.str();
+                        stringstream temp;
+                        int string_length = ss.str().length(); 
+                        temp << string_length;
+                        to_send = to_send + " " + temp.str() + " " + ss.str();
                         done = true;
                     }
                     else {
@@ -209,7 +212,10 @@ string handle_user_interaction(int sock) {
                         getline(cin, data);
                     }
                     // Build string to send
-                    to_send = to_send + " " + data;
+                    stringstream temp;
+                    int data_length = data.length();
+                    temp << data_length;
+                    to_send = to_send + " " + temp.str() + " " + data;
                     done = true;
                 }
                 // Do it again...
@@ -249,10 +255,10 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 if (index > MAX_KEY) {
-                    cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
+                    cout << "Please enter an integer less than " << MAX_KEY << "!" << endl;
                     continue;
                 }
-                to_send = cmd + " " + str;
+                to_send = cmd + " " + str + " 0 " ;
                 done = true;
             }
             // All done
@@ -290,7 +296,7 @@ string handle_user_interaction(int sock) {
                     cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
                     continue;
                 }
-                to_send = cmd + " " + str;
+                to_send = cmd + " " + str + " 0 ";
                 done = true;
             }
             // All done
