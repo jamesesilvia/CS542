@@ -273,8 +273,9 @@ bool Relation::isolation_manager() {
                                                         req.data.length());
                     // Response based on ret
                     if (ret == -1)
-                        req.data = "\nFAILURE: That key already exists";
+                        req.data = "PUT FAILED: That key already exists";
                     req.action = PUT;
+                    req.data = "SUCCESS";
                     free(buffer);
                     break;
                 }
@@ -291,7 +292,7 @@ bool Relation::isolation_manager() {
                     buffer[buffer_size] = NULL;
                     // Reponse based on ret
                     (ret == -1) ?
-                        req.data = "\nREAD FAILED" :
+                        req.data = "READ FAILED" :
                         req.data = string(buffer);
                     
                     req.action = GET;
@@ -301,21 +302,12 @@ bool Relation::isolation_manager() {
                 case(REMOVE):
                 // Need brackets for scope
                 {
-                    int buffer_size = memory_manager->get_index_length(req.key);
-                    char *buffer = (char *)malloc(buffer_size+1);
-                    memset(buffer, 0, sizeof(buffer));
-                    // Read from database
-                    ret = memory_manager->read_index(buffer,
-                                                        req.key);
-                    buffer[buffer_size] = NULL;
-                    if (ret == -1)
-                        req.data = "\nREAD FAILED (REMOVE).";
-                    // Now remove it
+                    // Remove it
                     ret = memory_manager->remove_index(req.key);
                     if (ret == -1)
-                        req.data = "\n" + req.data + "REMOVE FAILED.";
+                        req.data = "REMOVE FAILED";
                     // Update done item
-                    req.data = req.data + string(buffer);
+                    req.data = "SUCCESS";
                     req.action = REMOVE;
                     break;
                 }

@@ -29,7 +29,11 @@
 
 string handle_user_interaction(int sock);
 
+//Global for client
 ifstream infile;
+ofstream outfile;
+bool print_to_file;
+string output_file;
 
 //Main function
 int main(int argc, char *argv[]) {
@@ -97,7 +101,7 @@ int main(int argc, char *argv[]) {
             //Disconnected
             if (len == 0)
                 error("Server disconnected!");
-            cout << "Got buffer: " << buffer << endl;
+            
             if (!got_size) {
                 //Stringstream of received data
                 stringstream strstr(buffer);
@@ -108,7 +112,6 @@ int main(int argc, char *argv[]) {
                     continue;
                 if (!(strstr >> data_len))
                     continue;
-                cout << cmd << " " << key << " " << data_len << endl;
                 len_to_read = atoi(data_len.c_str());
                 string temp;
                 while(strstr >> temp) {
@@ -122,10 +125,20 @@ int main(int argc, char *argv[]) {
             }
         } while(len_to_read > BUFFER_LEN);
 
-        
-        //Print the response
-        cout << cmd << " " << key << " with data..." << data << endl;
+        // Response
+        stringstream response;
+        cout << endl;
+        response << cmd << " " << key << " with response..." << data << endl;
 
+        if (print_to_file){
+            outfile.open(output_file.c_str());
+            outfile << response.rdbuf();
+            outfile.close();
+        }
+        else {
+            cout << response.str() << endl;
+        }
+        cout << "Done." << endl;
     }
 
     return 0;
@@ -150,6 +163,8 @@ string handle_user_interaction(int sock) {
         str.clear();
         cmd.clear();
         to_send.clear();
+        output_file.clear();
+        print_to_file = false;
         
         //Print out a command line
         cout << "-> "; 
@@ -294,6 +309,35 @@ string handle_user_interaction(int sock) {
                 }
                 to_send = cmd + " " + str + " 0 " ;
                 done = true;
+            }
+            cout << "WARNING: Could receive lots of data!! "
+                    << "We recommend storing this in a file." << endl;
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Do you want store data in a file [y/n] ? ";
+                cout.flush();
+                getline(cin, str);
+                // Get data from file
+                if (str == "y") {
+                    string filename;
+                    while (filename.empty()) {
+                        cout << "Please enter the file name: ";
+                        cout.flush();
+                        getline(cin, filename);
+                    }
+                    // Set flags
+                    done = true;
+                    print_to_file = true;
+                    output_file = filename;
+                }
+                else if (str == "n") {
+                    cout << "OK. Hopefully it's not a lot..." << endl;
+                    done = true;
+                }
+                else {
+                    continue;
+                }
             }
             // All done
             break;
