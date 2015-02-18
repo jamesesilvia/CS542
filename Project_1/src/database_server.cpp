@@ -22,9 +22,6 @@
 Relation *Relation::s_instance = NULL;
 Memory_manager *Memory_manager::s_instance = NULL;
 
-// Request ID for client
-long request_id = 0;
-
 //Set to false to disable
 bool verbose = true;
 //Verbose printing mode
@@ -43,7 +40,7 @@ void printv(char *format, ...) {
 // Handles a client connection
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
-    int len;
+    int len, request_id;
     string cmd, key, data, to_send;
 
     Relation *table = Relation::instance();
@@ -90,33 +87,30 @@ bool handleclient(const int socket) {
                     to_send = to_send + " " + data;
             }
             // Put the entry
-            table->put(atoi(key.c_str()), to_send, request_id);
+            request_id = table->put(atoi(key.c_str()), to_send);
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
-            request_id++;
         } 
         /* Get request received */
         else if (cmd == "get") {
             // Let's get the info we need
             strstr >> key;
             // Get the entry
-            table->get(atoi(key.c_str()), request_id);
+            request_id = table->get(atoi(key.c_str()));
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
-            request_id++;
         }
         /* Remove request received */
         else if (cmd == "remove") {
             // Let's get the info we need
             strstr >> key;
             // Remove the entry
-            table->remove(atoi(key.c_str()), request_id);
+            request_id = table->remove(atoi(key.c_str()));
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
-            request_id++;
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
