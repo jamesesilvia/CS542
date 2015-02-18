@@ -27,3 +27,4 @@ server:
 
 clean:
 	rm -rf $(TARGET)
+	rm -rf *.dat

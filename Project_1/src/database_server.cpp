@@ -63,13 +63,13 @@ bool handleclient(const int socket) {
 
         //Some sort of error
         if (len < 0) {
-            cerr << "Unable to read from client socket! ID: " << request_id << endl;
+            cerr << "Unable to read from client socket!" << endl;
             break;
         }
 
         //Disconnected
         if (len == 0) {
-            cerr << "The client disconnected! ID: " << request_id << endl;
+            cerr << "The client disconnected!" << endl;
             break;
         }
 
