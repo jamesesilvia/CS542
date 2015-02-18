@@ -23,7 +23,7 @@ Relation *Relation::s_instance = NULL;
 Memory_manager *Memory_manager::s_instance = NULL;
 
 // Request ID for client
-int client_id = 0;
+long request_id = 0;
 
 //Set to false to disable
 bool verbose = true;
@@ -41,7 +41,7 @@ void printv(char *format, ...) {
 
 
 // Handles a client connection
-bool handleclient(const int socket, const int request_id) {
+bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len;
     string cmd, key, data, to_send;
@@ -94,6 +94,7 @@ bool handleclient(const int socket, const int request_id) {
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            request_id++;
         } 
         /* Get request received */
         else if (cmd == "get") {
@@ -104,6 +105,7 @@ bool handleclient(const int socket, const int request_id) {
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            request_id++;
         }
         /* Remove request received */
         else if (cmd == "remove") {
@@ -114,6 +116,7 @@ bool handleclient(const int socket, const int request_id) {
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            request_id++;
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
@@ -148,14 +151,11 @@ bool handleclient(const int socket, const int request_id) {
 
 
 //function to handle new client as a new thread
-void *handleclient_thread(void *incoming){
+void *handleclient_thread(void *newsock){
 
-    client_t *client = (client_t*)(incoming);
-    int *sock = &(client->sock);
-    int *id = &(client->id);
-
+    int *sock = (int *)(newsock);
     
-    handleclient(*sock, *id);
+    handleclient(*sock);
 
     close(*sock);
 }
@@ -206,15 +206,9 @@ int main(int argc, char *argv[])
         if (newsock < 0)
             error("Unable to accept connection!");
 
-        //New client, and ID.
-        ++client_id;
-        client_t client;
-        client.id = client_id;
-        client.sock = newsock;
-
         //Start a new thread to handle clients
         printv("Connection made! Starting new thread...\n");
-        if(pthread_create(&thread, NULL, handleclient_thread, (void*)&client) < 0)
+        if(pthread_create(&thread, NULL, handleclient_thread, (void*)&newsock) < 0)
             error("Unable to create new thread!\n");
 
     }

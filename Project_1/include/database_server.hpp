@@ -36,9 +36,4 @@
 
 #define PORT 1433
 
-typedef struct client {
-    int sock;
-    int id;
-} client_t;
-
 #endif
