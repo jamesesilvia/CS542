@@ -114,9 +114,12 @@ int main(int argc, char *argv[]) {
                     continue;
                 len_to_read = atoi(data_len.c_str());
                 string temp;
-                while(strstr >> temp) {
-                    data = data + " " + temp;
-                }
+                //while(strstr >> temp) {
+                //    data = data + temp + " ";
+                //}
+                int pos = strstr.tellg();
+                data = strstr.str().substr(pos+2,len_to_read-1);
+                
                 got_size = true;
             }
             else {
@@ -132,7 +135,7 @@ int main(int argc, char *argv[]) {
 
         if (print_to_file){
             outfile.open(output_file.c_str());
-            outfile << response.rdbuf();
+            outfile << data << endl;
             outfile.close();
         }
         else {
