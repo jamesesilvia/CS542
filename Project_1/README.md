@@ -59,6 +59,8 @@ put
 
 - stores key and corresponding data in the database
 - data can be input through command line, or through a file
+- put will fail if the key already exists
+- to update a key value, remove then re-add
 - NOTE: Use a file to send data greater than 1KB.
 
 get
