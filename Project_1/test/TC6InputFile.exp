@@ -5,10 +5,13 @@
 #there is already a server started manually in another putty instance
 #command to start server is "./server" from the build folder
 # (*important*) server and client are both on the same CCCWORK machine
+#CreateSmallInput.sh has been run before running this test
 
 #SUCCESS CRITERIA:
 #server shows commands from client
 #client shows one put command from file with no error related to put followed by a get command that successfully retrieves "This is data." as data
+
+#***CREATE FILE WITH CreateSmallInput.sh BEFORE RUNNING THIS TEST***
 
 #start the client
 spawn ./../build/client localhost

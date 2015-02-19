@@ -1,19 +1,23 @@
 #!./expect -f 
 
+#prevent test from timing out, note that this is a very long test
+set timeout -1
+
 #PREREQUISITES AND ASSUMPTIONS:
 #all testing is done through putty
 #there is already a server started manually in another putty instance
 #command to start server is "./server" from the build folder
 # (*important*) server and client are both on the same CCCWORK machine
-#CreateSmallInput.sh has been run before running this test
+#CreateGiantInput.sh has been run before running this test
+#This test takes forever, try it at your own risk
 
 #SUCCESS CRITERIA:
 #server shows commands from client
 #client shows one put command from file with no error related to put followed by a get command that successfully retrieves data
-#Data is output to test/BasicOutputFile.txt
-#File consists of the string "This is data."
+#Data is output to test/GiantOutputFile.txt
+#File size of both GiantInputFile.txt and GiantOutputFile.txt is 1 GB
 
-#***CREATE FILE WITH CreateSmallInput.sh BEFORE RUNNING THIS TEST***
+#***CREATE 1 GB FILE WITH CreateGiantInput.sh BEFORE RUNNING THIS TEST***
 
 #start the client
 spawn ./../build/client localhost
@@ -22,21 +26,22 @@ spawn ./../build/client localhost
 #this may throw a read failed error if there is no existing data
 #this is expected, we're just cleaning up what we intend to use
 expect ">" {send "remove\r"}
-expect "Please enter key to remove data:" {send "7\r"}
+expect "Please enter key to remove data:" {send "8\r"}
 
-#put new data into index 7 from text file
+#put new data into index 8 from large text file
 expect ">" {send "put\r"}
-expect "Please enter key to store data:" {send "7\r"}
+expect "Please enter key to store data:" {send "8\r"}
 expect "Do you want to send a file" {send "y\r"}
-expect "Please enter the file name:" {send "BasicInputFile.txt\r"}
+expect "Please enter the file name:" {send "GiantInputFile.txt\r"}
 
-#now get data from index 7
+#now get data from index 8
 expect ">" {send "get\r"}
-expect "Please enter key to retrieve data:" {send "7\r"}
+expect "Please enter key to retrieve data:" {send "8\r"}
 expect "Do you want to store data in a file" {send "y\r"}
-expect "Please enter the file name:" {send "BasicOutputFile.txt\r"}
+expect "Please enter the file name:" {send "GiantOutputFile.txt\r"}
 
 #return to user control
 interact
 
-#manually check the contents of BasicOutputFile.txt in test directory to make sure the output is correct
+#manually check the contents of GiantOutputFile.txt in test directory to make sure the output is correct relative to GiantInputFile.txt
+

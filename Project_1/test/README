@@ -1,0 +1,43 @@
+This is the test materials folder. All tests are automated, however some user input is required. We used expect for lots of our
+scripting, which is a tool that waits until the console outputs a specific, known string, and as a response the script will send
+a command.
+
+When running an expect script, note that every script ends on an interact command, which lets the tester play around for himself or
+use the "quit" command to exit the program. This is the time to review the console output on both the client and server and ensure
+that the expected operations happened. Details for test success are located in the comments near the top of each .exp file, and each
+script is well documented. Each test case (TC) is named with a unique number (except in the case where multiple scripts are needed
+for one test case) and a brief explanation of what the TC does.
+
+One limitation of our test suite is that all the multiclient scripts need to be carried out at once. These scripts generally begin
+with a short "sleep" command and use moderately-sized data. In this way, once the server returns, expect will ensure that multiple
+clients are attempting to send a command to the server at one time. It is a bit crude, but we suggest that the tester types out
+the expect command in each putty window before quickly clicking each window and pressing enter to execute the scripts.
+
+Note that multiclient commands sent at the same time were also tested manually with two clients by quickly pressing Alt+Tab (Windows)
+and by multiple people. It was found to pass.
+
+Each of these test scripts were found to pass. The first 5 TCs test the API, the 6th and 7th TCs test sending data in the form of a
+text file. The 8th test will put and get a 1 GB file. The 9th test shows that multiclient communication works and that database
+requests are carried out in the order that they are received. TC9 may take a few attempts to get meaningful data depending on where
+the removes fall. The 10th test is a manual one and it proves that data persists in the database even when every Putty session is
+closed.
+
+If you are experiencing difficulty, feel free to contact us via email and hopefully we can provide some support.
+
+Test steps:
+1) Open Putty
+1) Run CreateSmallInput.sh (The command is "sh CreateSmallInput.sh")
+2) Run CreateGiantInput.sh
+3) Start a server application from the build folder (The command is "./server")
+4) Open another Putty window
+5) Run TC1PutSuccess.exp (The command is "expect TC1PutSuccess.exp")
+6) Run TC2PutFailure.exp
+7) Run TC3GetSuccess.exp
+8) Run TC4GetFailure.exp
+9) Run TC5Remove.exp
+10) Run TC6InputFile.exp
+11) Run TC7InputFileOutputFile.exp
+12) Run TC8GiantFile.exp (This one takes an exceptionally long time, if any issues are encountered this operation can be done manually)
+13) Open two additional putty windows
+13) Run TC9Client1.exp, TC9Client2.exp, and TC9Client3.exp concurrently, one per client window. It may take a few tries to get meaningful results by interleaving removes with gets and putss.
+14) Run 10th manual test case as described in Word document

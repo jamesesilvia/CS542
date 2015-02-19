@@ -1,0 +1,13 @@
+This is a manual test to see if the database can retain data even if all servers and clients are closed.
+
+Test Steps:
+1) Start a server instance (use "./server") in the build folder on a putty session.
+2) Start a client instance (use "./client localhost") in the build folder on a putty session.
+3) On the client, do a remove at key 10 (it may not exist and fail the remove, that's okay).
+4) On the client, do a put at key 10. Don't opt for file transfer. When prompted for data to store, enter "This is data."
+5) Close both putty sessions
+6) Reopen a server and client as in steps 1 and 2.
+7) On the client, do a get at key 10. Don't opt for file transfer.
+
+Expected result:
+When data is retrieved from key 10, the data consists of "This is data." 

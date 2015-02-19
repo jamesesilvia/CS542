@@ -1,0 +1,75 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+# (*important*) server and client are both on the same CCCWORK machine
+#this script is run concurrently with other scripts on other clients, the scripts for Client1, Client2, and Client3 all need to be run simultaneously
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#Client1 shows a series of removes
+#Client2 shows a series of puts and gets
+#Client3 shows a series of puts and gets
+#Console output and data stored in files must be consistent, a get after a remove should fail, for instance
+#Server displays order of operations and clients display result of those operations
+
+sleep 5
+
+#start the client
+spawn ./../build/client localhost
+
+#assume Client 1 removes data
+#assume Client 2 is also putting and getting data
+
+#remove existing data
+#this may throw a read failed error if there is no existing data
+#this is expected, we're just cleaning up what we intend to use
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#put data into index 9
+expect ">" {send "put\r"}
+expect "Please enter key to store data:" {send "9\r"}
+expect "Do you want to send a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumInputFileClient3.txt\r"}
+
+#get data from index 9
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "9\r"}
+expect "Do you want to store data in a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumOutputFileClient3FirstGet.txt\r"}
+
+#put data into index 9
+expect ">" {send "put\r"}
+expect "Please enter key to store data:" {send "9\r"}
+expect "Do you want to send a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumInputFileClient3.txt\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#put data into index 9
+expect ">" {send "put\r"}
+expect "Please enter key to store data:" {send "9\r"}
+expect "Do you want to send a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumInputFileClient3.txt\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#put data into index 9
+expect ">" {send "put\r"}
+expect "Please enter key to store data:" {send "9\r"}
+expect "Do you want to send a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumInputFileClient3.txt\r"}
+
+#get data from index 9
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "9\r"}
+expect "Do you want to store data in a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumOutputFileClient3SecondGet.txt\r"}
+
+#return to user control
+interact
