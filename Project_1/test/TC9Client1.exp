@@ -1,0 +1,77 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+# (*important*) server and client are both on the same CCCWORK machine
+#this script is run concurrently with other scripts on other clients, the scripts for Client1, Client2, and Client3 all need to be run simultaneously
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#Client1 shows a series of removes
+#Client2 shows a series of puts and gets
+#Client3 shows a series of puts and gets
+#Console output and data stored in files must be consistent, a get after a remove should fail, for instance
+#Server displays order of operations and clients display result of those operations
+
+#assume Client 3 is putting and getting data
+#assume Client 2 is putting and getting data
+
+sleep 5
+
+#start the client
+spawn ./../build/client localhost
+
+#remove existing data
+#this may throw a read failed error if there is no existing data
+#this is expected, we're just cleaning up what we intend to use
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#repeatedly try to remove and get data
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#get data from index 9
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "9\r"}
+expect "Do you want to store data in a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumOutputFileClient1FirstGet.txt\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#get data from index 9
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "9\r"}
+expect "Do you want to store data in a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumOutputFileClient1SecondGet.txt\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#get data from index 9
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "9\r"}
+expect "Do you want to store data in a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumOutputFileClient1ThirdGet.txt\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data:" {send "9\r"}
+
+#get data from index 9
+expect ">" {send "get\r"}
+expect "Please enter key to retrieve data:" {send "9\r"}
+expect "Do you want to store data in a file" {send "y\r"}
+expect "Please enter the file name:" {send "MediumOutputFileClient1FourthGet.txt\r"}
+
+
+#return to user control
+interact
