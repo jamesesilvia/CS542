@@ -20,7 +20,8 @@
 #include <fstream>
 
 #define PORT    1433
-#define MAX_KEY 1000000
+#define MAX_KEY 2147483647
+#define MAX_STRING_LENGTH 100
 
 using namespace std;
 
