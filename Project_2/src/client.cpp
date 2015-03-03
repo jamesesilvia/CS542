@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 1
+ * In completion of: CS542 Project 2
  *
  * client.cpp
  *
@@ -301,31 +301,43 @@ string handle_user_interaction(int sock) {
         }
         /* Remove command */
         else if (cmd == "remove") {
-            // Get name to remove data with
+            // Get key to remove data with
             done = false;
             while (!done) {
                 str.clear();
-                cout << "Please enter city name to remove data with: ";
+                cout << "Please enter key to remove data with: ";
                 cout.flush();
                 getline(cin, str);
                 if (str.empty()) {
                     continue;
                 }
-		if (str.length() > MAX_STRING_LENGTH) {
-		    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
-		    continue;
-		}
-                // Build string to send
-                stringstream temp;
-                int data_length = str.length();
-                temp << data_length;
-                to_send = cmd + " 0 " + temp.str() + " " + str;
-                done = true;               
-            }
+                fail = false;
+                for (i = 0; i < str.length(); i++) {
+                    if (!isdigit(str[i])) {
+                        cout << "Please enter positive integers only!" << endl;
+                        fail = true;
+                        break;
+                    }
+                }
+                if (fail) {
+                    continue;
+                }
+                index = atoi(str.c_str());
+                if (index <= 0) {
+                    cout << "Please enter positive integers or those no greater than " << MAX_KEY << " only!" << endl;
+                    continue;
+                }
+                if (index > MAX_KEY) {
+                    cout << "Please enter an integer less than " << MAX_KEY << "!" << endl;
+                    continue;
+                }
+
+                to_send = cmd + " " + str + " 0 " ;
+                done = true;
+            }         
             // All done
             break;
         }
-
         /* Remove command, debug only */
         else if (cmd == "print") {
             to_send = cmd;
