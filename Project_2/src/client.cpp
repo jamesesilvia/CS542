@@ -225,10 +225,7 @@ string handle_user_interaction(int sock) {
 		    continue;
 		}
                 // Build string to send
-                stringstream temp;
-                int data_length = str.length();
-                temp << data_length;
-                to_send = to_send + " " + temp.str() + " " + str;
+                to_send = to_send + " " + str;
                 done = true;               
             }
             // All done
@@ -251,10 +248,7 @@ string handle_user_interaction(int sock) {
 		    continue;
 		}
                 // Build string to send
-                stringstream temp;
-                int data_length = str.length();
-                temp << data_length;
-                to_send = cmd + " 0 " + temp.str() + " " + str;
+                to_send = cmd + " " + str;
                 done = true;               
             }
             // All done
@@ -293,7 +287,7 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
 
-                to_send = cmd + " " + str + " 0 " ;
+                to_send = cmd + " " + str;
                 done = true;
             }         
             // All done
@@ -332,7 +326,7 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
 
-                to_send = cmd + " " + str + " 0 " ;
+                to_send = cmd + " " + str;
                 done = true;
             }         
             // All done
@@ -344,8 +338,8 @@ string handle_user_interaction(int sock) {
             break;
         }
         /* Force close server, slams clients */
-        else if (cmd == "close_server") {
-            to_send = "close server";
+        else if (cmd == "close_hidden_server") {
+            to_send = "close";
             break;
         }
         /* User wants to close the applcation */

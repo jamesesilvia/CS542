@@ -40,98 +40,79 @@ void printv(char *format, ...) {
 // Handles a client connection
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
-    int len, request_id;
-    string cmd, population, key, name, data_len, data, to_send;
+    int len, request_id, start, end;
+    string cmd, key, population, location, to_send;
 
     Relation *table = Relation::instance();
 
     while (true) {
         //Clear strings
         cmd.clear();
-        data_len.clear();
         key.clear();
 	population.clear();
-        data.clear();
-	name.clear();
+	location.clear();
         to_send.clear();
-        bool got_size = false;
-        int len_to_read = BUFFER_LEN;
-        do {
-            //Clear receive buffer
-            memset(buffer, 0, sizeof(buffer));
-            
-            //Shall we get some data?
-            len = read(socket, buffer, BUFFER_LEN);
+        
+        //Clear receive buffer
+        memset(buffer, 0, sizeof(buffer));
+        
+        //Shall we get some data?
+        len = read(socket, buffer, BUFFER_LEN);
 
-            //Some sort of error
-            if (len < 0) {
-            	cerr << "Unable to read from client socket!" << endl;
-            	break;
-            }
+        //Some sort of error
+        if (len < 0) {
+            cerr << "Unable to read from client socket!" << endl;
+            break;
+        }
 
-            //Disconnected
-            if (len == 0) {
-           	 cerr << "The client disconnected!" << endl;
-           	 return false;
-            }
-            
-            //Get command of incoming data on buffer
-            if (!got_size) {
-	        //Stringstream of received data
-        	stringstream strstr(buffer);
-        	//Get control data from buffer
-        	if (!(strstr >> cmd)) {
-		    //cerr << "The client didn't send a command!" << endl;
-        	    continue;
-    		}
-		if (!(strstr >> population)) {
-		    //cerr << "The client didn't send a command!" << endl;
-        	    continue;
-    		}
-		if (!(strstr >> data_len)) {
-		    //cerr << "The client didn't send a command!" << endl;
-        	    continue;
-    		}
+        //Disconnected
+        if (len == 0) {
+             cerr << "The client disconnected!" << endl;
+             return false;
+        }
 
-		if (cmd == "put" || cmd == "get_index_by_name") {
-		    if (!(strstr >> name))
-			continue;
-		}
+        //Get command
+        stringstream strstr(buffer);
+        if (!(strstr >> cmd)) {
+            continue;
+        }
 
-                
-        	len_to_read = atoi(data_len.c_str());
-        	int pos = strstr.tellg();
-        	to_send = strstr.str().substr(pos+1,len_to_read);
-        	got_size = true;
-            }
-            //Get buffer, decrease length of buffer left
-            else {
-            	to_send = to_send + string(buffer);
-            	len_to_read = len_to_read - BUFFER_LEN;
-            }
-        } while (len_to_read > BUFFER_LEN);
-
-
-        /* Put request received */
+        /* Put request received in buffer as
+         * "put <population> <location>"
+         */
         if (cmd == "put") {
-            printv("Putting: %s, %s\n", population.c_str(), name.c_str());
+            strstr >> population;
+            // Get everything left in location
+            start = strstr.tellg();
+            end = strstr.str().length();
+            location = strstr.str().substr(start+1,end); 
+            printv("Putting: %s, %s\n", population.c_str(), location.c_str());
             // Put the entry
-            request_id = table->put(atoi(population.c_str()), name.c_str());
+            request_id = table->put(atoi(population.c_str()), location.c_str());
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(request_id);
         } 
-        /* Get index by name request received */
+        /* Get index by name request received as
+         * "get_index_by_name <location>"
+         */
         else if (cmd == "get_index_by_name") {
-            printv("Getting: %s\n", name.c_str());
+            // Get everything left in location
+            start = strstr.tellg();
+            end = strstr.str().length();
+            location = strstr.str().substr(start+1,end);
+            printv("Getting: %s\n", location.c_str());
             // Get the entry
-            request_id = table->get_index_by_name(name.c_str());
+            request_id = table->get_index_by_name(location.c_str());
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(request_id);
         }
-	/* Get request received */
+	/* Get index by population received as
+         * "get_index_by_population <population>"
+         */
         else if (cmd == "get_index_by_population") {
+            strstr >> population;
             printv("Getting: %s\n", population.c_str());
             // Get the entry
             request_id = table->get_index_by_population(atoi(population.c_str()));
@@ -139,9 +120,12 @@ bool handleclient(const int socket) {
             // Wait for service
             to_send = table->wait_for_service(request_id);
         }
-        /* Remove request received */
+        /* Remove request received as 
+         * "remove <key>" 
+         */
         else if (cmd == "remove") {
-            printv("Removing: %s\n", population.c_str());	    //don't worry, population is the key in this instance
+            strstr >> key;
+            printv("Removing: %s\n", key.c_str());	    //don't worry, population is the key in this instance
             // Remove the entry
             request_id = table->remove(atoi(population.c_str()));   //don't worry, population is the key in this instance
             to_send.clear();
@@ -150,13 +134,10 @@ bool handleclient(const int socket) {
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
-            // Yes, lets exit.
-            if (population == "server") {
+                // Yes, lets exit.
                 cout << "Received force close, EXIT" << endl;
                 close(socket);
                 exit(0);
-            }
-            to_send = "We got your phony CLOSE request brah";
         }
         /* Print queue - verbose only */
         else if (cmd == "print" && verbose) {

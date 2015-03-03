@@ -276,7 +276,7 @@ bool Relation::isolation_manager() {
             req = get_req_for_service();
 
             /* Handle request from user */
-            switch(req.action ){
+            switch(req.action){
                 case(PUT):
                 // Need brackets for scope
                 {
