@@ -23,14 +23,16 @@
 using namespace std;
 
 // Actions for queue
-#define PUT     1
-#define GET     2
-#define REMOVE  3
+#define PUT     		    1
+#define GET_INDEX_BY_NAME     	    2
+#define GET_INDEX_BY_POPULATION     3
+#define REMOVE  		    4
 
 /* User request item placed on queue */
 typedef struct request
 {
     int key;
+    int population;
     string data;
     int client;
     int action;
@@ -38,7 +40,7 @@ typedef struct request
     string print() const
     {
         stringstream ss;
-        ss << "Key: " << key << " Data: " << data 
+        ss << "Key: " << key << " Population: " << population << " Data: " << data 
             << " Client: " << client << " Action: " << action;
         return ss.str();
 
@@ -51,8 +53,9 @@ public:
     /* functions */
     Relation(string _tablename);
     int get_next_request_id();
-    int put(int key, string data);
-    int get(int key);
+    int put(int population, string data);
+    int get_index_by_name(string data);
+    int get_index_by_population(int population);
     int remove(int key);
     string wait_for_service(int key, int client);
     void print_queues();

@@ -104,11 +104,20 @@ bool handleclient(const int socket) {
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);
         } 
-        /* Get request received */
-        else if (cmd == "get") {
+        /* Get index by name request received */
+        else if (cmd == "get_index_by_name") {
             printv("Getting: %s\n", key.c_str());
             // Get the entry
-            request_id = table->get(atoi(key.c_str()));
+            request_id = table->get_index_by_name(key.c_str()); //TODO: THIS IS NOT THE DATA STRING, THIS IS THE KEY, COULD BE AN ISSUE ALL OVER TOO
+            to_send.clear();
+            // Wait for service
+            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+        }
+	/* Get request received */
+        else if (cmd == "get_index_by_population") {
+            printv("Getting: %s\n", key.c_str());
+            // Get the entry
+            request_id = table->get_index_by_population(atoi(key.c_str()));
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(atoi(key.c_str()), request_id);

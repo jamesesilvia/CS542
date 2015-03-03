@@ -41,12 +41,12 @@ int Relation::get_next_request_id() {
     return ret;
 }
 
-int Relation::put(int key, string data) {
+int Relation::put(int population, string data) {
 
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { key, data, id, PUT };
+    request_t req = { 0, population, data, id, PUT }; //TODO: CHANGE 0 TO WHATEVER KEY IS OR FIGURE OUT WHAT TO DO WITH IT
 
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
@@ -56,12 +56,26 @@ int Relation::put(int key, string data) {
 }
 
 
-int Relation::get(int key) {
+int Relation::get_index_by_name(string data) {
 
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { key, "", id, GET };
+    request_t req = { 0, 0, data, id, GET_INDEX_BY_NAME }; //TODO: CHANGE 1ST 0 TO WHATEVER KEY IS OR FIGURE OUT WHAT TO DO WITH IT
+    
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        return -1;
+
+    return id;
+}
+
+int Relation::get_index_by_population(int population) {
+
+    int id = get_next_request_id();
+
+    // Create req
+    request_t req = { 0, population, "", id, GET_INDEX_BY_POPULATION }; //TODO: CHANGE 0 TO WHATEVER KEY IS OR FIGURE OUT WHAT TO DO WITH IT
     
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
@@ -76,7 +90,7 @@ int Relation::remove(int key) {
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { key, "", id, REMOVE };
+    request_t req = { key, 0, "", id, REMOVE };
 
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
@@ -171,7 +185,7 @@ bool Relation::check_if_queue_empty(pthread_mutex_t *lock,
     // Release mutex
     pthread_mutex_unlock(lock);
 
-    return false;
+    return ret;
 }
 
 request_t Relation::get_req_for_service() {
@@ -217,11 +231,17 @@ string Relation::wait_for_service(int key, int client) {
                                 " " << data_len <<
                                 " " << req->data << endl;
                     break;
-                case(GET):
+                case(GET_INDEX_BY_NAME):
                     to_send << "Got: " << req->key <<
                                 " " << data_len <<
                                 " " << req->data << endl;
                     break;
+		case(GET_INDEX_BY_POPULATION):
+                    to_send << "Got: " << req->key <<
+                                " " << data_len <<
+                                " " << req->data << endl;
+                    break;
+
                 case(REMOVE):
                     to_send << "Removed: " << req->key <<
                                 " " << data_len <<
@@ -277,7 +297,7 @@ bool Relation::isolation_manager() {
                     free(buffer);
                     break;
                 }
-                case(GET):
+                case(GET_INDEX_BY_NAME):
                 // Need brackets for scope
                 {
                     container_t *container = (container_t *)malloc(CONTAINER_LENGTH);
@@ -291,10 +311,29 @@ bool Relation::isolation_manager() {
                         req.data = "READ FAILED" :
                         req.data = "TODO YOOOOOOOOOOOO";
                     
-                    req.action = GET;
+                    req.action = GET_INDEX_BY_NAME;
                     free(container);
                     break;
                 }
+		case(GET_INDEX_BY_POPULATION):
+                // Need brackets for scope
+                {
+                    container_t *container = (container_t *)malloc(CONTAINER_LENGTH);
+                    memset(container, 0, CONTAINER_LENGTH);
+                    // Read data from database
+                    //ret = memory_manager->read_index(buffer,
+                    //                                    req.key);
+                    
+                    // Reponse based on ret
+                    (ret == -1) ?
+                        req.data = "READ FAILED" :
+                        req.data = "TODO YOOOOOOOOOOOO";
+                    
+                    req.action = GET_INDEX_BY_POPULATION;
+                    free(container);
+                    break;
+                }
+
                 case(REMOVE):
                 // Need brackets for scope
                 {
