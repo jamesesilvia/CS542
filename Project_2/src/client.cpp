@@ -32,7 +32,7 @@ string handle_user_interaction(int sock);
 //Global for client
 ifstream infile;
 ofstream outfile;
-bool print_to_file;
+//bool print_to_file;
 string output_file;
 
 //Main function
@@ -129,14 +129,14 @@ int main(int argc, char *argv[]) {
         cout << endl;
         response << cmd << " " << key << " with response..." << data << endl;
 
-        if (print_to_file){
-            outfile.open(output_file.c_str());
-            outfile << data;
-            outfile.close();
-        }
-        else {
-            cout << response.str() << endl;
-        }
+        //if (print_to_file){
+        //    outfile.open(output_file.c_str());
+        //    outfile << data;
+        //    outfile.close();
+        //}
+        //else {
+        cout << response.str() << endl;
+        //}
         cout << "Done." << endl;
     }
 
@@ -163,7 +163,7 @@ string handle_user_interaction(int sock) {
         cmd.clear();
         to_send.clear();
         output_file.clear();
-        print_to_file = false;
+        //print_to_file = false;
         
         //Print out a command line
         cout << "-> "; 
@@ -177,11 +177,11 @@ string handle_user_interaction(int sock) {
         
         /* Put command */
         if (cmd == "put") {
-            // Get key to store data
+            // Get numeric data to store
             done = false;
             while (!done) {
                 str.clear();
-                cout << "Please enter key to store data: ";
+                cout << "Please enter population of city to store: ";
                 cout.flush();
                 getline(cin, str);
                 if (str.empty()) {
@@ -199,8 +199,8 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 index = atoi(str.c_str());
-                if (index < 0) {
-                    cout << "Please enter positive integers only!" << endl;
+                if (index <= 0) {
+                    cout << "Please enter positive integers or those no greater than " << MAX_KEY << " only!" << endl;
                     continue;
                 }
                 if (index > MAX_KEY) {
@@ -209,81 +209,64 @@ string handle_user_interaction(int sock) {
                 }
                 to_send = cmd + " " + str;
                 done = true;
-            }
-            cout << "----------------------------------------------------------" << endl;
-            cout << "WARNING: Entering data via command line is limited to 1KB." << endl;
-            cout << endl;
-            cout << "Use a file to send data larger than that, up to 1GB." << endl; 
-            cout << "----------------------------------------------------------" << endl;
-            // Get data to store
+            }            
+            // Get string data to store
             done = false;
             while (!done) {
                 str.clear();
-                cout << "Do you want to send a file [y/n] ? ";
+                cout << "Please enter the name of the city to store: ";
                 cout.flush();
                 getline(cin, str);
-                // Get data from file
-                if (str == "y") {
-                    string filename;
-                    while (filename.empty()) {
-                        cout << "Please enter the file name: ";
-                        cout.flush();
-                        getline(cin, filename);
-                    }
-                    // Is that a file?
-                    if (!check_for_file(filename.c_str())){
-                        cout << "That file does not exist!" << endl;
-                        continue;
-                    }
-                    // Read data and send it all
-                    string line;
-                    stringstream ss;
-                    infile.open(filename.c_str());
-                    ss << infile.rdbuf();
-                    infile.close();
-                    // Is it empty?
-                    if (ss.str() != "") {
-                        stringstream temp;
-                        int string_length = ss.str().length(); 
-                        temp << string_length;
-                        to_send = to_send + " " + temp.str() + " " + ss.str();
-                        done = true;
-                    }
-                    else {
-                        cout << "That file is empty!" << endl;
-                        continue;
-                    }
-                }
-                // Get data from command line
-                else if (str == "n") {
-                    string data;
-                    while (data.empty()) {
-                        cout << "Please enter the data to store: ";
-                        cout.flush();
-                        getline(cin, data);
-                    }
-                    // Build string to send
-                    stringstream temp;
-                    int data_length = data.length();
-                    temp << data_length;
-                    to_send = to_send + " " + temp.str() + " " + data;
-                    done = true;
-                }
-                // Do it again...
-                else {
+                if (str.empty()) {
                     continue;
                 }
+		if (str.length() > MAX_STRING_LENGTH) {
+		    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
+		    continue;
+		}
+                // Build string to send
+                stringstream temp;
+                int data_length = str.length();
+                temp << data_length;
+                to_send = to_send + " " + temp.str() + " " + str;
+                done = true;               
             }
             // All done
             break;
         } 
-        /* Get command */
-        else if (cmd == "get") {
-            // Get key to retrieve data
+        /* Get index by name command */
+        else if (cmd == "get_index_by_name") {
+            // Get name to retrieve data with
             done = false;
             while (!done) {
                 str.clear();
-                cout << "Please enter key to retrieve data: ";
+                cout << "Please enter city name to retrieve data with: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+		if (str.length() > MAX_STRING_LENGTH) {
+		    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
+		    continue;
+		}
+                // Build string to send
+                stringstream temp;
+                int data_length = str.length();
+                temp << data_length;
+                to_send = cmd + " 0 " + temp.str() + " " + str;
+                done = true;               
+            }
+            // All done
+            break;
+        }
+	/* Get index by population command */
+        else if (cmd == "get_index_by_population") {
+            // Get number to retrieve data with
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter city population to retrieve data with: ";
                 cout.flush();
                 getline(cin, str);
                 if (str.empty()) {
@@ -301,90 +284,48 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 index = atoi(str.c_str());
-                if (index < 0) {
-                    cout << "Please enter positive integers only!" << endl;
+                if (index <= 0) {
+                    cout << "Please enter positive integers or those no greater than " << MAX_KEY << " only!" << endl;
                     continue;
                 }
                 if (index > MAX_KEY) {
                     cout << "Please enter an integer less than " << MAX_KEY << "!" << endl;
                     continue;
                 }
+
                 to_send = cmd + " " + str + " 0 " ;
                 done = true;
-            }
-            cout << "-----------------------------------------------" << endl;
-            cout << "WARNING: Could receive lots of data!! " << endl;
-            cout << endl;
-            cout << "We recommend storing this in a file." << endl;
-            cout << "-----------------------------------------------" << endl;
-            done = false;
-            while (!done) {
-                str.clear();
-                cout << "Do you want to store data in a file [y/n] ? ";
-                cout.flush();
-                getline(cin, str);
-                // Get data from file
-                if (str == "y") {
-                    string filename;
-                    while (filename.empty()) {
-                        cout << "Please enter the file name: ";
-                        cout.flush();
-                        getline(cin, filename);
-                    }
-                    // Set flags
-                    done = true;
-                    print_to_file = true;
-                    output_file = filename;
-                }
-                else if (str == "n") {
-                    cout << "OK. Hopefully it's not a lot..." << endl;
-                    done = true;
-                }
-                else {
-                    continue;
-                }
-            }
+            }         
             // All done
             break;
         }
         /* Remove command */
         else if (cmd == "remove") {
-            // Get key to retrieve data
+            // Get name to remove data with
             done = false;
             while (!done) {
                 str.clear();
-                cout << "Please enter key to remove data: ";
+                cout << "Please enter city name to remove data with: ";
                 cout.flush();
                 getline(cin, str);
                 if (str.empty()) {
                     continue;
                 }
-                fail = false;
-                for (i = 0; i < str.length(); i++) {
-                    if (!isdigit(str[i])) {
-                        cout << "Please enter positive integers only!" << endl;
-                        fail = true;
-                        break;
-                    }
-                }
-                if (fail) {
-                    continue;
-                }
-                index = atoi(str.c_str());
-                if (index < 0) {
-                    cout << "Please enter positive integers only!" << endl;
-                    continue;
-                }
-                if (index > MAX_KEY) {
-                    cout << "Please enter an intege less than " << MAX_KEY << "!" << endl;
-                    continue;
-                }
-                to_send = cmd + " " + str + " 0 ";
-                done = true;
+		if (str.length() > MAX_STRING_LENGTH) {
+		    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
+		    continue;
+		}
+                // Build string to send
+                stringstream temp;
+                int data_length = str.length();
+                temp << data_length;
+                to_send = cmd + " 0 " + temp.str() + " " + str;
+                done = true;               
             }
             // All done
             break;
         }
+
         /* Remove command, debug only */
         else if (cmd == "print") {
             to_send = cmd;
@@ -403,13 +344,15 @@ string handle_user_interaction(int sock) {
         /* Print Help */
         else {
             cout << "Acceptable commands are:" << endl;
-            cout << "   put     - store data" << endl;
-            cout << "   get     - retrieve data" << endl;
-            cout << "   remove  - delete data" << endl;
-            cout << "   quit    - exit the application" << endl;
+            cout << "   put                         - store data" << endl;
+            cout << "   get_index_by_name           - retrieve data based on city name" << endl;
+	    cout << "   get_index_by_population     - retrieve data based on city population" << endl;
+            cout << "   remove                      - delete data" << endl;
+            cout << "   quit                        - exit the application" << endl;
             continue;
         }
 
     }
+    cout << "Command sent to server: " << to_send << endl;
     return to_send;
 }
