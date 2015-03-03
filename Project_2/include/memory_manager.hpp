@@ -35,14 +35,16 @@ using namespace std;
 #define START_TABLE_SIZE       1000000   /* 1MB */
 #define EXPAND_TABLE_SIZE         1000   /* 1kB */
 
-/* structure to hold index */
-struct value {
+/* structure to store the data */
+struct container {
     int index;
-    int offset;
-    int length;
-    int fragment;
-    value *next_frag;
-};
+    int population;
+    char name[100];
+} __attribute__((__packed__));
+
+typedef struct container container_t;
+
+#define CONTAINER_LENGTH sizeof(container_t)
 
 /* Map table file into memory and keep track of indices in memory */
 class Memory_manager {
@@ -51,19 +53,19 @@ public:
     Memory_manager(string table);
     int map_to_memory(int database_size);
     int unmap_from_memory();
-    int read(char *buffer, int offset, int len);
-    int write(char *buffer, int offset, int len);
-    int get_free_memory_block(int size, int *ret_size);
-    int get_index_length(int index);
+    int read(void *buffer, int location, int length);
+    int write(void *buffer, int location, int length);
+    int get_free_memory_block(int *location);
     bool index_exist(int index);
-    list<value>::iterator write_to_table(int index, int offset, int length, int fragment, value *next_frag);
-    int read_index(char *buffer, int index);
-    int write_index(char *buffer, int index, int len);
+    void write_to_table(int index);
+    int get_by_population(int population, container_t *container);
+    int read_index(void *buffer, int index, int length);
+    int put(const char *buffer);
+    int write_index(container_t *container);
     int remove_index(int index);
     void print_memory_map();
     void save_memory_map();
     int load_memory_map();
-    void rebuild_links();
     int get_free_space();
     int expand_database(double request_size);
 
@@ -82,8 +84,8 @@ private:
     char *map;
     int size;
     int filled;
-    list<value> table;
-    list<value>::const_iterator iter;
+    list<int> table;
+    list<int>::const_iterator iter;
 
 };
 

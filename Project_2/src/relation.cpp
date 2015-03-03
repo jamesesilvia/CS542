@@ -268,9 +268,7 @@ bool Relation::isolation_manager() {
                     memset(buffer, 0, sizeof(buffer));
                     strcpy(buffer, req.data.c_str());
                     // Store data in database
-                    ret = memory_manager->write_index(buffer, 
-                                                        req.key,
-                                                        req.data.length());
+                    ret = memory_manager->put(buffer);
                     // Response based on ret
                     (ret == -1) ?
                         req.data = "PUT FAILED: That key already exists" :
@@ -282,21 +280,19 @@ bool Relation::isolation_manager() {
                 case(GET):
                 // Need brackets for scope
                 {
-                    int buffer_size = memory_manager->get_index_length(req.key);
-                    char *buffer = (char *)malloc(buffer_size+1);
-                    memset(buffer, 0, sizeof(buffer));
+                    container_t *container = (container_t *)malloc(CONTAINER_LENGTH);
+                    memset(container, 0, CONTAINER_LENGTH);
                     // Read data from database
-                    ret = memory_manager->read_index(buffer,
-                                                        req.key);
-
-                    buffer[buffer_size] = NULL;
+                    //ret = memory_manager->read_index(buffer,
+                    //                                    req.key);
+                    
                     // Reponse based on ret
                     (ret == -1) ?
                         req.data = "READ FAILED" :
-                        req.data = string(buffer);
+                        req.data = "TODO YOOOOOOOOOOOO";
                     
                     req.action = GET;
-                    free(buffer);
+                    free(container);
                     break;
                 }
                 case(REMOVE):
