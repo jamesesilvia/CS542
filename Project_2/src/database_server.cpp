@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 1
+ * In completion of: CS542 Project 2
  *
  * database_server.cpp
  *
@@ -183,6 +183,7 @@ int main(int argc, char *argv[])
     Memory_manager *memory_manager = Memory_manager::instance();
     int current_size = memory_manager->load_memory_map();
     memory_manager->map_to_memory(current_size);
+    memory_manager->rebuild_bptrees();
 
     //Create the sock handle
     printv("Creating socket\n");

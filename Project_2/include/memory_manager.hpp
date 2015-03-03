@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 1
+ * In completion of: CS557 Project 2
  *
  * memory_manager.hpp
  *
@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdarg.h>
+
+#include "bpt.hpp"
 
 using namespace std;
 
@@ -58,12 +60,15 @@ public:
     int get_free_memory_block(int *location);
     bool index_exist(int index);
     void write_to_table(int index);
-    int get_by_population(int population, container_t *container);
+    int get_by_population(int pop, container_t *container);
     int read_index(void *buffer, int index, int length);
     int put(const char *buffer);
     int write_index(container_t *container);
     int remove_index(int index);
+    void rebuild_bptrees();
     void print_memory_map();
+    void print_bpt();
+    void print_db();
     void save_memory_map();
     int load_memory_map();
     int get_free_space();
@@ -87,6 +92,9 @@ private:
     list<int> table;
     list<int>::iterator iter;
 
+    /* b+ trees for indexing */
+    Bpt population;
+    Bpt city_name;
 };
 
 #endif

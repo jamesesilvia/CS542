@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 1
+ * In completion of: CS557 Project 2
  *
  * memory_manager.cpp
  *
@@ -32,7 +32,7 @@ using namespace std;
 #include "memory_manager.hpp"
 
 /* constructor */
-Memory_manager::Memory_manager(string table) {
+Memory_manager::Memory_manager(string table) : population(), name() {
     name = table;
     filename = table + ".dat";
     map_loc = table + ".txt";
@@ -193,10 +193,13 @@ void Memory_manager::write_to_table(int index) {
 }
 
 
-int Memory_manager::get_by_population(int population, container_t *container) {
+int Memory_manager::get_by_population(int pop, container_t *container) {
+
+    /* Get index from b+ tree */
+    record *data = population.find(pop);
 
     /* This Fails if the index is removed, do stuff in relation */
-    if (read_index((void *)container, population, CONTAINER_LENGTH) == -1){
+    if (read_index((void *)container, data->value, CONTAINER_LENGTH) == -1){
         cout << __func__ << "(): get failed" << endl;
         return -1;
     }
@@ -277,6 +280,9 @@ int Memory_manager::write_index(container_t *container) {
         filled -= CONTAINER_LENGTH;
     }
 
+    /* add popluation to b+tree */
+    population.insert(container->population, container->index);
+
     // Free container
     free(container);
 
@@ -296,6 +302,16 @@ int Memory_manager::remove_index(int index) {
         return -1;
     }
 
+    /* find index so we can remove data from b+ trees */
+    container_t container;
+    if (read_index((void *)&container, index, CONTAINER_LENGTH) == -1){
+        cout << __func__ << "(): get failed" << endl;
+        return -1;
+    }
+
+    /* remove from b+ tree */
+    population.delete_node(container.population);
+
     for (iter = table.begin(); iter != table.end(); ++iter) {
         if ((*iter) == index){
             filled -= CONTAINER_LENGTH;
@@ -308,6 +324,23 @@ int Memory_manager::remove_index(int index) {
     save_memory_map();
 
     return 0;
+}
+
+
+/* read an index from the database of container sizer*/
+void Memory_manager::rebuild_bptrees() {
+    container_t container;
+
+    /* rebuild b+ trees
+     */
+    for (iter = table.begin(); iter != table.end(); ++iter) {
+        if (read_index((void *)&container, (*iter), CONTAINER_LENGTH) == -1){
+            cout << __func__ << "(): get failed" << endl;
+        }
+
+        /* add population to b+tree */
+        population.insert(container.population, container.index);
+    }
 }
 
 /* print out state of memory map for debug purposes */
@@ -323,6 +356,24 @@ void Memory_manager::print_memory_map() {
     }
     
     cout << "********************************" << endl;
+}
+
+/* print out state of memory map for debug purposes */
+void Memory_manager::print_bpt() {
+    
+    cout << "********** Population B+ tree **********" << endl;
+
+    population.print_tree();
+    
+    cout << "****************************************" << endl;
+}
+
+/* print out state of memory map for debug purposes */
+void Memory_manager::print_db() {
+
+    print_memory_map();
+    print_bpt();
+
 }
 
 /* save memory map to text file */

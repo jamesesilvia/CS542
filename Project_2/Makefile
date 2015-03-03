@@ -10,6 +10,7 @@ SERVER = \
 	$(SRCDIR)/database_server.cpp \
 	$(SRCDIR)/helpers.cpp \
 	$(SRCDIR)/memory_manager.cpp \
+	$(SRCDIR)/bpt.cpp \
 	$(SRCDIR)/relation.cpp
 
 default:
