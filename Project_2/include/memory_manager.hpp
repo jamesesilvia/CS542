@@ -85,7 +85,7 @@ private:
     int size;
     int filled;
     list<int> table;
-    list<int>::const_iterator iter;
+    list<int>::iterator iter;
 
 };
 
