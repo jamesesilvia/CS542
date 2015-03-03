@@ -41,7 +41,7 @@ void printv(char *format, ...) {
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len, request_id;
-    string cmd, key, data_len, data, to_send;
+    string cmd, population, key, name, data_len, data, to_send;
 
     Relation *table = Relation::instance();
 
@@ -50,7 +50,9 @@ bool handleclient(const int socket) {
         cmd.clear();
         data_len.clear();
         key.clear();
+	population.clear();
         data.clear();
+	name.clear();
         to_send.clear();
         bool got_size = false;
         int len_to_read = BUFFER_LEN;
@@ -63,78 +65,93 @@ bool handleclient(const int socket) {
 
             //Some sort of error
             if (len < 0) {
-                cerr << "Unable to read from client socket!" << endl;
-                break;
+            	cerr << "Unable to read from client socket!" << endl;
+            	break;
             }
 
             //Disconnected
             if (len == 0) {
-                cerr << "The client disconnected!" << endl;
-                return false;
+           	 cerr << "The client disconnected!" << endl;
+           	 return false;
             }
             
-            //Get size of incoming data on first buffer
+            //Get command of incoming data on buffer
             if (!got_size) {
-                //Stringstream of received data
-                stringstream strstr(buffer);
-                //Get control data from buffer
-                if (!(strstr >> cmd))
-                    continue;
-                if (!(strstr >> key))
-                    continue;
-                if (!(strstr >> data_len))
-                    continue;
-                len_to_read = atoi(data_len.c_str());
-                int pos = strstr.tellg();
-                to_send = strstr.str().substr(pos+1,len_to_read);
-                got_size = true;
+	        //Stringstream of received data
+        	stringstream strstr(buffer);
+        	//Get control data from buffer
+        	if (!(strstr >> cmd)) {
+		    //cerr << "The client didn't send a command!" << endl;
+        	    continue;
+    		}
+		if (!(strstr >> population)) {
+		    //cerr << "The client didn't send a command!" << endl;
+        	    continue;
+    		}
+		if (!(strstr >> data_len)) {
+		    //cerr << "The client didn't send a command!" << endl;
+        	    continue;
+    		}
+
+		if (cmd == "put" || cmd == "get_index_by_name") {
+		    if (!(strstr >> name))
+			continue;
+		}
+
+                
+        	len_to_read = atoi(data_len.c_str());
+        	int pos = strstr.tellg();
+        	to_send = strstr.str().substr(pos+1,len_to_read);
+        	got_size = true;
             }
             //Get buffer, decrease length of buffer left
             else {
-                to_send = to_send + string(buffer);
-                len_to_read = len_to_read - BUFFER_LEN;
+            	to_send = to_send + string(buffer);
+            	len_to_read = len_to_read - BUFFER_LEN;
             }
         } while (len_to_read > BUFFER_LEN);
+
+
         /* Put request received */
         if (cmd == "put") {
-            printv("Putting: %s\n", key.c_str());
+            printv("Putting: %s, %s\n", population.c_str(), name.c_str());
             // Put the entry
-            request_id = table->put(atoi(key.c_str()), to_send);
+            request_id = table->put(atoi(population.c_str()), name.c_str());
             to_send.clear();
             // Wait for service
-            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            to_send = table->wait_for_service(request_id);
         } 
         /* Get index by name request received */
         else if (cmd == "get_index_by_name") {
-            printv("Getting: %s\n", key.c_str());
+            printv("Getting: %s\n", name.c_str());
             // Get the entry
-            request_id = table->get_index_by_name(key.c_str()); //TODO: THIS IS NOT THE DATA STRING, THIS IS THE KEY, COULD BE AN ISSUE ALL OVER TOO
+            request_id = table->get_index_by_name(name.c_str());
             to_send.clear();
             // Wait for service
-            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            to_send = table->wait_for_service(request_id);
         }
 	/* Get request received */
         else if (cmd == "get_index_by_population") {
-            printv("Getting: %s\n", key.c_str());
+            printv("Getting: %s\n", population.c_str());
             // Get the entry
-            request_id = table->get_index_by_population(atoi(key.c_str()));
+            request_id = table->get_index_by_population(atoi(population.c_str()));
             to_send.clear();
             // Wait for service
-            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            to_send = table->wait_for_service(request_id);
         }
         /* Remove request received */
         else if (cmd == "remove") {
-            printv("Removing: %s\n", key.c_str());
+            printv("Removing: %s\n", population.c_str());	    //don't worry, population is the key in this instance
             // Remove the entry
-            request_id = table->remove(atoi(key.c_str()));
+            request_id = table->remove(atoi(population.c_str()));   //don't worry, population is the key in this instance
             to_send.clear();
             // Wait for service
-            to_send = table->wait_for_service(atoi(key.c_str()), request_id);
+            to_send = table->wait_for_service(request_id);
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
             // Yes, lets exit.
-            if (key == "server") {
+            if (population == "server") {
                 cout << "Received force close, EXIT" << endl;
                 close(socket);
                 exit(0);

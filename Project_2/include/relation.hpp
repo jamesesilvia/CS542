@@ -34,14 +34,14 @@ typedef struct request
     int key;
     int population;
     string data;
-    int client;
+    int id;
     int action;
 
     string print() const
     {
         stringstream ss;
         ss << "Key: " << key << " Population: " << population << " Data: " << data 
-            << " Client: " << client << " Action: " << action;
+            << " ID: " << id << " Action: " << action;
         return ss.str();
 
     }
@@ -57,7 +57,7 @@ public:
     int get_index_by_name(string data);
     int get_index_by_population(int population);
     int remove(int key);
-    string wait_for_service(int key, int client);
+    string wait_for_service(int req_id);
     void print_queues();
     bool isolation_manager();
 
@@ -86,8 +86,7 @@ private:
                                 list <request_t> *queue);
     request_t remove_from_queue(pthread_mutex_t *lock, 
                                 list <request_t> *queue);
-    request_t *remove_req_by_key(int key,
-                                int client,
+    request_t *remove_req_by_id(int id,
                                 pthread_mutex_t *lock,
                                 list <request_t> *queue);
     bool check_if_queue_empty(pthread_mutex_t *lock,

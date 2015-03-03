@@ -46,7 +46,7 @@ int Relation::put(int population, string data) {
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { 0, population, data, id, PUT }; //TODO: CHANGE 0 TO WHATEVER KEY IS OR FIGURE OUT WHAT TO DO WITH IT
+    request_t req = { 0, population, data, id, PUT };
 
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
@@ -61,7 +61,7 @@ int Relation::get_index_by_name(string data) {
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { 0, 0, data, id, GET_INDEX_BY_NAME }; //TODO: CHANGE 1ST 0 TO WHATEVER KEY IS OR FIGURE OUT WHAT TO DO WITH IT
+    request_t req = { 0, 0, data, id, GET_INDEX_BY_NAME };
     
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
@@ -75,8 +75,7 @@ int Relation::get_index_by_population(int population) {
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { 0, population, "", id, GET_INDEX_BY_POPULATION }; //TODO: CHANGE 0 TO WHATEVER KEY IS OR FIGURE OUT WHAT TO DO WITH IT
-    
+    request_t req = { 0, population, "", id, GET_INDEX_BY_POPULATION };    
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
         return -1;
@@ -142,10 +141,7 @@ request_t Relation::remove_from_queue(pthread_mutex_t *lock,
 }
 
 
-request_t *Relation::remove_req_by_key(int key,
-                                        int client,
-                                        pthread_mutex_t *lock,
-                                        list <request_t> *queue) {
+request_t *Relation::remove_req_by_id(int id, pthread_mutex_t *lock, list <request_t> *queue) {
     request_t *req = new request_t;
     req->action = 0;
     list <request_t>::iterator i = queue->begin();
@@ -154,7 +150,7 @@ request_t *Relation::remove_req_by_key(int key,
     pthread_mutex_lock(lock);
 
     while (i != queue->end()) {
-        if (i->key == key && i->client == client) {
+        if (i->id == id) {
             req->key = i->key;
             req->data = i->data;
             req->action = i->action;
@@ -212,7 +208,7 @@ bool Relation::req_service_done(request_t req) {
 
 
 
-string Relation::wait_for_service(int key, int client) {
+string Relation::wait_for_service(int req_id) {
     
     request_t *req = NULL;
     stringstream to_send;
@@ -222,7 +218,7 @@ string Relation::wait_for_service(int key, int client) {
     while(true) {
         if (!done_queue.empty()){
             to_send.str("");
-            req = remove_req_by_key(key, client, &d_lock, &done_queue);
+            req = remove_req_by_id(req_id, &d_lock, &done_queue);
             data_len = req->data.length();
             /* Respond to user */
             switch (req->action) {
@@ -389,7 +385,7 @@ void Relation::print_queues() {
     for (iter = service_queue.begin(); iter != service_queue.end(); ++iter) {
         cout << "Key: " << (*iter).key
             << " Data: " << (*iter).data
-            << " Client: " << (*iter).client
+            << " ID: " << (*iter).id
             << " Action: " << (*iter).action << endl;
     }
     cout << "**************** DONE QUEUE ****************" << endl; 
@@ -397,7 +393,7 @@ void Relation::print_queues() {
     for (iter = done_queue.begin(); iter != done_queue.end(); ++iter) {
         cout << "Key: " << (*iter).key
             << " Data: " << (*iter).data
-            << " Client: " << (*iter).client
+            << " ID: " << (*iter).id
             << " Action: " << (*iter).action << endl;
     }
     cout << "********************************************" << endl;
