@@ -196,7 +196,7 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 index = atoi(str.c_str());
-                if (index <= 0) {
+                if (index < 0) {
                     cout << "Please enter positive integers or those no greater than " << MAX_KEY << " only!" << endl;
                     continue;
                 }
@@ -275,7 +275,7 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 index = atoi(str.c_str());
-                if (index <= 0) {
+                if (index < 0) {
                     cout << "Please enter positive integers or those no greater than " << MAX_KEY << " only!" << endl;
                     continue;
                 }
@@ -314,7 +314,7 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 index = atoi(str.c_str());
-                if (index <= 0) {
+                if (index < 0) {
                     cout << "Please enter positive integers or those no greater than " << MAX_KEY << " only!" << endl;
                     continue;
                 }
