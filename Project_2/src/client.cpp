@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
             
             //Shall we get some data?
             len = read(sock, buffer, BUFFER_LEN);
-        
+
             //Some sort of error
             if (len < 0)
                 error("Unable to read from socket.");
@@ -107,8 +107,6 @@ int main(int argc, char *argv[]) {
                 stringstream strstr(buffer);
                 //Get control data from buffer
                 if (!(strstr >> cmd))
-                    continue;
-                if (!(strstr >> key))
                     continue;
                 if (!(strstr >> data_len))
                     continue;
@@ -126,8 +124,7 @@ int main(int argc, char *argv[]) {
 
         // Response
         stringstream response;
-        cout << endl;
-        response << cmd << " " << key << " with response..." << data << endl;
+        response << cmd << " with response..." << endl;
 
         //if (print_to_file){
         //    outfile.open(output_file.c_str());
@@ -135,7 +132,7 @@ int main(int argc, char *argv[]) {
         //    outfile.close();
         //}
         //else {
-        cout << response.str() << endl;
+        cout << response.str() << data << endl;
         //}
         cout << "Done." << endl;
     }
@@ -359,6 +356,8 @@ string handle_user_interaction(int sock) {
         }
 
     }
-    cout << "Command sent to server: " << to_send << endl;
+    cout << endl;
+    cout << "Sending query: " << to_send << endl;
+    cout << endl;
     return to_send;
 }

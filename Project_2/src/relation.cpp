@@ -223,24 +223,20 @@ string Relation::wait_for_service(int req_id) {
             /* Respond to user */
             switch (req->action) {
                 case(PUT):
-                    to_send << "Put: " << req->key << 
-                                " " << data_len <<
+                    to_send << "Put: " << data_len << 
                                 " " << req->data << endl;
                     break;
                 case(GET_INDEX_BY_NAME):
-                    to_send << "Got: " << req->key <<
-                                " " << data_len <<
+                    to_send << "Got: " << data_len <<
                                 " " << req->data << endl;
                     break;
 		case(GET_INDEX_BY_POPULATION):
-                    to_send << "Got: " << req->key <<
-                                " " << data_len <<
+                    to_send << "Got: " << data_len <<
                                 " " << req->data << endl;
                     break;
 
                 case(REMOVE):
-                    to_send << "Removed: " << req->key <<
-                                " " << data_len <<
+                    to_send << "Removed: " << data_len <<
                                 " " << req->data << endl;
                     break;
                 // Bogus action, do it again.
@@ -280,17 +276,17 @@ bool Relation::isolation_manager() {
                 case(PUT):
                 // Need brackets for scope
                 {
-                    char *buffer = (char *)malloc(req.data.length()+1);
-                    memset(buffer, 0, sizeof(buffer));
-                    strcpy(buffer, req.data.c_str());
+                    char *location = (char *)malloc(req.data.length()+1);
+                    memset(location, 0, sizeof(location));
+                    strcpy(location, req.data.c_str());
                     // Store data in database
-                    ret = memory_manager->put(buffer);
+                    ret = memory_manager->put(req.population, location);
                     // Response based on ret
                     (ret == -1) ?
                         req.data = "PUT FAILED: That key already exists" :
                         req.data = "SUCCESS";
                     req.action = PUT;
-                    free(buffer);
+                    free(location);
                     break;
                 }
                 case(GET_INDEX_BY_NAME):
@@ -314,19 +310,25 @@ bool Relation::isolation_manager() {
 		case(GET_INDEX_BY_POPULATION):
                 // Need brackets for scope
                 {
-                    container_t *container = (container_t *)malloc(CONTAINER_LENGTH);
-                    memset(container, 0, CONTAINER_LENGTH);
+                    stringstream ss;
+                    list<container_t> data;
+                    list<container_t>::iterator i;
+
                     // Read data from database
-                    //ret = memory_manager->read_index(buffer,
-                    //                                    req.key);
-                    
-                    // Reponse based on ret
-                    (ret == -1) ?
-                        req.data = "READ FAILED" :
-                        req.data = "TODO YOOOOOOOOOOOO";
+                    ret = memory_manager->get_by_population(req.population, data);
+
+                    // Get table entrys for sending
+                    req.data = "READ FAILED";
+                    if (!data.empty() && ret != -1){
+                        req.data.clear();
+                        for (i = data.begin(); i != data.end(); i++){
+                            ss << i->index << " " << i->population << " " << i->name << endl; 
+                        }
+                        req.data = ss.str();
+                        cout << ss.str() << endl;
+                    }
                     
                     req.action = GET_INDEX_BY_POPULATION;
-                    free(container);
                     break;
                 }
 

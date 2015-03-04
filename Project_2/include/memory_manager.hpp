@@ -41,7 +41,7 @@ using namespace std;
 struct container {
     int index;
     int population;
-    char name[100];
+    char name[101];
 } __attribute__((__packed__));
 
 typedef struct container container_t;
@@ -62,7 +62,7 @@ public:
     void write_to_table(int index);
     int get_by_population(int pop, list<container_t>& container_list);
     int read_index(void *buffer, int index, int length);
-    int put(const char *buffer);
+    int put(int pop, const char *location);
     int write_index(container_t *container);
     int remove_index(int index);
     void rebuild_bptrees();

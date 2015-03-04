@@ -234,25 +234,14 @@ int Memory_manager::read_index(void *buffer, int index, int length) {
     return -1;
 }
 
-/* expects "POPULATION PLACE" */ 
-int Memory_manager::put(const char *buffer) {
-    string population, place, temp;
-    place.clear();
 
-    stringstream ss(buffer);
-    ss >> population;
-    while (ss >> temp){
-        if (place.empty())
-            place = temp;
-        else
-            place = place + " " + temp;
-    }
-    
+int Memory_manager::put(int pop, const char *location) {
+
     /* Malloc and fill packed container for storage */
     container_t *item = (container_t *)malloc(CONTAINER_LENGTH);
-    item->population = atoi(population.c_str());
+    item->population = pop;
     // We protect for null at client entry
-    strcpy(item->name, place.c_str());
+    strcpy(item->name, location);
 
     write_index(item);
 }
