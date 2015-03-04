@@ -60,7 +60,7 @@ public:
     int get_free_memory_block(int *location);
     bool index_exist(int index);
     void write_to_table(int index);
-    int get_by_population(int pop, container_t *container);
+    int get_by_population(int pop, list<container_t>& container_list);
     int read_index(void *buffer, int index, int length);
     int put(const char *buffer);
     int write_index(container_t *container);

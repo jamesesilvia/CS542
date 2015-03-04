@@ -193,15 +193,22 @@ void Memory_manager::write_to_table(int index) {
 }
 
 
-int Memory_manager::get_by_population(int pop, container_t *container) {
+int Memory_manager::get_by_population(int pop, list<container_t>& container_list) {
 
     /* Get index from b+ tree */
     record *data = population.find(pop);
+    container_t container;
 
-    /* This Fails if the index is removed, do stuff in relation */
-    if (read_index((void *)container, data->value, CONTAINER_LENGTH) == -1){
-        cout << __func__ << "(): get failed" << endl;
-        return -1;
+    while (data) {
+
+        /* This Fails if the index is removed, do stuff in relation */
+        if (read_index((void *)&container, data->value, CONTAINER_LENGTH) == -1){
+            cout << __func__ << "(): get failed" << endl;
+            return -1;
+        }
+        container_list.push_back(container); 
+
+        data = data->next;
     }
 
     return 0;

@@ -38,6 +38,7 @@
  */
 typedef struct record {
 	int value;
+	record *next;
 } record;
 
 /* Type representing a node in the B+ tree.
@@ -106,6 +107,7 @@ public:
     node * make_leaf( void );
     int get_left_index(node * parent, node * left);
     node * insert_into_leaf( node * leaf, int key, record * pointer );
+    node * try_insert_into_full_leaf( node * leaf, int key, record * pointer );
     node * insert_into_leaf_after_splitting( node * leaf, int key, record * pointer );
     node * insert_into_node(node * n, 
             int left_index, int key, node * right);

@@ -8,6 +8,26 @@
  *
  **********************************************************************/
 
+#include <iostream>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <string.h>
+#include <string>
+#include <list>
+#include <sstream>
+#include <fstream>
+#include <iomanip>
+#include <cmath>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <stdarg.h>
+
+using namespace std;
+
 #include "bpt.hpp"
 
 /* constructor */
@@ -303,6 +323,7 @@ record * Bpt::make_record(int value) {
 	}
 	else {
 		new_record->value = value;
+		new_record->next = NULL;
 	}
 	return new_record;
 }
@@ -365,19 +386,73 @@ int Bpt::get_left_index(node * parent, node * left) {
 node * Bpt::insert_into_leaf( node * leaf, int key, record * pointer ) {
 
 	int i, insertion_point;
+    bool key_exists = false;
+    record * ptr = NULL;
 
 	insertion_point = 0;
-	while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] < key)
+	while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] <= key) {
+        if (leaf->keys[insertion_point] == key) {
+            /* our key already exists, add to the bucket */
+            key_exists = true;
+            break;
+        }
 		insertion_point++;
+    }
 
-	for (i = leaf->num_keys; i > insertion_point; i--) {
-		leaf->keys[i] = leaf->keys[i - 1];
-		leaf->pointers[i] = leaf->pointers[i - 1];
-	}
-	leaf->keys[insertion_point] = key;
-	leaf->pointers[insertion_point] = pointer;
-	leaf->num_keys++;
+    if (!key_exists) {
+        /* key does not exist, make room for new key and insert it */
+        for (i = leaf->num_keys; i > insertion_point; i--) {
+            leaf->keys[i] = leaf->keys[i - 1];
+            leaf->pointers[i] = leaf->pointers[i - 1];
+        }
+        leaf->keys[insertion_point] = key;
+        leaf->pointers[insertion_point] = pointer;
+        leaf->num_keys++;
+    } else {
+        ptr = (record *)leaf->pointers[insertion_point];
+        /* find the end of the list */
+        while (ptr->next) {
+            ptr = ptr->next;
+        }
+        /* insert at the end of the list */
+        ptr->next = pointer;
+    }
 	return leaf;
+}
+
+
+/* Inserts a new pointer to a record and its corresponding
+ * key into a leaf.
+ * Returns the altered leaf.
+ */
+node * Bpt::try_insert_into_full_leaf( node * leaf, int key, record * pointer ) {
+
+	int insertion_point;
+    bool key_exists = false;
+    record * ptr = NULL;
+
+	insertion_point = 0;
+	while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] <= key) {
+        if (leaf->keys[insertion_point] == key) {
+            /* our key already exists, add to the bucket */
+            key_exists = true;
+            break;
+        }
+		insertion_point++;
+    }
+
+    if (key_exists) {
+        ptr = (record *)leaf->pointers[insertion_point];
+        /* find the end of the list */
+        while (ptr->next) {
+            ptr = ptr->next;
+        }
+        /* insert at the end of the list */
+        ptr->next = pointer;
+        return leaf;
+    } else {
+        return NULL;
+    }
 }
 
 
@@ -642,13 +717,6 @@ node * Bpt::insert( int key, int value ) {
 	record * pointer;
 	node * leaf;
 
-	/* The current implementation ignores
-	 * duplicates.
-	 */
-
-	if (find(key) != NULL)
-		return root;
-
 	/* Create a new record for the
 	 * value.
 	 */
@@ -659,8 +727,9 @@ node * Bpt::insert( int key, int value ) {
 	 * Start a new tree.
 	 */
 
-	if (root == NULL) 
+	if (root == NULL) {
 		return start_new_tree(key, pointer);
+    }
 
 
 	/* Case: the tree already exists.
@@ -675,12 +744,16 @@ node * Bpt::insert( int key, int value ) {
 	if (leaf->num_keys < order - 1) {
 		leaf = insert_into_leaf(leaf, key, pointer);
 		return root;
-	}
-
+	} else {
+        /* Case: leaf is full, check if key already exists.
+         */
+        if (try_insert_into_full_leaf(leaf, key, pointer)) {
+            return root;
+        }
+    }
 
 	/* Case:  leaf must be split.
 	 */
-
 	return insert_into_leaf_after_splitting(leaf, key, pointer);
 }
 
