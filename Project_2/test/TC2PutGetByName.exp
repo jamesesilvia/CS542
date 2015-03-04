@@ -1,0 +1,84 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+#server and client are both on the same CCCWORK machine
+#Database.txt in build folder is deleted before running test
+
+#SUCCESS CRITERIA:
+#server shows command from client
+#client shows correct data described below
+
+#start the client
+spawn ./../build/client localhost
+
+#put new data
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "WPI\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "7000\r"}
+expect "Please enter the name of the city to store:" {send "WPI\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "50000\r"}
+expect "Please enter the name of the city to store:" {send "WPI\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "WPI\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "WPI\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Boston\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Foxboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Waltham\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "0\r"}
+expect "Please enter the name of the city to store:" {send "Midwest\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "2000000000\r"}
+expect "Please enter the name of the city to store:" {send "China\r"}
+
+#get all data when name is WPI (expect 5 entires related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "WPI\r"}
+
+#add one more entry for name WPI
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "WPI\r"}
+
+#get all data when name is WPI (expect 6 entries related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "WPI\r"}
+
+#get all data when name is Boston (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "Boston\r"}
+
+#get all data when name is Foxboro (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "Foxboro\r"}
+
+#get all data when name is Waltham (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "Waltham\r"}
+
+#get all data when name is Midwest (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "Midwest\r"}
+
+#get all data when name is China (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "China\r"}
+
+interact
+
+#verify that all added test records are there with the correct information

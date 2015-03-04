@@ -1,0 +1,3026 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+#server and client are both on the same CCCWORK machine
+#Database.txt in build folder is deleted before running test
+#Run this just after TC6PutManyRecords.exp from a different client
+
+#SUCCESS CRITERIA:
+#server shows command from client
+#client shows 2000 entries of Attleboro with population of 5000, assuming the other client is finished by then
+
+#start the client
+spawn ./../build/client localhost
+
+#put new data
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+
+#get all data when population is 5000 (expect 1000 entires related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "5000\r"}
+
+interact
+
+#verify that all 2000 added test records are there with the correct information assuming that this script finishes after the other

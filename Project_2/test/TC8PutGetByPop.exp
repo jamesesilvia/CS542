@@ -1,0 +1,86 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+#server and client are both on the same CCCWORK machine
+#Database.txt in build folder is ***NOT*** deleted before running this particular script
+#TC1 was run, then both the client and server are killed and restarted, and then this script is run
+
+#SUCCESS CRITERIA:
+#server shows command from client
+#client shows correct data described below
+
+#start the client
+spawn ./../build/client localhost
+
+#put new data
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "5000\r"}
+expect "Please enter the name of the city to store:" {send "Attleboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "7000\r"}
+expect "Please enter the name of the city to store:" {send "Holden\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "50000\r"}
+expect "Please enter the name of the city to store:" {send "NYC\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Worcester\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Springfield\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Boston\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Foxboro\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Waltham\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "0\r"}
+expect "Please enter the name of the city to store:" {send "Midwest\r"}
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "2000000000\r"}
+expect "Please enter the name of the city to store:" {send "China\r"}
+
+#get all data when population is 1000 (expect 5 entires related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "1000\r"}
+
+#add one more entry at population 1000
+expect ">" {send "put\r"}
+expect "Please enter population of city to store:" {send "1000\r"}
+expect "Please enter the name of the city to store:" {send "Auburn\r"}
+
+#get all data when population is 1000 (expect 6 entries related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "1000\r"}
+
+#get all data when population is 0 (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "0\r"}
+
+#get all data when population is 5000 (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "5000\r"}
+
+#get all data when population is 7000 (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "7000\r"}
+
+#get all data when population is 50000 (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "50000\r"}
+
+#get all data when population is 2000000000 (expect 1 entry related to this test data)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "2000000000\r"}
+
+interact
+
+#verify that all added test records are there from both this and TC1 with the correct information
+#essentially the data from TC1 should be doubled

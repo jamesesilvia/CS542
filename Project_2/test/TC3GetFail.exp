@@ -1,0 +1,27 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+#server and client are both on the same CCCWORK machine
+#Database.txt in build folder is deleted before running test
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#client shows two get commands and their responses with only errors
+
+#start the client
+spawn ./../build/client localhost
+
+#get all data when population is 9999 (expect 0 entires related to this test)
+expect ">" {send "get_index_by_population\r"}
+expect "Please enter city population to retrieve data with:" {send "9999\r"}
+
+#get all data when city name is ABC (expect 0 entires related to this test)
+expect ">" {send "get_index_by_name\r"}
+expect "Please enter city name to retrieve data with:" {send "ABC\r"}
+
+interact
+
+#verify that each read fails as there are no records with this data in a clean database

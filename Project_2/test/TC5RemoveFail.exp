@@ -1,0 +1,23 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./server" from the build folder
+#server and client are both on the same CCCWORK machine
+#Database.txt in build folder is deleted before running test ***REQUIRED***
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#client shows one remove command and its responses, it fails
+
+#start the client
+spawn ./../build/client localhost
+
+#remove single data entry
+expect ">" {send "remove\r"}
+expect "Please enter key to remove data with:" {send "0\r"}
+
+interact
+
+#verify that remove fails as there are no records with this data in a clean database
