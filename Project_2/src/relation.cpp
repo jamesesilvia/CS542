@@ -325,7 +325,6 @@ bool Relation::isolation_manager() {
                             ss << i->index << " " << i->population << " " << i->name << endl; 
                         }
                         req.data = ss.str();
-                        cout << ss.str() << endl;
                     }
                     
                     req.action = GET_INDEX_BY_POPULATION;
