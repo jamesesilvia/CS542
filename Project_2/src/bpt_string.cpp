@@ -11,7 +11,7 @@
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- * bpt.cpp
+ * bpt_string.cpp
  *
  **********************************************************************/
 
@@ -35,10 +35,10 @@
 
 using namespace std;
 
-#include "bpt.hpp"
+#include "bpt_string.hpp"
 
 /* constructor */
-Bpt::Bpt() {
+Bpt_string::Bpt_string() {
     root = NULL;
     verbose_output = false;
     queue = NULL;
@@ -48,8 +48,8 @@ Bpt::Bpt() {
 /* Helper function for printing the
  * tree out.  See print_tree.
  */
-void Bpt::enqueue( node * new_node ) {
-	node * c;
+void Bpt_string::enqueue( string_node * new_node ) {
+	string_node * c;
 	if (queue == NULL) {
 		queue = new_node;
 		queue->next = NULL;
@@ -68,8 +68,8 @@ void Bpt::enqueue( node * new_node ) {
 /* Helper function for printing the
  * tree out.  See print_tree.
  */
-node * Bpt::dequeue( void ) {
-	node * n = queue;
+string_node * Bpt_string::dequeue( void ) {
+	string_node * n = queue;
 	queue = queue->next;
 	n->next = NULL;
 	return n;
@@ -80,26 +80,26 @@ node * Bpt::dequeue( void ) {
  * of the tree (with their respective
  * pointers, if the verbose_output flag is set.
  */
-void Bpt::print_leaves( void ) {
+void Bpt_string::print_leaves( void ) {
 	int i;
-	node * c = root;
+	string_node * c = root;
 	if (root == NULL) {
 		printf("Empty tree.\n");
 		return;
 	}
 	while (!c->is_leaf)
-		c = (node *)c->pointers[0];
+		c = (string_node *)c->pointers[0];
 	while (true) {
-		for (i = 0; i < c->num_keys; i++) {
+        for (iter = c->keys.begin(); iter != c->keys.end(); ++iter) {
 			if (verbose_output)
 				printf("%lx ", (unsigned long)c->pointers[i]);
-			printf("%d ", c->keys[i]);
+			printf("%s ", (*iter).c_str());
 		}
 		if (verbose_output)
 			printf("%lx ", (unsigned long)c->pointers[order - 1]);
 		if (c->pointers[order - 1] != NULL) {
 			printf(" | ");
-			c = (node *)c->pointers[order - 1];
+			c = (string_node *)c->pointers[order - 1];
 		}
 		else
 			break;
@@ -112,11 +112,11 @@ void Bpt::print_leaves( void ) {
  * of the tree, which length in number of edges
  * of the path from the root to any leaf.
  */
-int Bpt::height( void ) {
+int Bpt_string::height( void ) {
 	int h = 0;
-	node * c = root;
+	string_node * c = root;
 	while (!c->is_leaf) {
-		c = (node *)c->pointers[0];
+		c = (string_node *)c->pointers[0];
 		h++;
 	}
 	return h;
@@ -126,9 +126,9 @@ int Bpt::height( void ) {
 /* Utility function to give the length in edges
  * of the path from any node to the root.
  */
-int Bpt::path_to_root( node * child ) {
+int Bpt_string::path_to_root( string_node * child ) {
 	int length = 0;
-	node * c = child;
+	string_node * c = child;
 	while (c != root) {
 		c = c->parent;
 		length++;
@@ -146,9 +146,9 @@ int Bpt::path_to_root( node * child ) {
  * to the keys also appear next to their respective
  * keys, in hexadecimal notation.
  */
-void Bpt::print_tree( void ) {
+void Bpt_string::print_tree( void ) {
 
-	node * n = NULL;
+	string_node * n = NULL;
 	int i = 0;
 	int rank = 0;
 	int new_rank = 0;
@@ -170,14 +170,14 @@ void Bpt::print_tree( void ) {
 		}
 		if (verbose_output) 
 			printf("(%lx)", (unsigned long)n);
-		for (i = 0; i < n->num_keys; i++) {
+        for (iter = n->keys.begin(); iter != n->keys.end(); ++iter) {
 			if (verbose_output)
 				printf("%lx ", (unsigned long)n->pointers[i]);
-			printf("%d ", n->keys[i]);
+			printf("%s ", (*iter).c_str());
 		}
 		if (!n->is_leaf)
-			for (i = 0; i <= n->num_keys; i++)
-				enqueue((node *)n->pointers[i]);
+            for (iter = n->keys.begin(); iter != n->keys.end(); ++iter)
+				enqueue((string_node *)n->pointers[i]);
 		if (verbose_output) {
 			if (n->is_leaf) 
 				printf("%lx ", (unsigned long)n->pointers[order - 1]);
@@ -193,12 +193,14 @@ void Bpt::print_tree( void ) {
 /* Finds and returns the record to which
  * a key refers.
  */
-record * Bpt::find( int key ) {
+record * Bpt_string::find( string key ) {
 	int i = 0;
-	node * c = find_leaf( key );
+	string_node * c = find_leaf( key );
 	if (c == NULL) return NULL;
-	for (i = 0; i < c->num_keys; i++)
-		if (c->keys[i] == key) break;
+    for (iter = c->keys.begin(); iter != c->keys.end(); ++iter) {
+		if (*iter == key) break;
+        i++;
+    }
 	if (i == c->num_keys) 
 		return NULL;
 	else
@@ -209,32 +211,37 @@ record * Bpt::find( int key ) {
 /* Finds the record under a given key and prints an
  * appropriate message to stdout.
  */
-void Bpt::find_and_print( int key ) {
+void Bpt_string::find_and_print( string key ) {
 	record * r = find(key);
 	if (r == NULL)
-		printf("Record not found under key %d.\n", key);
+		printf("Record not found under key %s.\n", key.c_str());
 	else 
-		printf("Record at %lx -- key %d, value %d.\n",
-				(unsigned long)r, key, r->value);
+		printf("Record at %lx -- key %s, value %d.\n",
+				(unsigned long)r, key.c_str(), r->value);
 }
 
 
 /* Finds and prints the keys, pointers, and values within a range
  * of keys between key_start and key_end, including both bounds.
  */
-void Bpt::find_and_print_range( int key_start, int key_end ) {
-	int i;
-	int array_size = key_end - key_start + 1;
-	int returned_keys[array_size];
+void Bpt_string::find_and_print_range( string key_start, string key_end ) {
+	
+    //we dont even use this function yet, ill return to it next project
+    return;
+
+    int i = 0;
+	//int array_size = key_end - key_start + 1;
+    int array_size = 1;
+    list<string> returned_keys;
 	void * returned_pointers[array_size];
 	int num_found = find_range( key_start, key_end,
 			returned_keys, returned_pointers );
 	if (!num_found)
 		printf("None found.\n");
 	else {
-		for (i = 0; i < num_found; i++)
-			printf("Key: %d   Location: %lx  Value: %d\n",
-					returned_keys[i],
+        for (iter = returned_keys.begin(); iter != returned_keys.end(); ++iter)
+			printf("Key: %s   Location: %lx  Value: %d\n",
+					(*iter).c_str(),
 					(unsigned long)returned_pointers[i],
 					((record *)
 					 returned_pointers[i])->value);
@@ -247,21 +254,32 @@ void Bpt::find_and_print_range( int key_start, int key_end ) {
  * returned_keys and returned_pointers, and returns the number of
  * entries found.
  */
-int Bpt::find_range( int key_start, int key_end,
-		int returned_keys[], void * returned_pointers[] ) {
-	int i, num_found;
+int Bpt_string::find_range( string key_start, string key_end,
+		list<string>& returned_keys, void * returned_pointers[] ) {
+	int i = 0, num_found;
 	num_found = 0;
-	node * n = find_leaf( key_start );
+	string_node * n = find_leaf( key_start );
 	if (n == NULL) return 0;
-	for (i = 0; i < n->num_keys && n->keys[i] < key_start; i++) ;
+	//for (i = 0; i < n->num_keys && n->keys[i] < key_start; i++) ;
+    for (iter = n->keys.begin(); iter != n->keys.end(); ++iter) {
+        if ((*iter).compare(key_start) >= 0) {
+            break;
+        }
+        i++;
+    }
 	if (i == n->num_keys) return 0;
 	while (n != NULL) {
-		for ( ; i < n->num_keys && n->keys[i] <= key_end; i++) {
-			returned_keys[num_found] = n->keys[i];
+		//for ( ; i < n->num_keys && n->keys[i] <= key_end; i++) {
+        for ( ; iter != n->keys.end(); ++iter) {
+            if ((*iter).compare(key_end) < 0) {
+                break;
+            }
+			//returned_keys[num_found] = n->keys[i];
+            returned_keys.push_back(*iter);
 			returned_pointers[num_found] = n->pointers[i];
 			num_found++;
 		}
-		n = (node *)n->pointers[order - 1];
+		n = (string_node *)n->pointers[order - 1];
 		i = 0;
 	}
 	return num_found;
@@ -273,9 +291,9 @@ int Bpt::find_range( int key_start, int key_end,
  * if the verbose flag is set.
  * Returns the leaf containing the given key.
  */
-node * Bpt::find_leaf( int key ) {
+string_node * Bpt_string::find_leaf( string key ) {
 	int i = 0;
-	node * c = root;
+	string_node * c = root;
 	if (c == NULL) {
 		if (verbose_output) 
 			printf("Empty tree.\n");
@@ -285,23 +303,35 @@ node * Bpt::find_leaf( int key ) {
 		if (verbose_output) {
 			printf("[");
 			for (i = 0; i < c->num_keys - 1; i++)
-				printf("%d ", c->keys[i]);
-			printf("%d] ", c->keys[i]);
+                printf("%s ", (*iter).c_str());
+            printf("%s] ->\n", (*iter).c_str());
 		}
 		i = 0;
-		while (i < c->num_keys) {
+		/*while (i < c->num_keys) {
 			if (key >= c->keys[i]) i++;
 			else break;
-		}
+		}*/
+        iter = c->keys.begin();
+        while (iter != c->keys.end()) {
+            if (key.compare(*iter) >= 0) {
+                ++iter;
+                i++;
+            } else {
+                break;
+            }
+        }
 		if (verbose_output)
 			printf("%d ->\n", i);
-		c = (node *)c->pointers[i];
+		c = (string_node *)c->pointers[i];
 	}
 	if (verbose_output) {
 		printf("Leaf [");
-		for (i = 0; i < c->num_keys - 1; i++)
-			printf("%d ", c->keys[i]);
-		printf("%d] ->\n", c->keys[i]);
+		//for (i = 0; i < c->num_keys - 1; i++)
+        list<string>::iterator end_iter = c->keys.end();
+        --end_iter;
+        for (iter = c->keys.begin(); iter != end_iter; ++iter)
+            printf("%s ", (*iter).c_str());
+        printf("%s] ->\n", (*iter).c_str());
 	}
 	return c;
 }
@@ -309,7 +339,7 @@ node * Bpt::find_leaf( int key ) {
 /* Finds the appropriate place to
  * split a node that is too big into two.
  */
-int Bpt::cut( int length ) {
+int Bpt_string::cut( int length ) {
 	if (length % 2 == 0)
 		return length/2;
 	else
@@ -322,7 +352,7 @@ int Bpt::cut( int length ) {
 /* Creates a new record to hold the value
  * to which a key refers.
  */
-record * Bpt::make_record(int value) {
+record * Bpt_string::make_record(int value) {
 	record * new_record = (record *)malloc(sizeof(record));
 	if (new_record == NULL) {
 		perror("Record creation.");
@@ -339,18 +369,21 @@ record * Bpt::make_record(int value) {
 /* Creates a new general node, which can be adapted
  * to serve as either a leaf or an internal node.
  */
-node * Bpt::make_node( void ) {
-	node * new_node;
-	new_node = (node *)malloc(sizeof(node));
+string_node * Bpt_string::make_node( void ) {
+	string_node * new_node;
+	/*new_node = (string_node *)malloc(sizeof(string_node));
 	if (new_node == NULL) {
 		perror("Node creation.");
 		exit(EXIT_FAILURE);
-	}
-	new_node->keys = (int *)malloc( (order - 1) * sizeof(int) );
+	}*/
+    new_node = new string_node;
+	/*new_node->keys = (int *)malloc( (order - 1) * sizeof(int) );
 	if (new_node->keys == NULL) {
 		perror("New node keys array.");
 		exit(EXIT_FAILURE);
-	}
+	}*/
+    //new_node->keys = list<string>();
+
 	new_node->pointers =(void **) malloc( order * sizeof(void *) );
 	if (new_node->pointers == NULL) {
 		perror("New node pointers array.");
@@ -366,8 +399,8 @@ node * Bpt::make_node( void ) {
 /* Creates a new leaf by creating a node
  * and then adapting it appropriately.
  */
-node * Bpt::make_leaf( void ) {
-	node * leaf = make_node();
+string_node * Bpt_string::make_leaf( void ) {
+	string_node * leaf = make_node();
 	leaf->is_leaf = true;
 	return leaf;
 }
@@ -377,7 +410,7 @@ node * Bpt::make_leaf( void ) {
  * to find the index of the parent's pointer to 
  * the node to the left of the key to be inserted.
  */
-int Bpt::get_left_index(node * parent, node * left) {
+int Bpt_string::get_left_index(string_node * parent, string_node * left) {
 
 	int left_index = 0;
 	while (left_index <= parent->num_keys && 
@@ -390,29 +423,41 @@ int Bpt::get_left_index(node * parent, node * left) {
  * key into a leaf.
  * Returns the altered leaf.
  */
-node * Bpt::insert_into_leaf( node * leaf, int key, record * pointer ) {
+string_node * Bpt_string::insert_into_leaf( string_node * leaf, string key, record * pointer ) {
 
 	int i, insertion_point;
     bool key_exists = false;
     record * ptr = NULL;
 
 	insertion_point = 0;
-	while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] <= key) {
+	/*while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] <= key) {
         if (leaf->keys[insertion_point] == key) {
+            // our key already exists, add to the bucket
+            key_exists = true;
+            break;
+        }
+		insertion_point++;
+    }*/
+
+    iter = leaf->keys.begin();
+    while (iter != leaf->keys.end() && (*iter).compare(key) <= 0) {
+        if ((*iter).compare(key) == 0) {
             /* our key already exists, add to the bucket */
             key_exists = true;
             break;
         }
 		insertion_point++;
+        ++iter;
     }
 
     if (!key_exists) {
         /* key does not exist, make room for new key and insert it */
         for (i = leaf->num_keys; i > insertion_point; i--) {
-            leaf->keys[i] = leaf->keys[i - 1];
+            //leaf->keys[i] = leaf->keys[i - 1];
             leaf->pointers[i] = leaf->pointers[i - 1];
         }
-        leaf->keys[insertion_point] = key;
+        //leaf->keys[insertion_point] = key;
+        leaf->keys.insert(iter, key);
         leaf->pointers[insertion_point] = pointer;
         leaf->num_keys++;
     } else {
@@ -432,21 +477,33 @@ node * Bpt::insert_into_leaf( node * leaf, int key, record * pointer ) {
  * key into a leaf.
  * Returns the altered leaf.
  */
-node * Bpt::try_insert_into_full_leaf( node * leaf, int key, record * pointer ) {
+string_node * Bpt_string::try_insert_into_full_leaf( string_node * leaf, string key, record * pointer ) {
 
 	int insertion_point;
     bool key_exists = false;
     record * ptr = NULL;
 
 	insertion_point = 0;
-	while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] <= key) {
+	/*while (insertion_point < leaf->num_keys && leaf->keys[insertion_point] <= key) {
         if (leaf->keys[insertion_point] == key) {
+            // our key already exists, add to the bucket
+            key_exists = true;
+            break;
+        }
+		insertion_point++;
+    }*/
+
+    iter = leaf->keys.begin();
+    while (iter != leaf->keys.end() && (*iter).compare(key) <= 0) {
+        if ((*iter).compare(key) == 0) {
             /* our key already exists, add to the bucket */
             key_exists = true;
             break;
         }
 		insertion_point++;
+        ++iter;
     }
+
 
     if (key_exists) {
         ptr = (record *)leaf->pointers[insertion_point];
@@ -468,20 +525,23 @@ node * Bpt::try_insert_into_full_leaf( node * leaf, int key, record * pointer ) 
  * the tree's order, causing the leaf to be split
  * in half.
  */
-node * Bpt::insert_into_leaf_after_splitting( node * leaf, int key, record * pointer ) {
+string_node * Bpt_string::insert_into_leaf_after_splitting( string_node * leaf, string key, record * pointer ) {
 
-	node * new_leaf;
-	int * temp_keys;
+	string_node * new_leaf;
+	//int * tiemp_keys;
+    list<string> temp_keys;
 	void ** temp_pointers;
-	int insertion_index, split, new_key, i, j;
+	//int insertion_index, split, new_key, i, j;
+	int insertion_index, split, i, j;
+    string new_key, temp;
 
 	new_leaf = make_leaf();
 
-	temp_keys = (int *)malloc( order * sizeof(int) );
+	/*temp_keys = (int *)malloc( order * sizeof(int) );
 	if (temp_keys == NULL) {
 		perror("Temporary keys array.");
 		exit(EXIT_FAILURE);
-	}
+	}*/
 
 	temp_pointers = (void **)malloc( order * sizeof(void *) );
 	if (temp_pointers == NULL) {
@@ -490,36 +550,61 @@ node * Bpt::insert_into_leaf_after_splitting( node * leaf, int key, record * poi
 	}
 
 	insertion_index = 0;
-	while (insertion_index < order - 1 && leaf->keys[insertion_index] < key)
+	/*while (insertion_index < order - 1 && leaf->keys[insertion_index] < key)
+		insertion_index++;*/
+
+    temp_keys = leaf->keys;
+
+    iter = temp_keys.begin();
+    while (insertion_index < order - 1 && (*iter).compare(key) < 0) {
 		insertion_index++;
+        ++iter;
+    }
+    
+    temp_keys.insert(iter, key);
+   
+    cout << "temp keys: ";
+    for (iter = temp_keys.begin(); iter != temp_keys.end(); ++iter) {
+        cout << *iter << " ";
+    }
+    cout << endl;
 
 	for (i = 0, j = 0; i < leaf->num_keys; i++, j++) {
 		if (j == insertion_index) j++;
-		temp_keys[j] = leaf->keys[i];
+		//temp_keys[j] = leaf->keys[i];
 		temp_pointers[j] = leaf->pointers[i];
 	}
 
-	temp_keys[insertion_index] = key;
+	//temp_keys[insertion_index] = key;
 	temp_pointers[insertion_index] = pointer;
 
 	leaf->num_keys = 0;
+    leaf->keys.erase(leaf->keys.begin(), leaf->keys.end());
 
 	split = cut(order - 1);
 
 	for (i = 0; i < split; i++) {
 		leaf->pointers[i] = temp_pointers[i];
-		leaf->keys[i] = temp_keys[i];
+		//leaf->keys[i] = temp_keys[i];
+        //leaf->keys.push_back(temp_keys.pop_front());
+        temp = temp_keys.front();
+        leaf->keys.push_back(temp);
+        temp_keys.pop_front();
 		leaf->num_keys++;
 	}
 
 	for (i = split, j = 0; i < order; i++, j++) {
 		new_leaf->pointers[j] = temp_pointers[i];
-		new_leaf->keys[j] = temp_keys[i];
+		//new_leaf->keys[j] = temp_keys[i];
+        //new_leaf->keys.push_back(temp_keys.pop_front());
+        temp = temp_keys.front();
+        new_leaf->keys.push_back(temp);
+        temp_keys.pop_front();
 		new_leaf->num_keys++;
 	}
 
 	free(temp_pointers);
-	free(temp_keys);
+	//free(temp_keys);
 
 	new_leaf->pointers[order - 1] = leaf->pointers[order - 1];
 	leaf->pointers[order - 1] = new_leaf;
@@ -530,7 +615,8 @@ node * Bpt::insert_into_leaf_after_splitting( node * leaf, int key, record * poi
 		new_leaf->pointers[i] = NULL;
 
 	new_leaf->parent = leaf->parent;
-	new_key = new_leaf->keys[0];
+	//new_key = new_leaf->keys[0];
+	new_key = new_leaf->keys.front();
 
 	return insert_into_parent(leaf, new_key, new_leaf);
 }
@@ -540,16 +626,20 @@ node * Bpt::insert_into_leaf_after_splitting( node * leaf, int key, record * poi
  * into a node into which these can fit
  * without violating the B+ tree properties.
  */
-node * Bpt::insert_into_node( node * n, 
-		int left_index, int key, node * right ) {
+string_node * Bpt_string::insert_into_node( string_node * n, 
+		int left_index, string key, string_node * right ) {
 	int i;
 
-	for (i = n->num_keys; i > left_index; i--) {
+    iter = n->keys.end();
+	for (i = n->num_keys; i > left_index; i--, --iter) {
 		n->pointers[i + 1] = n->pointers[i];
-		n->keys[i] = n->keys[i - 1];
+		//n->keys[i] = n->keys[i - 1];
+        //iter might need to go here
+        //--iter;
 	}
 	n->pointers[left_index + 1] = right;
-	n->keys[left_index] = key;
+	//n->keys[left_index] = key;
+    n->keys.insert(iter, key);
 	n->num_keys++;
 	return root;
 }
@@ -559,13 +649,16 @@ node * Bpt::insert_into_node( node * n,
  * into a node, causing the node's size to exceed
  * the order, and causing the node to split into two.
  */
-node * Bpt::insert_into_node_after_splitting(node * old_node, int left_index, 
-		int key, node * right) {
+string_node * Bpt_string::insert_into_node_after_splitting(string_node * old_node, int left_index, 
+		string key, string_node * right) {
 
-	int i, j, split, k_prime;
-	node * new_node, * child;
-	int * temp_keys;
-	node ** temp_pointers;
+    //int i, j, split, k_prime;
+	int i, j, split;
+    string k_prime, temp;
+	string_node * new_node, * child;
+	//int * temp_keys;
+    list<string> temp_keys;
+	string_node ** temp_pointers;
 
 	/* First create a temporary set of keys and pointers
 	 * to hold everything in order, including
@@ -576,29 +669,35 @@ node * Bpt::insert_into_node_after_splitting(node * old_node, int left_index,
 	 * the other half to the new.
 	 */
 
-	temp_pointers = (node **)malloc( (order + 1) * sizeof(node *) );
+	temp_pointers = (string_node **)malloc( (order + 1) * sizeof(string_node *) );
 	if (temp_pointers == NULL) {
 		perror("Temporary pointers array for splitting nodes.");
 		exit(EXIT_FAILURE);
 	}
-	temp_keys = (int *)malloc( order * sizeof(int) );
+	/*temp_keys = (int *)malloc( order * sizeof(int) );
 	if (temp_keys == NULL) {
 		perror("Temporary keys array for splitting nodes.");
 		exit(EXIT_FAILURE);
-	}
+	}*/
 
 	for (i = 0, j = 0; i < old_node->num_keys + 1; i++, j++) {
 		if (j == left_index + 1) j++;
-		temp_pointers[j] = (node *)old_node->pointers[i];
+		temp_pointers[j] = (string_node *)old_node->pointers[i];
 	}
 
-	for (i = 0, j = 0; i < old_node->num_keys; i++, j++) {
-		if (j == left_index) j++;
-		temp_keys[j] = old_node->keys[i];
+    temp_keys = old_node->keys;
+    iter = temp_keys.begin(); 
+	for (i = 0, j = 0; i < old_node->num_keys; i++, j++, ++iter) {
+		//if (j == left_index) j++;
+		if (j == left_index) {
+            temp_keys.insert(iter, key);
+            break;
+        }
+		//temp_keys[j] = old_node->keys[i];
 	}
 
 	temp_pointers[left_index + 1] = right;
-	temp_keys[left_index] = key;
+	//temp_keys[left_index] = key;
 
 	/* Create the new node and copy
 	 * half the keys and pointers to the
@@ -607,24 +706,33 @@ node * Bpt::insert_into_node_after_splitting(node * old_node, int left_index,
 	split = cut(order);
 	new_node = make_node();
 	old_node->num_keys = 0;
+    old_node->keys.erase(old_node->keys.begin(), old_node->keys.end());
 	for (i = 0; i < split - 1; i++) {
 		old_node->pointers[i] = temp_pointers[i];
-		old_node->keys[i] = temp_keys[i];
+		//old_node->keys[i] = temp_keys[i];
+        //old_node->keys.push_back(temp_keys.pop_front());
+        old_node->keys.push_back(*(temp_keys.begin()));
+        temp_keys.pop_front();
 		old_node->num_keys++;
 	}
 	old_node->pointers[i] = temp_pointers[i];
-	k_prime = temp_keys[split - 1];
+	//k_prime = temp_keys[split - 1];
+    k_prime = *(temp_keys.begin());
 	for (++i, j = 0; i < order; i++, j++) {
 		new_node->pointers[j] = temp_pointers[i];
-		new_node->keys[j] = temp_keys[i];
+		//new_node->keys[j] = temp_keys[i];
+        //new_node->keys.push_back(temp_keys.pop_front());
+        temp = temp_keys.front();
+        new_node->keys.push_back(temp);
+        temp_keys.pop_front();
 		new_node->num_keys++;
 	}
 	new_node->pointers[j] = temp_pointers[i];
 	free(temp_pointers);
-	free(temp_keys);
+	//free(temp_keys);
 	new_node->parent = old_node->parent;
 	for (i = 0; i <= new_node->num_keys; i++) {
-		child = (node *)new_node->pointers[i];
+		child = (string_node *)new_node->pointers[i];
 		child->parent = new_node;
 	}
 
@@ -641,10 +749,10 @@ node * Bpt::insert_into_node_after_splitting(node * old_node, int left_index,
 /* Inserts a new node (leaf or internal node) into the B+ tree.
  * Returns the root of the tree after insertion.
  */
-node * Bpt::insert_into_parent(node * left, int key, node * right) {
+string_node * Bpt_string::insert_into_parent(string_node * left, string key, string_node * right) {
 
 	int left_index;
-	node * parent;
+	string_node * parent;
 
 	parent = left->parent;
 
@@ -682,10 +790,11 @@ node * Bpt::insert_into_parent(node * left, int key, node * right) {
  * and inserts the appropriate key into
  * the new root.
  */
-node * Bpt::insert_into_new_root(node * left, int key, node * right) {
+string_node * Bpt_string::insert_into_new_root(string_node * left, string key, string_node * right) {
 
 	root = make_node();
-	root->keys[0] = key;
+	//root->keys[0] = key;
+    root->keys.push_back(key);
 	root->pointers[0] = left;
 	root->pointers[1] = right;
 	root->num_keys++;
@@ -700,10 +809,11 @@ node * Bpt::insert_into_new_root(node * left, int key, node * right) {
 /* First insertion:
  * start a new tree.
  */
-node * Bpt::start_new_tree(int key, record * pointer) {
+string_node * Bpt_string::start_new_tree(string key, record * pointer) {
 
 	root = make_leaf();
-	root->keys[0] = key;
+	//root->keys[0] = key;
+    root->keys.push_back(key);
 	root->pointers[0] = pointer;
 	root->pointers[order - 1] = NULL;
 	root->parent = NULL;
@@ -719,10 +829,10 @@ node * Bpt::start_new_tree(int key, record * pointer) {
  * however necessary to maintain the B+ tree
  * properties.
  */
-node * Bpt::insert( int key, int value ) {
+string_node * Bpt_string::insert( string key, int value ) {
 
 	record * pointer;
-	node * leaf;
+	string_node * leaf;
 
 	/* Create a new record for the
 	 * value.
@@ -775,7 +885,7 @@ node * Bpt::insert( int key, int value ) {
  * is the leftmost child), returns -1 to signify
  * this special case.
  */
-int Bpt::get_neighbor_index( node * n ) {
+int Bpt_string::get_neighbor_index( string_node * n ) {
 
 	int i;
 
@@ -796,16 +906,18 @@ int Bpt::get_neighbor_index( node * n ) {
 }
 
 
-node * Bpt::remove_entry_from_node(node * n, int key, node * pointer) {
+string_node * Bpt_string::remove_entry_from_node(string_node * n, string key, string_node * pointer) {
 
 	int i, num_pointers;
 
 	// Remove the key and shift other keys accordingly.
-	i = 0;
+	/*i = 0;
 	while (n->keys[i] != key)
 		i++;
 	for (++i; i < n->num_keys; i++)
 		n->keys[i - 1] = n->keys[i];
+    */
+    n->keys.remove(key);
 
 	// Remove the pointer and shift other pointers accordingly.
 	// First determine number of pointers.
@@ -833,9 +945,9 @@ node * Bpt::remove_entry_from_node(node * n, int key, node * pointer) {
 }
 
 
-node * Bpt::adjust_root( void ) {
+string_node * Bpt_string::adjust_root( void ) {
 
-	node * new_root;
+	string_node * new_root;
 
 	/* Case: nonempty root.
 	 * Key and pointer have already been deleted,
@@ -853,7 +965,7 @@ node * Bpt::adjust_root( void ) {
 	// as the new root.
 
 	if (!root->is_leaf) {
-		new_root = (node *)root->pointers[0];
+		new_root = (string_node *)root->pointers[0];
 		new_root->parent = NULL;
 	}
 
@@ -863,9 +975,9 @@ node * Bpt::adjust_root( void ) {
 	else
 		new_root = NULL;
 
-	free(root->keys);
+	//free(root->keys);
 	free(root->pointers);
-	free(root);
+	delete root;
 
 	return new_root;
 }
@@ -877,10 +989,10 @@ node * Bpt::adjust_root( void ) {
  * can accept the additional entries
  * without exceeding the maximum.
  */
-node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k_prime) {
+string_node * Bpt_string::coalesce_nodes( string_node * n, string_node * neighbor, int neighbor_index, string k_prime) {
 
 	int i, j, neighbor_insertion_index, n_end;
-	node * tmp;
+	string_node * tmp;
 
 	/* Swap neighbor with node if node is on the
 	 * extreme left and neighbor is to its right.
@@ -910,14 +1022,18 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
 		/* Append k_prime.
 		 */
 
-		neighbor->keys[neighbor_insertion_index] = k_prime;
+		//neighbor->keys[neighbor_insertion_index] = k_prime;
+        neighbor->keys.push_back(k_prime);
 		neighbor->num_keys++;
 
 
 		n_end = n->num_keys;
 
 		for (i = neighbor_insertion_index + 1, j = 0; j < n_end; i++, j++) {
-			neighbor->keys[i] = n->keys[j];
+			//neighbor->keys[i] = n->keys[j];
+            //neighbor->keys.push_back(n->keys.pop_front());
+            neighbor->keys.push_back(*(n->keys.begin()));
+            n->keys.pop_front();
 			neighbor->pointers[i] = n->pointers[j];
 			neighbor->num_keys++;
 			n->num_keys--;
@@ -933,7 +1049,7 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
 		 */
 
 		for (i = 0; i < neighbor->num_keys + 1; i++) {
-			tmp = (node *)neighbor->pointers[i];
+			tmp = (string_node *)neighbor->pointers[i];
 			tmp->parent = neighbor;
 		}
 	}
@@ -946,7 +1062,10 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
 
 	else {
 		for (i = neighbor_insertion_index, j = 0; j < n->num_keys; i++, j++) {
-			neighbor->keys[i] = n->keys[j];
+			//neighbor->keys[i] = n->keys[j];
+            //neighbor->keys.push_back(n->keys.pop_front());
+            neighbor->keys.push_back(*(n->keys.begin()));
+            n->keys.pop_front();
 			neighbor->pointers[i] = n->pointers[j];
 			neighbor->num_keys++;
 		}
@@ -954,9 +1073,9 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
 	}
 
 	root = delete_entry(n->parent, k_prime, n);
-	free(n->keys);
+	//free(n->keys);
 	free(n->pointers);
-	free(n); 
+	delete n; 
 	return root;
 }
 
@@ -967,11 +1086,11 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
  * small node's entries without exceeding the
  * maximum
  */
-node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index, 
-		int k_prime_index, int k_prime ) {  
+string_node * Bpt_string::redistribute_nodes( string_node * n, string_node * neighbor, int neighbor_index, 
+		int k_prime_index, string k_prime ) {  
 
 	int i;
-	node * tmp;
+	string_node * tmp;
 
 	/* Case: n has a neighbor to the left. 
 	 * Pull the neighbor's last key-pointer pair over
@@ -982,22 +1101,42 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
 		if (!n->is_leaf)
 			n->pointers[n->num_keys + 1] = n->pointers[n->num_keys];
 		for (i = n->num_keys; i > 0; i--) {
-			n->keys[i] = n->keys[i - 1];
+			//n->keys[i] = n->keys[i - 1];
 			n->pointers[i] = n->pointers[i - 1];
 		}
 		if (!n->is_leaf) {
 			n->pointers[0] = neighbor->pointers[neighbor->num_keys];
-			tmp = (node *)n->pointers[0];
+			tmp = (string_node *)n->pointers[0];
 			tmp->parent = n;
 			neighbor->pointers[neighbor->num_keys] = NULL;
-			n->keys[0] = k_prime;
-			n->parent->keys[k_prime_index] = neighbor->keys[neighbor->num_keys - 1];
+			//n->keys[0] = k_prime;
+            n->keys.push_front(k_prime);
+			//n->parent->keys[k_prime_index] = neighbor->keys[neighbor->num_keys - 1];
+            //n->parent->keys.insert(k_prime_index, neighbor->keys.pop_back());
+            i = 0;
+            for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
+                if (i == k_prime_index) {
+                    //n->parent->keys.insert(iter, neighbor->keys.pop_back());
+                    n->parent->keys.insert(iter, *(neighbor->keys.end()));
+                    break;
+                }
+            }
 		}
 		else {
 			n->pointers[0] = neighbor->pointers[neighbor->num_keys - 1];
 			neighbor->pointers[neighbor->num_keys - 1] = NULL;
-			n->keys[0] = neighbor->keys[neighbor->num_keys - 1];
-			n->parent->keys[k_prime_index] = n->keys[0];
+			//n->keys[0] = neighbor->keys[neighbor->num_keys - 1];
+            //n->keys.push_front(neighbor->keys.pop_back());
+            n->keys.push_front(*(neighbor->keys.end()));
+			//n->parent->keys[k_prime_index] = n->keys[0];
+            //n->parent->keys.insert(k_prime_index, *(n->keys.begin()))
+            i = 0;
+            for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
+                if (i == k_prime_index) {
+                    n->parent->keys.insert(iter, *(n->keys.begin()));
+                    break;
+                }
+            }
 		}
 	}
 
@@ -1009,19 +1148,41 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
 
 	else {  
 		if (n->is_leaf) {
-			n->keys[n->num_keys] = neighbor->keys[0];
+			//n->keys[n->num_keys] = neighbor->keys[0];
+            //n->keys.push_back(neighbor->keys.pop_front());
+            n->keys.push_back(*(neighbor->keys.begin()));
+            neighbor->keys.pop_front();
 			n->pointers[n->num_keys] = neighbor->pointers[0];
-			n->parent->keys[k_prime_index] = neighbor->keys[1];
+			//n->parent->keys[k_prime_index] = neighbor->keys[1];
+            //n->parent->keys.insert(k_prime_index, *(neighbor->keys.begin()+1))
+            i = 0;
+            list<string>::iterator iter_insert = n->keys.begin();
+            ++iter_insert;
+            for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
+                if (i == k_prime_index) {
+                    n->parent->keys.insert(iter, *(iter_insert));
+                    break;
+                }
+            }
 		}
 		else {
-			n->keys[n->num_keys] = k_prime;
+			//n->keys[n->num_keys] = k_prime;
+            n->keys.push_back(k_prime);
 			n->pointers[n->num_keys + 1] = neighbor->pointers[0];
-			tmp = (node *)n->pointers[n->num_keys + 1];
+			tmp = (string_node *)n->pointers[n->num_keys + 1];
 			tmp->parent = n;
-			n->parent->keys[k_prime_index] = neighbor->keys[0];
+			//n->parent->keys[k_prime_index] = neighbor->keys[0];
+            //n->parent->keys.insert(k_prime_index, *(n->keys.begin()))
+            i = 0;
+            for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
+                if (i == k_prime_index) {
+                    n->parent->keys.insert(iter, *(n->keys.begin()));
+                    break;
+                }
+            }
 		}
 		for (i = 0; i < neighbor->num_keys - 1; i++) {
-			neighbor->keys[i] = neighbor->keys[i + 1];
+			//neighbor->keys[i] = neighbor->keys[i + 1];
 			neighbor->pointers[i] = neighbor->pointers[i + 1];
 		}
 		if (!n->is_leaf)
@@ -1044,17 +1205,19 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
  * from the leaf, and then makes all appropriate
  * changes to preserve the B+ tree properties.
  */
-node * Bpt::delete_entry( node * n, int key, void * pointer ) {
+string_node * Bpt_string::delete_entry( string_node * n, string key, void * pointer ) {
 
 	int min_keys;
-	node * neighbor;
+	string_node * neighbor;
 	int neighbor_index;
-	int k_prime_index, k_prime;
+	//int k_prime_index, k_prime;
+    int k_prime_index, i;
+    string k_prime;
 	int capacity;
 
 	// Remove key and pointer from node.
 
-	n = remove_entry_from_node(n, key, (node *)pointer);
+	n = remove_entry_from_node(n, key, (string_node *)pointer);
 
 	/* Case:  deletion from the root. 
 	 */
@@ -1094,8 +1257,14 @@ node * Bpt::delete_entry( node * n, int key, void * pointer ) {
 
 	neighbor_index = get_neighbor_index( n );
 	k_prime_index = neighbor_index == -1 ? 0 : neighbor_index;
-	k_prime = n->parent->keys[k_prime_index];
-	neighbor = (node *)(neighbor_index == -1 ? n->parent->pointers[1] : 
+	//k_prime = n->parent->keys[k_prime_index];
+    for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
+        if (i == k_prime_index) {
+            k_prime = *iter;
+            break;
+        }
+    }
+	neighbor = (string_node *)(neighbor_index == -1 ? n->parent->pointers[1] : 
 		n->parent->pointers[neighbor_index]);
 
 	capacity = n->is_leaf ? order : order - 1;
@@ -1115,9 +1284,9 @@ node * Bpt::delete_entry( node * n, int key, void * pointer ) {
 
 /* Master deletion function.
  */
-node * Bpt::delete_node( int key ) {
+string_node * Bpt_string::delete_node( string key ) {
 
-	node * key_leaf;
+	string_node * key_leaf;
 	record * key_record;
 
 	key_record = find(key);
@@ -1130,21 +1299,21 @@ node * Bpt::delete_node( int key ) {
 }
 
 
-void Bpt::destroy_tree_nodes( node * n ) {
+void Bpt_string::destroy_tree_nodes( string_node * n ) {
 	int i;
 	if (n->is_leaf)
 		for (i = 0; i < n->num_keys; i++)
 			free(n->pointers[i]);
 	else
 		for (i = 0; i < n->num_keys + 1; i++)
-			destroy_tree_nodes((node *)n->pointers[i]);
+			destroy_tree_nodes((string_node *)n->pointers[i]);
 	free(n->pointers);
-	free(n->keys);
-	free(n);
+	//free(n->keys);
+	delete n;
 }
 
 
-node * Bpt::destroy_tree( void ) {
+string_node * Bpt_string::destroy_tree( void ) {
 	destroy_tree_nodes(root);
 	return NULL;
 }

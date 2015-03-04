@@ -49,8 +49,8 @@ bool handleclient(const int socket) {
         //Clear strings
         cmd.clear();
         key.clear();
-	population.clear();
-	location.clear();
+        population.clear();
+        location.clear();
         to_send.clear();
         
         //Clear receive buffer
@@ -108,7 +108,7 @@ bool handleclient(const int socket) {
             // Wait for service
             to_send = table->wait_for_service(request_id);
         }
-	/* Get index by population received as
+        /* Get index by population received as
          * "get_index_by_population <population>"
          */
         else if (cmd == "get_index_by_population") {
@@ -125,7 +125,7 @@ bool handleclient(const int socket) {
          */
         else if (cmd == "remove") {
             strstr >> key;
-            printv("Removing: %s\n", key.c_str());	    //don't worry, population is the key in this instance
+            printv("Removing: %s\n", key.c_str());          //don't worry, population is the key in this instance
             // Remove the entry
             request_id = table->remove(atoi(population.c_str()));   //don't worry, population is the key in this instance
             to_send.clear();

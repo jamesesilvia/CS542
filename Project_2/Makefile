@@ -11,6 +11,7 @@ SERVER = \
 	$(SRCDIR)/helpers.cpp \
 	$(SRCDIR)/memory_manager.cpp \
 	$(SRCDIR)/bpt.cpp \
+	$(SRCDIR)/bpt_string.cpp \
 	$(SRCDIR)/relation.cpp
 
 default:

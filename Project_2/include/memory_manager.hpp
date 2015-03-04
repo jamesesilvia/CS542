@@ -30,6 +30,7 @@
 #include <stdarg.h>
 
 #include "bpt.hpp"
+#include "bpt_string.hpp"
 
 using namespace std;
 
