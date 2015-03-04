@@ -127,7 +127,7 @@ public:
     node * redistribute_nodes( node * n, node * neighbor, int neighbor_index, 
             int k_prime_index, int k_prime );
     node * delete_entry( node * n, int key, void * pointer );
-    node * delete_node( int key );
+    node * delete_node( int key, int value );
     void destroy_tree_nodes( node * n );
     node * destroy_tree( void );
 

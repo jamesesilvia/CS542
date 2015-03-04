@@ -1115,17 +1115,50 @@ node * Bpt::delete_entry( node * n, int key, void * pointer ) {
 
 /* Master deletion function.
  */
-node * Bpt::delete_node( int key ) {
+node * Bpt::delete_node( int key, int value ) {
 
 	node * key_leaf;
-	record * key_record;
+	record * key_record, * temp, *temp2;
+    bool delete_from_tree = false;
+    int i;
 
 	key_record = find(key);
 	key_leaf = find_leaf(key);
-	if (key_record != NULL && key_leaf != NULL) {
-		root = delete_entry(key_leaf, key, key_record);
-		free(key_record);
-	}
+    temp = key_record;
+    /* only delete the record we want */
+    /* case 1: only 1 record */
+    if (temp->next == NULL && temp->value == value) {
+        delete_from_tree = true;
+    }
+    /* case 2: mult records, first one is one we want */
+    else if (temp->next != NULL && temp->value == value) {
+        delete_from_tree = false;
+        for (i = 0; i < key_leaf->num_keys; i++)
+            if (key_leaf->keys[i] == key) break;
+        key_leaf->pointers[i] = temp->next;
+        free(temp);
+
+    }
+    /* case 3: mult records, first one is not what we want */
+    else {
+        delete_from_tree = false;
+        while (temp->next) {
+            temp2 = temp;
+            temp = temp->next;
+            if (temp->value == value) {
+                temp2->next = temp->next;
+                free(temp);
+                break;
+            }
+        }
+    }
+
+    if (delete_from_tree) {
+        if (key_record != NULL && key_leaf != NULL) {
+            root = delete_entry(key_leaf, key, key_record);
+            free(key_record);
+        }
+    }
 	return root;
 }
 
