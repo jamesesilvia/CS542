@@ -1,10 +1,12 @@
-# Project 1
-A Value Store
+# Project 2
+A Value Store with Indexing
 
-Project 1 uses a client/server model to represent users interacting with a database.
+Project 2 uses a client/server model to represent users interacting with a database.
 
 The server is multi-threaded and uses a serial access isolation manager to maintain
 the integrity of user requests.
+
+B+ Trees have been implemented to index the stored data for efficient lookup times.
 
 To see the full design document, please review the folder "docs".
 
@@ -27,7 +29,7 @@ docs/
 - design document
 
 ## Usage
-While in Project_1 directory:
+While in Project_2 directory:
 
 make clean
 
@@ -57,21 +59,24 @@ The client provides interfaces to the database through the commands:
 	
 put
 
-- stores key and corresponding data in the database
-- data can be input through command line, or through a file
-- put will fail if the key already exists
-- to update a key value, remove then re-add
-- NOTE: Use a file to send data greater than 1KB.
+- stores population and city in to database
+- can have duplicate entries
+- to update an entry, remove then re-add
 
-get
+get_index_by_population
 
-- retreives data from database based on key
-- NOTE: we recommend storing received data in a file if LARGE
-- otherwise it will be printed directly to terminal
+- retreives all entries in database if population value exists
+- client will print all entries if they are present.
 
+get_index_by_name
+
+- retreives all entries in database if name value exists
+- client will print all entries if they are present.
+- 
 remove
 
-- remove key and data from the database
+- removes based on unique identifier (UID)
+- to view UID of entries, perform a get
 
 ## Server
 The server is currently configured in verbose mode. It will print actions
