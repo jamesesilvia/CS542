@@ -308,7 +308,7 @@ int Memory_manager::remove_index(int index) {
     /* remove from b+ tree */
     population.delete_node(container.population);
 
-    for (iter = table.begin(); iter != table.end(); ++iter) {
+    for (iter = table.begin(); iter != table.end(); iter++) {
         if ((*iter) == index){
             filled -= CONTAINER_LENGTH;
             table.erase(iter);
