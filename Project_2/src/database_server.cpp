@@ -125,9 +125,9 @@ bool handleclient(const int socket) {
          */
         else if (cmd == "remove") {
             strstr >> key;
-            printv("Removing: %s\n", key.c_str());          //don't worry, population is the key in this instance
+            printv("Removing: %s\n", key.c_str());          
             // Remove the entry
-            request_id = table->remove(atoi(population.c_str()));   //don't worry, population is the key in this instance
+            request_id = table->remove(atoi(key.c_str()));              
             to_send.clear();
             // Wait for service
             to_send = table->wait_for_service(request_id);
