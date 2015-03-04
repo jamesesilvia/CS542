@@ -72,7 +72,7 @@ get_index_by_name
 
 - retreives all entries in database if name value exists
 - client will print all entries if they are present.
-- 
+
 remove
 
 - removes based on unique identifier (UID)
