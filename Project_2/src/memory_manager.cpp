@@ -32,7 +32,7 @@ using namespace std;
 #include "memory_manager.hpp"
 
 /* constructor */
-Memory_manager::Memory_manager(string table) : population(), name() {
+Memory_manager::Memory_manager(string table) : population(), city_name() {
     name = table;
     filename = table + ".dat";
     map_loc = table + ".txt";
@@ -215,6 +215,28 @@ int Memory_manager::get_by_population(int pop, list<container_t>& container_list
 }
 
 
+int Memory_manager::get_by_city_name(string name, list<container_t>& container_list) {
+
+    /* Get index from b+ tree */
+    record *data = city_name.find(name);
+    container_t container;
+
+    while (data) {
+
+        /* This Fails if the index is removed, do stuff in relation */
+        if (read_index((void *)&container, data->value, CONTAINER_LENGTH) == -1){
+            cout << __func__ << "(): get failed" << endl;
+            return -1;
+        }
+        container_list.push_back(container); 
+
+        data = data->next;
+    }
+
+    return 0;
+}
+
+
 /* read an index from the database of container sizer*/
 int Memory_manager::read_index(void *buffer, int index, int length) {
     int offset = 0;
@@ -278,6 +300,8 @@ int Memory_manager::write_index(container_t *container) {
 
     /* add popluation to b+tree */
     population.insert(container->population, container->index);
+    /* add name to b+tree */
+    city_name.insert(container->name, container->index);
 
     // Free container
     free(container);
@@ -307,6 +331,9 @@ int Memory_manager::remove_index(int index) {
 
     /* remove from b+ tree */
     population.delete_node(container.population, index);
+    /* remove from b+ tree */
+    string temp = container.name;
+    city_name.delete_node(temp, index);
 
     for (iter = table.begin(); iter != table.end(); iter++) {
         if ((*iter) == index){
@@ -336,6 +363,8 @@ void Memory_manager::rebuild_bptrees() {
 
         /* add population to b+tree */
         population.insert(container.population, container.index);
+        /* add name to b+tree */
+        city_name.insert(container.name, container.index);
     }
 }
 
@@ -360,6 +389,12 @@ void Memory_manager::print_bpt() {
     cout << "********** Population B+ tree **********" << endl;
 
     population.print_tree();
+    
+    cout << "****************************************" << endl;
+    
+    cout << "********** City Name B+ tree **********" << endl;
+
+    city_name.print_tree();
     
     cout << "****************************************" << endl;
 }

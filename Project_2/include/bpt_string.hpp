@@ -104,7 +104,7 @@ public:
     string_node * redistribute_nodes( string_node * n, string_node * neighbor, int neighbor_index, 
             int k_prime_index, string k_prime );
     string_node * delete_entry( string_node * n, string key, void * pointer );
-    string_node * delete_node( string key );
+    string_node * delete_node( string key, int value );
     void destroy_tree_nodes( string_node * n );
     string_node * destroy_tree( void );
 

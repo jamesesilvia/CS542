@@ -62,6 +62,7 @@ public:
     bool index_exist(int index);
     void write_to_table(int index);
     int get_by_population(int pop, list<container_t>& container_list);
+    int get_by_city_name(string name, list<container_t>& container_list);
     int read_index(void *buffer, int index, int length);
     int put(int pop, const char *location);
     int write_index(container_t *container);
@@ -95,7 +96,7 @@ private:
 
     /* b+ trees for indexing */
     Bpt population;
-    Bpt city_name;
+    Bpt_string city_name;
 };
 
 #endif

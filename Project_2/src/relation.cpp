@@ -230,7 +230,7 @@ string Relation::wait_for_service(int req_id) {
                     to_send << "Got: " << data_len <<
                                 " " << req->data << endl;
                     break;
-		case(GET_INDEX_BY_POPULATION):
+                case(GET_INDEX_BY_POPULATION):
                     to_send << "Got: " << data_len <<
                                 " " << req->data << endl;
                     break;
@@ -292,22 +292,27 @@ bool Relation::isolation_manager() {
                 case(GET_INDEX_BY_NAME):
                 // Need brackets for scope
                 {
-                    container_t *container = (container_t *)malloc(CONTAINER_LENGTH);
-                    memset(container, 0, CONTAINER_LENGTH);
+                    stringstream ss;
+                    list<container_t> data;
+                    list<container_t>::iterator i;
+
                     // Read data from database
-                    //ret = memory_manager->read_index(buffer,
-                    //                                    req.key);
-                    
-                    // Reponse based on ret
-                    (ret == -1) ?
-                        req.data = "READ FAILED" :
-                        req.data = "TODO YOOOOOOOOOOOO";
+                    ret = memory_manager->get_by_city_name(req.data, data);
+
+                    // Get table entrys for sending
+                    req.data = "READ FAILED";
+                    if (!data.empty() && ret != -1){
+                        req.data.clear();
+                        for (i = data.begin(); i != data.end(); i++){
+                            ss << i->index << " " << i->population << " " << i->name << endl; 
+                        }
+                        req.data = ss.str();
+                    }
                     
                     req.action = GET_INDEX_BY_NAME;
-                    free(container);
                     break;
                 }
-		case(GET_INDEX_BY_POPULATION):
+                case(GET_INDEX_BY_POPULATION):
                 // Need brackets for scope
                 {
                     stringstream ss;
