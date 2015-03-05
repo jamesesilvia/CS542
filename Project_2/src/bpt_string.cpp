@@ -563,11 +563,13 @@ string_node * Bpt_string::insert_into_leaf_after_splitting( string_node * leaf, 
     
     temp_keys.insert(iter, key);
    
+    /*
     cout << "temp keys: ";
     for (iter = temp_keys.begin(); iter != temp_keys.end(); ++iter) {
         cout << *iter << " ";
     }
     cout << endl;
+    */
 
 	for (i = 0, j = 0; i < leaf->num_keys; i++, j++) {
 		if (j == insertion_index) j++;
