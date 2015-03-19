@@ -1,0 +1,12 @@
+# Ignore build
+build
+
+# Ignore MAC specific files
+*.DS_Store
+
+# No swap
+*.swp
+
+# No database
+*.dat
+*.txt
