@@ -2,7 +2,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 2
+ * In completion of: CS557 Project 3
  *
  * Adapted from: http://www.amittai.com/prose/bpt.c
  * License from source:

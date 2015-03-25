@@ -2,7 +2,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 2
+ * In completion of: CS557 Project 3
  *
  * Adapted from: http://www.amittai.com/prose/bpt.c
  * License from source:
@@ -81,7 +81,7 @@ string_node * Bpt_string::dequeue( void ) {
  * pointers, if the verbose_output flag is set.
  */
 void Bpt_string::print_leaves( void ) {
-    int i;
+    int i = 0;
     string_node * c = root;
     if (root == NULL) {
         printf("Empty tree.\n");
@@ -90,9 +90,11 @@ void Bpt_string::print_leaves( void ) {
     while (!c->is_leaf)
         c = (string_node *)c->pointers[0];
     while (true) {
-        for (iter = c->keys.begin(); iter != c->keys.end(); ++iter) {
+        //for (i = 0; i < c->num_keys; i++) {
+        for (iter = c->keys.begin(); iter != c->keys.end(); ++iter, i++) {
             if (verbose_output)
                 printf("%lx ", (unsigned long)c->pointers[i]);
+            //printf("%d ", c->keys[i]);
             printf("%s ", (*iter).c_str());
         }
         if (verbose_output)
@@ -170,13 +172,18 @@ void Bpt_string::print_tree( void ) {
         }
         if (verbose_output) 
             printf("(%lx)", (unsigned long)n);
-        for (iter = n->keys.begin(); iter != n->keys.end(); ++iter) {
+        //for (i = 0; i < n->num_keys; i++) {
+        i = 0;
+        for (iter = n->keys.begin(); iter != n->keys.end(); ++iter, i++) {
             if (verbose_output)
                 printf("%lx ", (unsigned long)n->pointers[i]);
+            //printf("%d ", n->keys[i]);
             printf("%s ", (*iter).c_str());
         }
         if (!n->is_leaf)
-            for (iter = n->keys.begin(); iter != n->keys.end(); ++iter)
+            //i = 0;
+            //for (iter = n->keys.begin(); iter != n->keys.end(); ++iter, i++)
+            for (i = 0; i <= n->num_keys; i++)
                 enqueue((string_node *)n->pointers[i]);
         if (verbose_output) {
             if (n->is_leaf) 
