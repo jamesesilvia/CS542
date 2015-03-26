@@ -33,6 +33,8 @@
 #include <pthread.h>
 #include <stdarg.h>
 
+//#define DEBUG
+
 using namespace std;
 
 #include "bpt_string.hpp"
@@ -204,9 +206,10 @@ record * Bpt_string::find( string key ) {
     int i = 0;
     string_node * c = find_leaf( key );
     if (c == NULL) return NULL;
-    for (iter = c->keys.begin(); iter != c->keys.end(); ++iter) {
+    //for (i = 0; i < c->num_keys; i++)
+    for (iter = c->keys.begin(); iter != c->keys.end(); ++iter, i++) {
+        //if (c->keys[i] == key) break;
         if (*iter == key) break;
-        i++;
     }
     if (i == c->num_keys) 
         return NULL;
@@ -246,8 +249,7 @@ void Bpt_string::find_and_print_range( string key_start, string key_end ) {
     if (!num_found)
         printf("None found.\n");
     else {
-        for (iter = returned_keys.begin(); iter != returned_keys.end(); ++iter)
-            printf("Key: %s   Location: %lx  Value: %d\n",
+        for (iter = returned_keys.begin(); iter != returned_keys.end(); ++iter, i++)            printf("Key: %s   Location: %lx  Value: %d\n",
                     (*iter).c_str(),
                     (unsigned long)returned_pointers[i],
                     ((record *)
@@ -268,11 +270,10 @@ int Bpt_string::find_range( string key_start, string key_end,
     string_node * n = find_leaf( key_start );
     if (n == NULL) return 0;
     //for (i = 0; i < n->num_keys && n->keys[i] < key_start; i++) ;
-    for (iter = n->keys.begin(); iter != n->keys.end(); ++iter) {
+    for (iter = n->keys.begin(); iter != n->keys.end(); ++iter, i++) {
         if ((*iter).compare(key_start) >= 0) {
             break;
         }
-        i++;
     }
     if (i == n->num_keys) return 0;
     while (n != NULL) {
@@ -335,8 +336,9 @@ string_node * Bpt_string::find_leaf( string key ) {
         printf("Leaf [");
         //for (i = 0; i < c->num_keys - 1; i++)
         list<string>::iterator end_iter = c->keys.end();
-        --end_iter;
-        for (iter = c->keys.begin(); iter != end_iter; ++iter)
+        //--end_iter;
+        //for (iter = c->keys.begin(); iter != end_iter; ++iter)
+        for (iter = c->keys.begin(); iter != --(c->keys.end()); ++iter)
             printf("%s ", (*iter).c_str());
         printf("%s] ->\n", (*iter).c_str());
     }
@@ -1030,6 +1032,9 @@ string_node * Bpt_string::coalesce_nodes( string_node * n, string_node * neighbo
 
         /* Append k_prime.
          */
+#ifdef DEBUG
+        cout << "case: n is not leaf" << endl;
+#endif
 
         //neighbor->keys[neighbor_insertion_index] = k_prime;
         neighbor->keys.push_back(k_prime);
@@ -1070,6 +1075,9 @@ string_node * Bpt_string::coalesce_nodes( string_node * n, string_node * neighbo
      */
 
     else {
+#ifdef DEBUG
+        cout << "case: n is leaf" << endl;
+#endif
         for (i = neighbor_insertion_index, j = 0; j < n->num_keys; i++, j++) {
             //neighbor->keys[i] = n->keys[j];
             //neighbor->keys.push_back(n->keys.pop_front());
@@ -1101,12 +1109,20 @@ string_node * Bpt_string::redistribute_nodes( string_node * n, string_node * nei
     int i;
     string_node * tmp;
 
+#ifdef DEBUG
+    cout << "resdistr nodes called with neighbor index: " << neighbor_index << endl;
+    cout << "k prime index: " << k_prime_index << endl;
+#endif
+
     /* Case: n has a neighbor to the left. 
      * Pull the neighbor's last key-pointer pair over
      * from the neighbor's right end to n's left end.
      */
 
     if (neighbor_index != -1) {
+#ifdef DEBUG
+        cout << "case: n has neighbor to the left" << endl;
+#endif
         if (!n->is_leaf)
             n->pointers[n->num_keys + 1] = n->pointers[n->num_keys];
         for (i = n->num_keys; i > 0; i--) {
@@ -1114,6 +1130,9 @@ string_node * Bpt_string::redistribute_nodes( string_node * n, string_node * nei
             n->pointers[i] = n->pointers[i - 1];
         }
         if (!n->is_leaf) {
+#ifdef DEBUG
+            cout << "case: n is leaf" << endl;
+#endif
             n->pointers[0] = neighbor->pointers[neighbor->num_keys];
             tmp = (string_node *)n->pointers[0];
             tmp->parent = n;
@@ -1121,28 +1140,30 @@ string_node * Bpt_string::redistribute_nodes( string_node * n, string_node * nei
             //n->keys[0] = k_prime;
             n->keys.push_front(k_prime);
             //n->parent->keys[k_prime_index] = neighbor->keys[neighbor->num_keys - 1];
-            //n->parent->keys.insert(k_prime_index, neighbor->keys.pop_back());
             i = 0;
             for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
                 if (i == k_prime_index) {
-                    //n->parent->keys.insert(iter, neighbor->keys.pop_back());
-                    n->parent->keys.insert(iter, *(neighbor->keys.end()));
+                    (*iter) = neighbor->keys.back();
                     break;
                 }
             }
+            neighbor->keys.pop_back();
         }
         else {
+#ifdef DEBUG
+            cout << "case: n is not leaf" << endl;
+#endif
             n->pointers[0] = neighbor->pointers[neighbor->num_keys - 1];
             neighbor->pointers[neighbor->num_keys - 1] = NULL;
             //n->keys[0] = neighbor->keys[neighbor->num_keys - 1];
-            //n->keys.push_front(neighbor->keys.pop_back());
-            n->keys.push_front(*(neighbor->keys.end()));
+            n->keys.push_front(neighbor->keys.back());
+            neighbor->keys.pop_back();
             //n->parent->keys[k_prime_index] = n->keys[0];
             //n->parent->keys.insert(k_prime_index, *(n->keys.begin()))
             i = 0;
             for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
                 if (i == k_prime_index) {
-                    n->parent->keys.insert(iter, *(n->keys.begin()));
+                    (*iter) = n->keys.front();
                     break;
                 }
             }
@@ -1156,39 +1177,44 @@ string_node * Bpt_string::redistribute_nodes( string_node * n, string_node * nei
      */
 
     else {  
+#ifdef DEBUG
+        cout << "case: n is the leftmost child" << endl;
+#endif
         if (n->is_leaf) {
+#ifdef DEBUG
+            cout << "case: n is leaf" << endl;
+#endif
             //n->keys[n->num_keys] = neighbor->keys[0];
-            //n->keys.push_back(neighbor->keys.pop_front());
-            n->keys.push_back(*(neighbor->keys.begin()));
+            n->keys.push_back(neighbor->keys.front());
             neighbor->keys.pop_front();
             n->pointers[n->num_keys] = neighbor->pointers[0];
             //n->parent->keys[k_prime_index] = neighbor->keys[1];
-            //n->parent->keys.insert(k_prime_index, *(neighbor->keys.begin()+1))
             i = 0;
-            list<string>::iterator iter_insert = n->keys.begin();
-            ++iter_insert;
             for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
                 if (i == k_prime_index) {
-                    n->parent->keys.insert(iter, *(iter_insert));
+                    (*iter) = neighbor->keys.front();
                     break;
                 }
             }
         }
         else {
+#ifdef DEBUG
+            cout << "case: n is not leaf" << endl;
+#endif
             //n->keys[n->num_keys] = k_prime;
             n->keys.push_back(k_prime);
             n->pointers[n->num_keys + 1] = neighbor->pointers[0];
             tmp = (string_node *)n->pointers[n->num_keys + 1];
             tmp->parent = n;
             //n->parent->keys[k_prime_index] = neighbor->keys[0];
-            //n->parent->keys.insert(k_prime_index, *(n->keys.begin()))
             i = 0;
             for (iter = n->parent->keys.begin(); iter != n->parent->keys.end(); ++iter, i++) {
                 if (i == k_prime_index) {
-                    n->parent->keys.insert(iter, *(n->keys.begin()));
+                    (*iter) = neighbor->keys.front();
                     break;
                 }
             }
+            neighbor->keys.pop_front();
         }
         for (i = 0; i < neighbor->num_keys - 1; i++) {
             //neighbor->keys[i] = neighbor->keys[i + 1];
@@ -1231,8 +1257,12 @@ string_node * Bpt_string::delete_entry( string_node * n, string key, void * poin
     /* Case:  deletion from the root. 
      */
 
-    if (n == root) 
+    if (n == root) { 
+#ifdef DEBUG
+        cout << "case: deletion from root" << endl;
+#endif
         return adjust_root();
+    }
 
 
     /* Case:  deletion from a node below the root.
@@ -1249,8 +1279,12 @@ string_node * Bpt_string::delete_entry( string_node * n, string key, void * poin
      * (The simple case.)
      */
 
-    if (n->num_keys >= min_keys)
+    if (n->num_keys >= min_keys) {
+#ifdef DEBUG
+        cout << "case: node stays at or above min" << endl;
+#endif
         return root;
+    }
 
     /* Case:  node falls below minimum.
      * Either coalescence or redistribution
@@ -1280,13 +1314,21 @@ string_node * Bpt_string::delete_entry( string_node * n, string key, void * poin
 
     /* Coalescence. */
 
-    if (neighbor->num_keys + n->num_keys < capacity)
+    if (neighbor->num_keys + n->num_keys < capacity) {
+#ifdef DEBUG
+        cout << "coalesce nodes" << endl;
+#endif
         return coalesce_nodes(n, neighbor, neighbor_index, k_prime);
+    }
 
     /* Redistribution. */
 
-    else
+    else {
+#ifdef DEBUG
+        cout << "redistribute nodes" << endl;
+#endif
         return redistribute_nodes(n, neighbor, neighbor_index, k_prime_index, k_prime);
+    }
 }
 
 

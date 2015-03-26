@@ -33,6 +33,8 @@
 #include <pthread.h>
 #include <stdarg.h>
 
+//#define DEBUG
+
 using namespace std;
 
 #include "bpt.hpp"
@@ -909,6 +911,9 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
 
         /* Append k_prime.
          */
+#ifdef DEBUG
+        cout << "case: n is not leaf" << endl;
+#endif
 
         neighbor->keys[neighbor_insertion_index] = k_prime;
         neighbor->num_keys++;
@@ -945,6 +950,9 @@ node * Bpt::coalesce_nodes( node * n, node * neighbor, int neighbor_index, int k
      */
 
     else {
+#ifdef DEBUG
+        cout << "case: n is leaf" << endl;
+#endif
         for (i = neighbor_insertion_index, j = 0; j < n->num_keys; i++, j++) {
             neighbor->keys[i] = n->keys[j];
             neighbor->pointers[i] = n->pointers[j];
@@ -973,12 +981,20 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
     int i;
     node * tmp;
 
+#ifdef DEBUG
+    cout << "resdistr nodes called with neighbor index: " << neighbor_index << endl;
+    cout << "k prime index: " << k_prime_index << endl;
+#endif
+
     /* Case: n has a neighbor to the left. 
      * Pull the neighbor's last key-pointer pair over
      * from the neighbor's right end to n's left end.
      */
 
     if (neighbor_index != -1) {
+#ifdef DEBUG
+        cout << "case: n has neighbor to the left" << endl;
+#endif
         if (!n->is_leaf)
             n->pointers[n->num_keys + 1] = n->pointers[n->num_keys];
         for (i = n->num_keys; i > 0; i--) {
@@ -986,6 +1002,9 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
             n->pointers[i] = n->pointers[i - 1];
         }
         if (!n->is_leaf) {
+#ifdef DEBUG
+            cout << "case: n is leaf" << endl;
+#endif
             n->pointers[0] = neighbor->pointers[neighbor->num_keys];
             tmp = (node *)n->pointers[0];
             tmp->parent = n;
@@ -994,6 +1013,9 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
             n->parent->keys[k_prime_index] = neighbor->keys[neighbor->num_keys - 1];
         }
         else {
+#ifdef DEBUG
+            cout << "case: n is not leaf" << endl;
+#endif
             n->pointers[0] = neighbor->pointers[neighbor->num_keys - 1];
             neighbor->pointers[neighbor->num_keys - 1] = NULL;
             n->keys[0] = neighbor->keys[neighbor->num_keys - 1];
@@ -1008,12 +1030,21 @@ node * Bpt::redistribute_nodes( node * n, node * neighbor, int neighbor_index,
      */
 
     else {  
+#ifdef DEBUG
+        cout << "case: n is the leftmost child" << endl;
+#endif
         if (n->is_leaf) {
+#ifdef DEBUG
+            cout << "case: n is leaf" << endl;
+#endif
             n->keys[n->num_keys] = neighbor->keys[0];
             n->pointers[n->num_keys] = neighbor->pointers[0];
             n->parent->keys[k_prime_index] = neighbor->keys[1];
         }
         else {
+#ifdef DEBUG
+            cout << "case: n is not leaf" << endl;
+#endif
             n->keys[n->num_keys] = k_prime;
             n->pointers[n->num_keys + 1] = neighbor->pointers[0];
             tmp = (node *)n->pointers[n->num_keys + 1];
@@ -1059,8 +1090,12 @@ node * Bpt::delete_entry( node * n, int key, void * pointer ) {
     /* Case:  deletion from the root. 
      */
 
-    if (n == root) 
+    if (n == root) {
+#ifdef DEBUG
+        cout << "case: deletion from root" << endl;
+#endif
         return adjust_root();
+    }
 
 
     /* Case:  deletion from a node below the root.
@@ -1077,8 +1112,12 @@ node * Bpt::delete_entry( node * n, int key, void * pointer ) {
      * (The simple case.)
      */
 
-    if (n->num_keys >= min_keys)
+    if (n->num_keys >= min_keys) {
+#ifdef DEBUG
+        cout << "case: node stays at or above min" << endl;
+#endif
         return root;
+    }
 
     /* Case:  node falls below minimum.
      * Either coalescence or redistribution
@@ -1102,13 +1141,21 @@ node * Bpt::delete_entry( node * n, int key, void * pointer ) {
 
     /* Coalescence. */
 
-    if (neighbor->num_keys + n->num_keys < capacity)
+    if (neighbor->num_keys + n->num_keys < capacity) {
+#ifdef DEBUG
+        cout << "coalesce nodes" << endl;
+#endif
         return coalesce_nodes(n, neighbor, neighbor_index, k_prime);
+    }
 
     /* Redistribution. */
 
-    else
+    else {
+#ifdef DEBUG
+        cout << "redistribute nodes" << endl;
+#endif
         return redistribute_nodes(n, neighbor, neighbor_index, k_prime_index, k_prime);
+    }
 }
 
 
