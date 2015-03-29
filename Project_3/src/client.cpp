@@ -329,6 +329,44 @@ string handle_user_interaction(int sock) {
             // All done
             break;
         }
+        /* Query command */
+        if (cmd == "query") {
+            // Get percentage of country population to use in query
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter percentage of country population to use in query: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+                fail = false;
+                for (i = 0; i < str.length(); i++) {
+                    if (!isdigit(str[i])) {
+                        cout << "Please enter positive integers from 1 to 100 only!" << endl;
+                        fail = true;
+                        break;
+                    }
+                }
+                if (fail) {
+                    continue;
+                }
+                int percentage = atoi(str.c_str());
+                if (percentage <= 0) {
+                    cout << "Please enter positive integers from 1 to 100 only!" << endl;
+                    continue;
+                }
+                if (percentage > 100) {
+                    cout << "Please enter an integer less than 100!" << endl;
+                    continue;
+                }
+                to_send = cmd + " " + str;
+                done = true;
+            }            
+            // All done
+            break;
+        }
         /* Remove command, debug only */
         else if (cmd == "print") {
             to_send = cmd;
@@ -351,6 +389,7 @@ string handle_user_interaction(int sock) {
             cout << "   get_index_by_name           - retrieve data based on city name" << endl;
 	    cout << "   get_index_by_population     - retrieve data based on city population" << endl;
             cout << "   remove                      - delete data" << endl;
+            cout << "   query                       - query database for a city whose population is a specified percentage of the country population" << endl;
             cout << "   quit                        - exit the application" << endl;
             continue;
         }
