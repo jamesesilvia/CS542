@@ -20,6 +20,7 @@
 #include <pthread.h>
 #include <list>
 
+#include "helpers.hpp"
 #include "memory_manager.hpp"
 
 using namespace std;
@@ -29,6 +30,10 @@ using namespace std;
 #define GET_INDEX_BY_NAME     	    2
 #define GET_INDEX_BY_POPULATION     3
 #define REMOVE  		    4
+
+// Parse schema information
+#define MAX_CHARS           1024
+#define DELIMITER           ","
 
 /* User request item placed on queue */
 typedef struct request
@@ -61,6 +66,7 @@ public:
     int remove(int key);
     string wait_for_service(int req_id);
     void print_queues();
+    bool init_db();
     bool open();
     bool close();
     bool isolation_manager();
@@ -111,6 +117,8 @@ private:
     list <request_t> done_queue;
     /* memory manager */
     Memory_manager db;
+    bool load_city_data();
+    bool load_country_data();
 };
 
 #endif

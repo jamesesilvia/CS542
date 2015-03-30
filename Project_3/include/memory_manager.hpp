@@ -38,12 +38,15 @@ using namespace std;
 #define START_TABLE_SIZE       1000000   /* 1MB */
 #define EXPAND_TABLE_SIZE         1000   /* 1kB */
 
+#define MAX_NAME 101
+#define MAX_CODE 4
+
 /* structure to store the data */
 struct container {
     int index;
     int population;
-    char name[101];
-    char code[4];
+    char name[MAX_NAME];
+    char code[MAX_CODE];
 } __attribute__((__packed__));
 
 typedef struct container container_t;

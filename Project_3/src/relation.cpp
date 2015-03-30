@@ -250,6 +250,92 @@ string Relation::wait_for_service(int req_id) {
     return to_send.str();
 }
 
+bool Relation::init_db() {
+
+    if (tablename == "city"){
+        if (!check_for_file("city.dat")) {
+            fprintf(stderr, "Initializing city database...");
+            open();
+            load_city_data();
+            close();
+            cout << "Done!" << endl;
+        }
+    }
+    else if (tablename == "country") {
+        if (!check_for_file("country.dat")) {
+            fprintf(stderr, "Initializing country database...");
+            open();
+            load_country_data();
+            close();
+            cout << "Done!" << endl;
+        }
+    }
+
+    return true;
+}
+
+bool Relation::load_city_data() {
+    ifstream fin;
+    string inFileName = "schema/city_table.csv";
+
+    fin.open(inFileName.c_str());
+    if (!fin.good()) {
+        string str = "Could not open " + inFileName;
+        error(str.c_str());
+    }
+    
+    char buffer[MAX_CHARS];
+    while (fin.getline(buffer, MAX_CHARS)) {
+        // Parse line
+        string id, name, c_code, dist, population;
+        id = strtok(buffer, DELIMITER);
+        name = strtok(0, DELIMITER);
+        c_code = strtok(0, DELIMITER);
+        dist = strtok(0, DELIMITER);
+        population = strtok(0, DELIMITER);
+
+        // Store line
+        container_t *data = (container_t *)malloc(CONTAINER_LENGTH);
+        data->population = atoi(population.c_str());
+        strncpy(data->name, name.c_str(), MAX_NAME);
+        strncpy(data->code, c_code.c_str(), MAX_CODE);
+        db.write_index(data);
+
+        // Empty buffer for next line
+        memset(buffer, 0, MAX_CHARS);
+    }
+    return true;
+}
+
+bool Relation::load_country_data() {
+    ifstream fin;
+    string inFileName = "schema/country_table.csv";
+
+    fin.open(inFileName.c_str());
+    if (!fin.good()) {
+        string str = "Could not open " + inFileName;
+        error(str.c_str());
+    }
+
+    char buffer[MAX_CHARS];
+    while (fin.getline(buffer, MAX_CHARS)) {
+        // Parse line
+        string c_code, name, population;
+        c_code = strtok(buffer, DELIMITER);
+        name = strtok(0, DELIMITER);
+        population = strtok(0, DELIMITER);
+
+        // Store line
+        container_t *data = (container_t *)malloc(CONTAINER_LENGTH);
+        data->population = atoi(population.c_str());
+        strncpy(data->name, name.c_str(), MAX_NAME);
+        strncpy(data->code, c_code.c_str(), MAX_CODE);
+        db.write_index(data);
+
+        // Empty buffer for next line
+        memset(buffer, 0, MAX_CHARS);
+    }
+}
 bool Relation::open() {
     if (db.map_to_memory(START_TABLE_SIZE) == -1) {
         return false;

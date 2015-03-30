@@ -194,12 +194,12 @@ int main(int argc, char *argv[])
     Relation *country_table = Relation::instance_country();
 
     //do database loading here, open db, load, close db
-    city_table->open();
-    country_table->open();
-
-
-    city_table->close();
-    country_table->close();
+    cout << "***************************************************" << endl;
+    cout << "   WARNING: First database init could be lengthy.  " << endl;
+    cout << "               Please be patient.                  " << endl;
+    cout << "***************************************************" << endl;
+    city_table->init_db();
+    country_table->init_db();
 
     //Create the sock handle
     printv("Creating socket\n");
