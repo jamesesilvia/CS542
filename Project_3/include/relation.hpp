@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 1
+ * In completion of: CS542 Project 3
  *
  * relation.hpp
  *
@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <list>
+
+#include "memory_manager.hpp"
 
 using namespace std;
 
@@ -59,17 +61,26 @@ public:
     int remove(int key);
     string wait_for_service(int req_id);
     void print_queues();
+    bool open();
+    bool close();
     bool isolation_manager();
 
-    static Relation *instance() {
-        if (!s_instance)
-            s_instance = new Relation("my table");
-        return s_instance;
+    static Relation *instance_country() {
+        if (!s_instance_country)
+            s_instance_country = new Relation("country");
+        return s_instance_country;
+    }
+
+    static Relation *instance_city() {
+        if (!s_instance_city)
+            s_instance_city = new Relation("city");
+        return s_instance_city;
     }
 
 private:
     /* variables */
-    static Relation *s_instance;
+    static Relation *s_instance_country;
+    static Relation *s_instance_city;
     string tablename;
     int key;
     string data;
@@ -98,6 +109,8 @@ private:
     /* queues */
     list <request_t> service_queue;
     list <request_t> done_queue;
+    /* memory manager */
+    Memory_manager db;
 };
 
 #endif

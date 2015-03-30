@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 2
+ * In completion of: CS557 Project 3
  *
  * bpt.hpp
  *
@@ -17,7 +17,7 @@
 #include <stdbool.h>
 
 // Default order is 4.
-#define DEFAULT_ORDER 4
+#define DEFAULT_ORDER 100
 
 // Minimum order is necessarily 3.  We set the maximum
 // order arbitrarily.  You may change the maximum order.

@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 2
+ * In completion of: CS557 Project 3
  *
  * memory_manager.hpp
  *
@@ -43,6 +43,7 @@ struct container {
     int index;
     int population;
     char name[101];
+    char code[4];
 } __attribute__((__packed__));
 
 typedef struct container container_t;
@@ -61,8 +62,9 @@ public:
     int get_free_memory_block(int *location);
     bool index_exist(int index);
     void write_to_table(int index);
-    int get_by_population(int pop, list<container_t>& container_list);
-    int get_by_city_name(string name, list<container_t>& container_list);
+    //int get_by_population(int pop, list<container_t>& container_list);
+    //int get_by_city_name(string name, list<container_t>& container_list);
+    int get_by_code(string name, list<container_t>& container_list);
     int read_index(void *buffer, int index, int length);
     int put(int pop, const char *location);
     int write_index(container_t *container);
@@ -76,14 +78,8 @@ public:
     int get_free_space();
     int expand_database(double request_size);
 
-    static Memory_manager *instance() {
-        if (!s_instance)
-            s_instance = new Memory_manager("database");
-        return s_instance;
-    }
 private:
     /* variables */
-    static Memory_manager *s_instance;
     string name;
     string filename;
     string map_loc;
@@ -95,8 +91,7 @@ private:
     list<int>::iterator iter;
 
     /* b+ trees for indexing */
-    Bpt population;
-    Bpt_string city_name;
+    Bpt_string code;
 };
 
 #endif

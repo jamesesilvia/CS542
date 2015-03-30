@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 2
+ * In completion of: CS542 Project 3
  *
  * client.cpp
  *
@@ -171,7 +171,7 @@ string handle_user_interaction(int sock) {
         stringstream strstr(str);
         if (!(strstr >> cmd))
             continue;
-        
+#if 0 
         /* Put command */
         if (cmd == "put") {
             // Get numeric data to store
@@ -217,10 +217,10 @@ string handle_user_interaction(int sock) {
                 if (str.empty()) {
                     continue;
                 }
-		if (str.length() > MAX_STRING_LENGTH) {
-		    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
-		    continue;
-		}
+                if (str.length() > MAX_STRING_LENGTH) {
+                    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
+                    continue;
+                }
                 // Build string to send
                 to_send = to_send + " " + str;
                 done = true;               
@@ -240,10 +240,10 @@ string handle_user_interaction(int sock) {
                 if (str.empty()) {
                     continue;
                 }
-		if (str.length() > MAX_STRING_LENGTH) {
-		    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
-		    continue;
-		}
+                if (str.length() > MAX_STRING_LENGTH) {
+                    cout << "Please enter a string no longer than " << MAX_STRING_LENGTH << " characters!" << endl;
+                    continue;
+                }
                 // Build string to send
                 to_send = cmd + " " + str;
                 done = true;               
@@ -251,7 +251,7 @@ string handle_user_interaction(int sock) {
             // All done
             break;
         }
-	/* Get index by population command */
+        /* Get index by population command */
         else if (cmd == "get_index_by_population") {
             // Get number to retrieve data with
             done = false;
@@ -329,6 +329,7 @@ string handle_user_interaction(int sock) {
             // All done
             break;
         }
+#endif
         /* Query command */
         if (cmd == "query") {
             // Get percentage of country population to use in query
@@ -385,10 +386,10 @@ string handle_user_interaction(int sock) {
         /* Print Help */
         else {
             cout << "Acceptable commands are:" << endl;
-            cout << "   put                         - store data" << endl;
-            cout << "   get_index_by_name           - retrieve data based on city name" << endl;
-	    cout << "   get_index_by_population     - retrieve data based on city population" << endl;
-            cout << "   remove                      - delete data" << endl;
+            //cout << "   put                         - store data" << endl;
+            //cout << "   get_index_by_name           - retrieve data based on city name" << endl;
+            //cout << "   get_index_by_population     - retrieve data based on city population" << endl;
+            //cout << "   remove                      - delete data" << endl;
             cout << "   query                       - query database for a city whose population is a specified percentage of the country population" << endl;
             cout << "   quit                        - exit the application" << endl;
             continue;

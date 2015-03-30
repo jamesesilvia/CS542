@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 1
+ * In completion of: CS542 Project 3
  *
  * helpers.hpp
  *

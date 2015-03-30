@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS557 Project 2
+ * In completion of: CS557 Project 3
  *
  * bpt_string.hpp
  *
@@ -17,6 +17,8 @@
 #include <stdbool.h>
 
 #include "bpt.hpp"
+
+using namespace std;
 
 /* Type representing a node in the B+ tree.
  * This type is general enough to serve for both

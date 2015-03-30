@@ -3,18 +3,17 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 1
+ * In completion of: CS542 Project 3
  *
  * relation.cpp
  *
  **********************************************************************/
 
 #include "relation.hpp"
-#include "memory_manager.hpp"
 
 using namespace std;
 
-Relation::Relation(string _tablename) {
+Relation::Relation(string _tablename) : db(_tablename) {
     tablename = _tablename;
     // init locks
     pthread_mutex_init(&s_lock, NULL);
@@ -251,6 +250,22 @@ string Relation::wait_for_service(int req_id) {
     return to_send.str();
 }
 
+bool Relation::open() {
+    if (db.map_to_memory(START_TABLE_SIZE) == -1) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+bool Relation::close() {
+    if (db.unmap_from_memory() == -1) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 /*
  * isolation_manager()
  *
@@ -263,7 +278,7 @@ string Relation::wait_for_service(int req_id) {
 bool Relation::isolation_manager() {
     int ret = 0;
     request_t req;
-    Memory_manager *memory_manager = Memory_manager::instance();
+    //Memory_manager *memory_manager = Memory_manager::instance();
 
     while(true) {
         // Do stuff if queue not empty
@@ -280,7 +295,7 @@ bool Relation::isolation_manager() {
                     memset(location, 0, sizeof(location));
                     strcpy(location, req.data.c_str());
                     // Store data in database
-                    ret = memory_manager->put(req.population, location);
+                    //ret = memory_manager->put(req.population, location);
                     // Response based on ret
                     (ret == -1) ?
                         req.data = "PUT FAILED: That key already exists" :
@@ -297,7 +312,7 @@ bool Relation::isolation_manager() {
                     list<container_t>::iterator i;
 
                     // Read data from database
-                    ret = memory_manager->get_by_city_name(req.data, data);
+                    //ret = memory_manager->get_by_city_name(req.data, data);
 
                     // Get table entrys for sending
                     req.data = "READ FAILED";
@@ -320,7 +335,7 @@ bool Relation::isolation_manager() {
                     list<container_t>::iterator i;
 
                     // Read data from database
-                    ret = memory_manager->get_by_population(req.population, data);
+                    //ret = memory_manager->get_by_population(req.population, data);
 
                     // Get table entrys for sending
                     req.data = "READ FAILED";
@@ -340,7 +355,7 @@ bool Relation::isolation_manager() {
                 // Need brackets for scope
                 {
                     // Remove it
-                    ret = memory_manager->remove_index(req.key);
+                    //ret = memory_manager->remove_index(req.key);
                     (ret == -1) ?
                         req.data = "REMOVE FAILED" :
                         req.data = "SUCCESS";

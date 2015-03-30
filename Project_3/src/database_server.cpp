@@ -3,7 +3,7 @@
  * CS542 Database Management Systems
  *
  * Written by: Tyler Carroll, James Silvia, Tom Strott
- * In completion of: CS542 Project 2
+ * In completion of: CS542 Project 3
  *
  * database_server.cpp
  *
@@ -18,9 +18,9 @@
 //The buffer length for receiving commands
 #define BUFFER_LEN 1024 
 
-/* Singleton of each class */
-Relation *Relation::s_instance = NULL;
-Memory_manager *Memory_manager::s_instance = NULL;
+/* Relations for each table */
+Relation *Relation::s_instance_country = NULL;
+Relation *Relation::s_instance_city = NULL;
 
 //Set to false to disable
 bool verbose = true;
@@ -43,7 +43,8 @@ bool handleclient(const int socket) {
     int len, request_id, start, end;
     string cmd, key, population, location, to_send;
 
-    Relation *table = Relation::instance();
+    Relation *city_table = Relation::instance_city();
+    Relation *country_table = Relation::instance_country();
 
     while (true) {
         //Clear strings
@@ -76,7 +77,7 @@ bool handleclient(const int socket) {
         if (!(strstr >> cmd)) {
             continue;
         }
-
+#if 0
         /* Put request received in buffer as
          * "put <population> <location>"
          */
@@ -132,16 +133,22 @@ bool handleclient(const int socket) {
             // Wait for service
             to_send = table->wait_for_service(request_id);
         }
+#endif
+        /* query command from client */
+        if (cmd == "query") {
+            
+
+        }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
-                // Yes, lets exit.
-                cout << "Received force close, EXIT" << endl;
-                close(socket);
-                exit(0);
+            // Yes, lets exit.
+            cout << "Received force close, EXIT" << endl;
+            close(socket);
+            exit(0);
         }
         /* Print queue - verbose only */
         else if (cmd == "print" && verbose) {
-            table->print_queues();
+            //table->print_queues();
             to_send = "We got your PRINT request brah";
         }
         /* Junk catch all */
@@ -178,10 +185,21 @@ int main(int argc, char *argv[])
     pthread_t thread;
 
     //Create memory manager for database
-    Memory_manager *memory_manager = Memory_manager::instance();
-    int current_size = memory_manager->load_memory_map();
-    memory_manager->map_to_memory(current_size);
-    memory_manager->rebuild_bptrees();
+    //Memory_manager *memory_manager = Memory_manager::instance();
+    //int current_size = memory_manager->load_memory_map();
+    //memory_manager->map_to_memory(current_size);
+    //memory_manager->rebuild_bptrees();
+
+    Relation *city_table = Relation::instance_city();
+    Relation *country_table = Relation::instance_country();
+
+    //do database loading here, open db, load, close db
+    city_table->open();
+    country_table->open();
+
+
+    city_table->close();
+    country_table->close();
 
     //Create the sock handle
     printv("Creating socket\n");
@@ -224,6 +242,6 @@ int main(int argc, char *argv[])
     }
 
     //All done.
-    memory_manager->unmap_from_memory();
+    //memory_manager->unmap_from_memory();
     return 0;
 }
