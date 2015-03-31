@@ -347,6 +347,7 @@ bool Relation::isolation_manager() {
                     list<container_t> data;
                     container_t city;                    
                     float percentage = req.percentage;
+                    int count = 0;
                                         
                     city_table->open();
                     country_table->open();
@@ -362,6 +363,7 @@ bool Relation::isolation_manager() {
                         if ((countrypop*percentage*0.01) <= citypop) {
                             ss << city.index << " " << city.code << " " << city.name << " " << city.population << endl;
                             cout <<  city.name << " " << city.population << " vs. " << data.front().name << " " << data.front().population << endl;
+                            count++;
                         }
 
                         data.clear();
@@ -370,12 +372,8 @@ bool Relation::isolation_manager() {
                     country_table->close();
                     city_table->close();                    
                     
-                    if(!ss.str().empty()){
-                        req.data = ss.str();
-                    }
-                    else{
-                        req.data = "NO RECORDS RETURNED";
-                    }                    
+                    ss << "Records returned: " << count << endl;
+                    req.data = ss.str();                                     
                     
                     req.action = QUERY;                    
                     next_index = 0;
