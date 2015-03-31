@@ -42,7 +42,7 @@ CHL,Chile,15211000
 CHN,China,1277558000
 CIV,Côte d’Ivoire,14786000
 CMR,Cameroon,15085000
-COD,"Congo, The Democratic Republic of the",51654000
+COD,Congo-The Democratic Republic of the,51654000
 COG,Congo,2943000
 COK,Cook Islands,20000
 COL,Colombia,42321000
@@ -72,7 +72,7 @@ FJI,Fiji Islands,817000
 FLK,Falkland Islands,2000
 FRA,France,59225700
 FRO,Faroe Islands,43000
-FSM,"Micronesia, Federated States of",119000
+FSM,Micronesia-Federated States of,119000
 GAB,Gabon,1226000
 GBR,United Kingdom,59623400
 GEO,Georgia,4968000
@@ -226,8 +226,8 @@ UZB,Uzbekistan,24318000
 VAT,Holy See (Vatican City State),1000
 VCT,Saint Vincent and the Grenadines,114000
 VEN,Venezuela,24170000
-VGB,"Virgin Islands, British",21000
-VIR,"Virgin Islands, U.S.",93000
+VGB,Virgin Islands-British,21000
+VIR,Virgin Islands-U.S.,93000
 VNM,Vietnam,79832000
 VUT,Vanuatu,190000
 WLF,Wallis and Futuna,15000
