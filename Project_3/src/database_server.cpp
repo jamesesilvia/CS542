@@ -41,7 +41,7 @@ void printv(char *format, ...) {
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len, request_id, start, end;
-    string cmd, key, population, location, to_send;
+    string cmd, percentage, to_send;
 
     Relation *city_table = Relation::instance_city();
     Relation *country_table = Relation::instance_country();
@@ -49,9 +49,7 @@ bool handleclient(const int socket) {
     while (true) {
         //Clear strings
         cmd.clear();
-        key.clear();
-        population.clear();
-        location.clear();
+        percentage.clear();
         to_send.clear();
         
         //Clear receive buffer
@@ -77,67 +75,14 @@ bool handleclient(const int socket) {
         if (!(strstr >> cmd)) {
             continue;
         }
-#if 0
-        /* Put request received in buffer as
-         * "put <population> <location>"
-         */
-        if (cmd == "put") {
-            strstr >> population;
-            // Get everything left in location
-            start = strstr.tellg();
-            end = strstr.str().length();
-            location = strstr.str().substr(start+1,end); 
-            printv("Putting: %s, %s\n", population.c_str(), location.c_str());
-            // Put the entry
-            request_id = table->put(atoi(population.c_str()), location.c_str());
-            to_send.clear();
-            // Wait for service
-            to_send = table->wait_for_service(request_id);
-        } 
-        /* Get index by name request received as
-         * "get_index_by_name <location>"
-         */
-        else if (cmd == "get_index_by_name") {
-            // Get everything left in location
-            start = strstr.tellg();
-            end = strstr.str().length();
-            location = strstr.str().substr(start+1,end);
-            printv("Getting: %s\n", location.c_str());
-            // Get the entry
-            request_id = table->get_index_by_name(location.c_str());
-            to_send.clear();
-            // Wait for service
-            to_send = table->wait_for_service(request_id);
-        }
-        /* Get index by population received as
-         * "get_index_by_population <population>"
-         */
-        else if (cmd == "get_index_by_population") {
-            strstr >> population;
-            printv("Getting: %s\n", population.c_str());
-            // Get the entry
-            request_id = table->get_index_by_population(atoi(population.c_str()));
-            to_send.clear();
-            // Wait for service
-            to_send = table->wait_for_service(request_id);
-        }
-        /* Remove request received as 
-         * "remove <key>" 
-         */
-        else if (cmd == "remove") {
-            strstr >> key;
-            printv("Removing: %s\n", key.c_str());          
-            // Remove the entry
-            request_id = table->remove(atoi(key.c_str()));              
-            to_send.clear();
-            // Wait for service
-            to_send = table->wait_for_service(request_id);
-        }
-#endif
         /* query command from client */
         if (cmd == "query") {
-            
-
+            strstr >> percentage;
+            printv("Getting: %s\n", percentage.c_str());
+            request_id = city_table->query(atoi(percentage.c_str()));
+            to_send.clear();
+            // Wait for service
+            to_send = city_table->wait_for_service(request_id);
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {
@@ -183,12 +128,6 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr, cli_addr;
     socklen_t clilen = sizeof(cli_addr);
     pthread_t thread;
-
-    //Create memory manager for database
-    //Memory_manager *memory_manager = Memory_manager::instance();
-    //int current_size = memory_manager->load_memory_map();
-    //memory_manager->map_to_memory(current_size);
-    //memory_manager->rebuild_bptrees();
 
     Relation *city_table = Relation::instance_city();
     Relation *country_table = Relation::instance_country();
@@ -241,7 +180,5 @@ int main(int argc, char *argv[])
 
     }
 
-    //All done.
-    //memory_manager->unmap_from_memory();
     return 0;
 }

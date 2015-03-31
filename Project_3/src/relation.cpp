@@ -23,6 +23,8 @@ Relation::Relation(string _tablename) : db(_tablename) {
     spawn_isolation_manager();
     // init request ID to zero
     request_id = 0;
+    // init next index ID to zero
+    next_index = 0;
 }
 
 int Relation::get_next_request_id() {
@@ -40,60 +42,17 @@ int Relation::get_next_request_id() {
     return ret;
 }
 
-int Relation::put(int population, string data) {
+int Relation::query(int percentage) {
 
     int id = get_next_request_id();
 
     // Create req
-    request_t req = { 0, population, data, id, PUT };
+    request_t req = { 0, percentage, "", id, QUERY };
 
     // Add to service queue
     if (!add_to_queue(&s_lock, req, &service_queue))
         return -1;
 
-    return id;
-}
-
-
-int Relation::get_index_by_name(string data) {
-
-    int id = get_next_request_id();
-
-    // Create req
-    request_t req = { 0, 0, data, id, GET_INDEX_BY_NAME };
-    
-    // Add to service queue
-    if (!add_to_queue(&s_lock, req, &service_queue))
-        return -1;
-
-    return id;
-}
-
-int Relation::get_index_by_population(int population) {
-
-    int id = get_next_request_id();
-
-    // Create req
-    request_t req = { 0, population, "", id, GET_INDEX_BY_POPULATION };    
-    // Add to service queue
-    if (!add_to_queue(&s_lock, req, &service_queue))
-        return -1;
-
-    return id;
-}
-
-
-int Relation::remove(int key) {
-
-    int id = get_next_request_id();
-
-    // Create req
-    request_t req = { key, 0, "", id, REMOVE };
-
-    // Add to service queue
-    if (!add_to_queue(&s_lock, req, &service_queue))
-        return -1;    
-    
     return id;
 }
 
@@ -221,21 +180,8 @@ string Relation::wait_for_service(int req_id) {
             data_len = req->data.length();
             /* Respond to user */
             switch (req->action) {
-                case(PUT):
-                    to_send << "Put: " << data_len << 
-                                " " << req->data << endl;
-                    break;
-                case(GET_INDEX_BY_NAME):
-                    to_send << "Got: " << data_len <<
-                                " " << req->data << endl;
-                    break;
-                case(GET_INDEX_BY_POPULATION):
-                    to_send << "Got: " << data_len <<
-                                " " << req->data << endl;
-                    break;
-
-                case(REMOVE):
-                    to_send << "Removed: " << data_len <<
+                case(QUERY):
+                    to_send << "Query: " << data_len << 
                                 " " << req->data << endl;
                     break;
                 // Bogus action, do it again.
@@ -259,6 +205,11 @@ bool Relation::init_db() {
             load_city_data();
             close();
             cout << "Done!" << endl;
+        } else {
+            db.load_memory_map();
+            open();
+            db.rebuild_bptrees();
+            close();
         }
     }
     else if (tablename == "country") {
@@ -268,6 +219,11 @@ bool Relation::init_db() {
             load_country_data();
             close();
             cout << "Done!" << endl;
+        } else {
+            db.load_memory_map();
+            open();
+            db.rebuild_bptrees();
+            close();
         }
     }
 
@@ -352,6 +308,15 @@ bool Relation::close() {
     }
 }
 
+bool Relation::get_next(container_t& next) {
+    if (db.read_index((void *)&next, next_index, CONTAINER_LENGTH) == -1) {
+        return false;
+    } else {
+        next_index++;
+        return true;
+    }
+}
+
 /*
  * isolation_manager()
  *
@@ -364,7 +329,8 @@ bool Relation::close() {
 bool Relation::isolation_manager() {
     int ret = 0;
     request_t req;
-    //Memory_manager *memory_manager = Memory_manager::instance();
+    Relation *city_table = Relation::instance_city();
+    Relation *country_table = Relation::instance_country();
 
     while(true) {
         // Do stuff if queue not empty
@@ -374,79 +340,47 @@ bool Relation::isolation_manager() {
 
             /* Handle request from user */
             switch(req.action){
-                case(PUT):
+                case(QUERY):
                 // Need brackets for scope
                 {
-                    char *location = (char *)malloc(req.data.length()+1);
-                    memset(location, 0, sizeof(location));
-                    strcpy(location, req.data.c_str());
+                    stringstream ss;
+                    list<container_t> data;
+                    container_t city;
+                    list<container_t>::iterator i;
+                    int percentage = req.percentage;
+                    // Do Query
+                    /*while(city_table->getNext()) {
+                        country_table->db.get_by_code()
+
+                    }
+                    */
+                    country_table->open();
+                    country_table->db.get_by_code("USA", data);
+                    cout << __func__ << "(): " << data.front().name << endl;
+                    country_table->close();
+
+                    city_table->open();
+                    city_table->get_next(city);
+                    cout << __func__ << "(): " << city.name << endl;
+                    city_table->get_next(city);
+                    cout << __func__ << "(): " << city.name << endl;
+                    city_table->get_next(city);
+                    cout << __func__ << "(): " << city.name << endl;
+                    city_table->close();
+
                     // Store data in database
                     //ret = memory_manager->put(req.population, location);
                     // Response based on ret
-                    (ret == -1) ?
-                        req.data = "PUT FAILED: That key already exists" :
-                        req.data = "SUCCESS";
-                    req.action = PUT;
-                    free(location);
-                    break;
-                }
-                case(GET_INDEX_BY_NAME):
-                // Need brackets for scope
-                {
-                    stringstream ss;
-                    list<container_t> data;
-                    list<container_t>::iterator i;
-
-                    // Read data from database
-                    //ret = memory_manager->get_by_city_name(req.data, data);
-
-                    // Get table entrys for sending
-                    req.data = "READ FAILED";
-                    if (!data.empty() && ret != -1){
+                    req.data = "QUERY FAILED";
+                    /*if (!data.empty() && ret != -1){
                         req.data.clear();
                         for (i = data.begin(); i != data.end(); i++){
                             ss << i->index << " " << i->population << " " << i->name << endl; 
                         }
                         req.data = ss.str();
-                    }
+                    }*/
                     
-                    req.action = GET_INDEX_BY_NAME;
-                    break;
-                }
-                case(GET_INDEX_BY_POPULATION):
-                // Need brackets for scope
-                {
-                    stringstream ss;
-                    list<container_t> data;
-                    list<container_t>::iterator i;
-
-                    // Read data from database
-                    //ret = memory_manager->get_by_population(req.population, data);
-
-                    // Get table entrys for sending
-                    req.data = "READ FAILED";
-                    if (!data.empty() && ret != -1){
-                        req.data.clear();
-                        for (i = data.begin(); i != data.end(); i++){
-                            ss << i->index << " " << i->population << " " << i->name << endl; 
-                        }
-                        req.data = ss.str();
-                    }
-                    
-                    req.action = GET_INDEX_BY_POPULATION;
-                    break;
-                }
-
-                case(REMOVE):
-                // Need brackets for scope
-                {
-                    // Remove it
-                    //ret = memory_manager->remove_index(req.key);
-                    (ret == -1) ?
-                        req.data = "REMOVE FAILED" :
-                        req.data = "SUCCESS";
-                    // Update done item
-                    req.action = REMOVE;
+                    req.action = QUERY;
                     break;
                 }
                 default:

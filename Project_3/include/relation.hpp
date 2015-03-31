@@ -26,10 +26,7 @@
 using namespace std;
 
 // Actions for queue
-#define PUT     		    1
-#define GET_INDEX_BY_NAME     	    2
-#define GET_INDEX_BY_POPULATION     3
-#define REMOVE  		    4
+#define QUERY     		    1
 
 // Parse schema information
 #define MAX_CHARS           1024
@@ -39,7 +36,7 @@ using namespace std;
 typedef struct request
 {
     int key;
-    int population;
+    int percentage;
     string data;
     int id;
     int action;
@@ -47,7 +44,7 @@ typedef struct request
     string print() const
     {
         stringstream ss;
-        ss << "Key: " << key << " Population: " << population << " Data: " << data 
+        ss << "Key: " << key << " Percentage: " << percentage << " Data: " << data 
             << " ID: " << id << " Action: " << action;
         return ss.str();
 
@@ -60,15 +57,13 @@ public:
     /* functions */
     Relation(string _tablename);
     int get_next_request_id();
-    int put(int population, string data);
-    int get_index_by_name(string data);
-    int get_index_by_population(int population);
-    int remove(int key);
+    int query(int percentage);
     string wait_for_service(int req_id);
     void print_queues();
     bool init_db();
     bool open();
     bool close();
+    bool get_next(container_t& next);
     bool isolation_manager();
 
     static Relation *instance_country() {
@@ -89,6 +84,7 @@ private:
     static Relation *s_instance_city;
     string tablename;
     int key;
+    int next_index;
     string data;
     int client;
     pthread_mutex_t s_lock;
