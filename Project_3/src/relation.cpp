@@ -345,42 +345,40 @@ bool Relation::isolation_manager() {
                 {
                     stringstream ss;
                     list<container_t> data;
-                    container_t city;
-                    list<container_t>::iterator i;
-                    int percentage = req.percentage;
-                    // Do Query
-                    /*while(city_table->getNext()) {
-                        country_table->db.get_by_code()
+                    container_t city;                    
+                    float percentage = req.percentage;
+                                        
+                    city_table->open();
+                    country_table->open();
+
+                    //Get the next city, only continue as long as there is one left to get
+                    while(city_table->get_next(city)) {
+
+                        //Get the country related to the city's country code
+                        country_table->db.get_by_code(city.code, data);
+                        float countrypop = data.front().population;
+                        float citypop = city.population;
+
+                        if ((countrypop*percentage*0.01) <= citypop) {
+                            ss << city.index << " " << city.code << " " << city.name << " " << city.population << endl;
+                            cout <<  city.name << " " << city.population << " vs. " << data.front().name << " " << data.front().population << endl;
+                        }
+
+                        data.clear();
 
                     }
-                    */
-                    country_table->open();
-                    country_table->db.get_by_code("USA", data);
-                    cout << __func__ << "(): " << data.front().name << endl;
                     country_table->close();
-
-                    city_table->open();
-                    city_table->get_next(city);
-                    cout << __func__ << "(): " << city.name << endl;
-                    city_table->get_next(city);
-                    cout << __func__ << "(): " << city.name << endl;
-                    city_table->get_next(city);
-                    cout << __func__ << "(): " << city.name << endl;
-                    city_table->close();
-
-                    // Store data in database
-                    //ret = memory_manager->put(req.population, location);
-                    // Response based on ret
-                    req.data = "QUERY FAILED";
-                    /*if (!data.empty() && ret != -1){
-                        req.data.clear();
-                        for (i = data.begin(); i != data.end(); i++){
-                            ss << i->index << " " << i->population << " " << i->name << endl; 
-                        }
-                        req.data = ss.str();
-                    }*/
+                    city_table->close();                    
                     
-                    req.action = QUERY;
+                    if(!ss.str().empty()){
+                        req.data = ss.str();
+                    }
+                    else{
+                        req.data = "NO RECORDS RETURNED";
+                    }                    
+                    
+                    req.action = QUERY;                    
+                    next_index = 0;
                     break;
                 }
                 default:
