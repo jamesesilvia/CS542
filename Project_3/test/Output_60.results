@@ -1,0 +1,16 @@
+-> query
+Please enter percentage of country population to use in query: 60
+Query: with response...
+584 DJI Djibouti 383000
+762 FLK Stanley 1636
+914 GIB Gibraltar 27025
+2315 CCK Bantam 503
+2453 MAC Macao 437500
+2880 PLW Koror 12000
+2911 PCN Adamstown 42
+3066 SPM Saint-Pierre 5808
+3207 SGP Singapore 4017733
+Records returned: 9
+
+Done.
+->

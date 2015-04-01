@@ -1,0 +1,45 @@
+-> query
+Please enter percentage of country population to use in query: 30
+Query: with response...
+62 ATG Saint John´s 24000
+125 ARM Yerevan 1248700
+147 BHS Nassau 172000
+536 VGB Road Town 8000
+552 CYM George Town 19600
+553 CHL Santiago de Chile 4703954
+582 COK Avarua 11900
+584 DJI Djibouti 383000
+762 FLK Stanley 1636
+900 FRO Tórshavn 14542
+901 GAB Libreville 419000
+914 GIB Gibraltar 27025
+937 SJM Longyearbyen 1438
+1448 ISL Reykjavík 109184
+2295 COG Brazzaville 950000
+2315 CCK Bantam 503
+2433 LVA Riga 764328
+2437 LBN Beirut 1100000
+2440 LBY Tripoli 1682000
+2452 ESH El-Aaiún 169000
+2453 MAC Macao 437500
+2506 MHL Dalap-Uliga-Darrit 28000
+2693 MCO Monte-Carlo 13154
+2726 NRU Yangor 4050
+2804 NIU Alofi 682
+2805 NFK Kingston 800
+2880 PLW Koror 12000
+2911 PCN Adamstown 42
+2972 QAT Doha 355000
+3063 KNA Basseterre 11600
+3066 SPM Saint-Pierre 5808
+3171 STP São Tomé 49541
+3205 SYC Victoria 41000
+3207 SGP Singapore 4017733
+3423 TUV Funafuti 4600
+3491 URY Montevideo 1236000
+3492 NCL Nouméa 76293
+3537 VAT Città del Vaticano 455
+Records returned: 38
+
+Done.
+->
