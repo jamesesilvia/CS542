@@ -1,0 +1,14 @@
+-> query
+Please enter percentage of country population to use in query: 80
+Query: with response...
+762 FLK Stanley 1636
+914 GIB Gibraltar 27025
+2315 CCK Bantam 503
+2453 MAC Macao 437500
+2911 PCN Adamstown 42
+3066 SPM Saint-Pierre 5808
+3207 SGP Singapore 4017733
+Records returned: 7
+
+Done.
+->

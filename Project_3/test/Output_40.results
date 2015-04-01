@@ -1,0 +1,26 @@
+-> query
+Please enter percentage of country population to use in query: 40
+Query: with response...
+147 BHS Nassau 172000
+552 CYM George Town 19600
+582 COK Avarua 11900
+584 DJI Djibouti 383000
+762 FLK Stanley 1636
+914 GIB Gibraltar 27025
+937 SJM Longyearbyen 1438
+2315 CCK Bantam 503
+2452 ESH El-Aaiún 169000
+2453 MAC Macao 437500
+2506 MHL Dalap-Uliga-Darrit 28000
+2805 NFK Kingston 800
+2880 PLW Koror 12000
+2911 PCN Adamstown 42
+2972 QAT Doha 355000
+3066 SPM Saint-Pierre 5808
+3205 SYC Victoria 41000
+3207 SGP Singapore 4017733
+3537 VAT Città del Vaticano 455
+Records returned: 19
+
+Done.
+->
