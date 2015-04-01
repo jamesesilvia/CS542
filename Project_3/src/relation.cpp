@@ -362,7 +362,6 @@ bool Relation::isolation_manager() {
 
                         if ((countrypop*percentage*0.01) <= citypop) {
                             ss << city.index << " " << city.code << " " << city.name << " " << city.population << endl;
-                            cout <<  city.name << " " << city.population << " vs. " << data.front().name << " " << data.front().population << endl;
                             count++;
                         }
 

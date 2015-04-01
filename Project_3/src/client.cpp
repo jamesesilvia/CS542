@@ -187,7 +187,7 @@ string handle_user_interaction(int sock) {
                 fail = false;
                 for (i = 0; i < str.length(); i++) {
                     if (!isdigit(str[i])) {
-                        cout << "Please enter positive integers from 1 to 100 only!" << endl;
+                        cout << "Please enter positive integers from 0 to 100 only!" << endl;
                         fail = true;
                         break;
                     }
@@ -196,8 +196,8 @@ string handle_user_interaction(int sock) {
                     continue;
                 }
                 int percentage = atoi(str.c_str());
-                if (percentage <= 0) {
-                    cout << "Please enter positive integers from 1 to 100 only!" << endl;
+                if (percentage < 0) {
+                    cout << "Please enter positive integers from 0 to 100 only!" << endl;
                     continue;
                 }
                 if (percentage > 100) {
@@ -228,14 +228,13 @@ string handle_user_interaction(int sock) {
         /* Print Help */
         else {
             cout << "Acceptable commands are:" << endl;
-            cout << "   query                       - query database for a city whose population is a specified percentage of the country population" << endl;
-            cout << "   quit                        - exit the application" << endl;
+            cout << "   query       - query database for a city whose " << endl;
+            cout << "                   population is a specified percentage " << endl;
+            cout << "                   of the country population" << endl;
+            cout << "   quit        - exit the application" << endl;
             continue;
         }
 
     }
-    cout << endl;
-    cout << "Sending query: " << to_send << endl;
-    cout << endl;
     return to_send;
 }
