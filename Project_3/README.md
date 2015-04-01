@@ -83,9 +83,9 @@ Do not alter any database assocated files, otherwise bad things can happen.
 make clean WILL remove the database.
 
 ## Tests
-The test/ directory contains several Expect scripts that were used to test
-concurrent accesses to our database. I redirect you to their README for any
-additional information.
+The test/ directory contains the output from our client application as well as
+the results for the SQL Query with the world database. These two were compared 
+for validation.
 
 ## Notes
 - This code has been developed and test on the WPI CCC machines.
