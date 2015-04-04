@@ -12,7 +12,8 @@ SERVER = \
 	$(SRCDIR)/memory_manager.cpp \
 	$(SRCDIR)/bpt.cpp \
 	$(SRCDIR)/bpt_string.cpp \
-	$(SRCDIR)/relation.cpp
+	$(SRCDIR)/relation.cpp \
+	$(SRCDIR)/logger.cpp
 
 default:
 	mkdir -p $(TARGET)
@@ -31,3 +32,4 @@ clean:
 	rm -rf $(TARGET)
 	rm -rf *.dat
 	rm -rf *.txt
+	rm -rf *.log

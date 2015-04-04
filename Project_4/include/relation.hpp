@@ -22,6 +22,7 @@
 
 #include "helpers.hpp"
 #include "memory_manager.hpp"
+#include "logger.hpp"
 
 using namespace std;
 
@@ -113,6 +114,8 @@ private:
     list <request_t> done_queue;
     /* memory manager */
     Memory_manager db;
+    /* Logger */
+    Logger log;
     bool load_city_data();
     bool load_country_data();
 };

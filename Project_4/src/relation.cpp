@@ -13,7 +13,7 @@
 
 using namespace std;
 
-Relation::Relation(string _tablename) : db(_tablename) {
+Relation::Relation(string _tablename) : db(_tablename), log(_tablename) {
     tablename = _tablename;
     // init locks
     pthread_mutex_init(&s_lock, NULL);
@@ -233,12 +233,16 @@ bool Relation::init_db() {
 bool Relation::load_city_data() {
     ifstream fin;
     string inFileName = "schema/city_table.csv";
+    int index;
 
     fin.open(inFileName.c_str());
     if (!fin.good()) {
         string str = "Could not open " + inFileName;
         error(str.c_str());
     }
+
+    /* start logging transaction */
+    log.start_commit();
     
     char buffer[MAX_CHARS];
     while (fin.getline(buffer, MAX_CHARS)) {
@@ -255,17 +259,23 @@ bool Relation::load_city_data() {
         data->population = atoi(population.c_str());
         strncpy(data->name, name.c_str(), MAX_NAME);
         strncpy(data->code, c_code.c_str(), MAX_CODE);
-        db.write_index(data);
+        index = db.write_index(data);
+        
+        // log entry with id, population
+        log.update_entry(index, "NULL", population);
 
         // Empty buffer for next line
         memset(buffer, 0, MAX_CHARS);
     }
+    /* end logging transaction */
+    log.end_commit();
     return true;
 }
 
 bool Relation::load_country_data() {
     ifstream fin;
     string inFileName = "schema/country_table.csv";
+    int index;
 
     fin.open(inFileName.c_str());
     if (!fin.good()) {
@@ -273,6 +283,9 @@ bool Relation::load_country_data() {
         error(str.c_str());
     }
 
+    /* start logging transaction */
+    log.start_commit();
+    
     char buffer[MAX_CHARS];
     while (fin.getline(buffer, MAX_CHARS)) {
         // Parse line
@@ -286,12 +299,19 @@ bool Relation::load_country_data() {
         data->population = atoi(population.c_str());
         strncpy(data->name, name.c_str(), MAX_NAME);
         strncpy(data->code, c_code.c_str(), MAX_CODE);
-        db.write_index(data);
+        index = db.write_index(data);
 
+        // log entry with id, population
+        log.update_entry(index, "NULL", population);
+        
         // Empty buffer for next line
         memset(buffer, 0, MAX_CHARS);
     }
+    /* end logging transaction */
+    log.end_commit();
+    return true;
 }
+
 bool Relation::open() {
     if (db.map_to_memory(START_TABLE_SIZE) == -1) {
         return false;

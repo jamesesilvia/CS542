@@ -285,7 +285,7 @@ int Memory_manager::write_index(container_t *container) {
     /* save changes to persistent memory map */
     save_memory_map();
 
-    return 0;
+    return free_block_index;
 }
 
 /* remove an index from database, it just removes the index from the table,
