@@ -10,3 +10,6 @@ build
 # No database
 *.dat
 *.txt
+
+# No log files
+*.log
