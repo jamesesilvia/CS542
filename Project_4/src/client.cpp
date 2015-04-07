@@ -210,6 +210,71 @@ string handle_user_interaction(int sock) {
             // All done
             break;
         }
+        /* Update population command */
+        if (cmd == "update-population") {
+            // Get percentage of population to change all database entries by
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter percentage of population change: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+                fail = false;
+                for (i = 0; i < str.length(); i++) {
+                    if (!isdigit(str[i])) {
+                        cout << "Please enter integers from -10 to -1 or 1 to 10 only!" << endl;
+                        fail = true;
+                        break;
+                    }
+                }
+                if (fail) {
+                    continue;
+                }
+                int percentage = atoi(str.c_str());
+                if (percentage < -10) {
+                    cout << "Please enter integers from -10 to -1 or 1 to 10 only!" << endl;
+                    continue;
+                }
+                if (percentage > 10) {
+                    cout << "Please enter integers from -10 to -1 or 1 to 10 only!" << endl;
+                    continue;
+                }
+                if (percentage == 0) {
+                    cout << "Please enter integers from -10 to -1 or 1 to 10 only!" << endl;
+                    continue;
+                }
+                to_send = cmd + " " + str;
+                done = true;
+            }            
+            // All done
+            break;
+        }
+        /* Restore log command */
+        else if (cmd == "restore-log") {
+            // Get file name to restore data with
+            done = false;
+            while (!done) {
+                str.clear();
+                cout << "Please enter log file name to restore data with: ";
+                cout.flush();
+                getline(cin, str);
+                if (str.empty()) {
+                    continue;
+                }
+		if (str.length() > 100) {
+		    cout << "Please enter a string no longer than 100 characters!" << endl;
+		    continue;
+		}
+                // Build string to send
+                to_send = cmd + " " + str;
+                done = true;               
+            }
+            // All done
+            break;
+        }
         /* Remove command, debug only */
         else if (cmd == "print") {
             to_send = cmd;
@@ -228,10 +293,13 @@ string handle_user_interaction(int sock) {
         /* Print Help */
         else {
             cout << "Acceptable commands are:" << endl;
-            cout << "   query       - query database for a city whose " << endl;
-            cout << "                   population is a specified percentage " << endl;
-            cout << "                   of the country population" << endl;
-            cout << "   quit        - exit the application" << endl;
+            cout << "   query             - query database for a city whose " << endl;
+            cout << "                       population is a specified percentage " << endl;
+            cout << "                       of the country population" << endl;
+            cout << "   update-population - change population of all data " << endl;
+            cout << "                       by a specified percentage " << endl;
+            cout << "   restore-log       - restore data from a logfile " << endl;
+            cout << "   quit              - exit the application" << endl;
             continue;
         }
 
