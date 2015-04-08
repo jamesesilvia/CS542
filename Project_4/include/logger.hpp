@@ -28,7 +28,7 @@ class Logger {
 public:
     Logger(string _tablename);
     void start_commit();
-    void update_entry(int ID, string old_val, string new_val);
+    void update_entry(int ID, int old_val, int new_val);
     void end_commit();
 
 private:

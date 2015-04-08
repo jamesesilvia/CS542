@@ -37,7 +37,7 @@ void Logger::start_commit() {
 }
 
 
-void Logger::update_entry(int ID, string old_val, string new_val) {
+void Logger::update_entry(int ID, int old_val, int new_val) {
     stringstream out;
     string fileName = tablename + ".log";
     

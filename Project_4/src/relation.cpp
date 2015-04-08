@@ -258,9 +258,6 @@ bool Relation::load_city_data() {
         string str = "Could not open " + inFileName;
         error(str.c_str());
     }
-
-    /* start logging transaction */
-    log.start_commit();
     
     char buffer[MAX_CHARS];
     while (fin.getline(buffer, MAX_CHARS)) {
@@ -278,15 +275,10 @@ bool Relation::load_city_data() {
         strncpy(data->name, name.c_str(), MAX_NAME);
         strncpy(data->code, c_code.c_str(), MAX_CODE);
         index = db.write_index(data);
-        
-        // log entry with id, population
-        log.update_entry(index, "NULL", population);
 
         // Empty buffer for next line
         memset(buffer, 0, MAX_CHARS);
     }
-    /* end logging transaction */
-    log.end_commit();
     return true;
 }
 
@@ -301,9 +293,6 @@ bool Relation::load_country_data() {
         error(str.c_str());
     }
 
-    /* start logging transaction */
-    log.start_commit();
-    
     char buffer[MAX_CHARS];
     while (fin.getline(buffer, MAX_CHARS)) {
         // Parse line
@@ -318,15 +307,10 @@ bool Relation::load_country_data() {
         strncpy(data->name, name.c_str(), MAX_NAME);
         strncpy(data->code, c_code.c_str(), MAX_CODE);
         index = db.write_index(data);
-
-        // log entry with id, population
-        log.update_entry(index, "NULL", population);
         
         // Empty buffer for next line
         memset(buffer, 0, MAX_CHARS);
     }
-    /* end logging transaction */
-    log.end_commit();
     return true;
 }
 
@@ -413,7 +397,8 @@ bool Relation::isolation_manager() {
                     req.data = ss.str();                                     
                     
                     req.action = QUERY;                    
-                    next_index = 0;
+                    country_table->next_index = 0;
+                    city_table->next_index = 0;
                     break;
                 }
                 case(UPDATE):
@@ -423,21 +408,38 @@ bool Relation::isolation_manager() {
                     list<container_t> data;
                     container_t val;                    
                     float percentage = req.percentage;
+                    int new_population;
                     int count = 0;
                                         
                     city_table->open();
                     country_table->open();
 
+                    /* start logging transaction */
+                    city_table->log.start_commit();
                     //Get the next city, only continue as long as there is one left to get
                     while(city_table->get_next(val)) {
-                        val.population *= (1 + (percentage*.01));
-                        city_table->db.update_by_index(val.index, val.population);
+                        new_population = val.population * (1 + (percentage*.01));
+                        city_table->db.update_by_index(val.index, new_population);
+        
+                        // log entry with id, population
+                        city_table->log.update_entry(val.index, val.population, new_population);
                     }
+                    /* end logging transaction */
+                    city_table->log.end_commit();
+
+                    /* start logging transaction */
+                    country_table->log.start_commit();
                     //Get the next country, only continue as long as there is one left to get
                     while(country_table->get_next(val)) {
-                        val.population *= (1 + (percentage*.01));
+                        new_population = val.population * (1 + (percentage*.01));
                         country_table->db.update_by_index(val.index, val.population);
+        
+                        // log entry with id, population
+                        country_table->log.update_entry(val.index, val.population, new_population);
                     }
+                    /* end logging transaction */
+                    country_table->log.end_commit();
+                    
                     country_table->close();
                     city_table->close();                    
                     
@@ -445,7 +447,8 @@ bool Relation::isolation_manager() {
                     req.data = ss.str();                                     
                     
                     req.action = UPDATE;                    
-                    next_index = 0;
+                    country_table->next_index = 0;
+                    city_table->next_index = 0;
                     break;
                 }
                 default:
