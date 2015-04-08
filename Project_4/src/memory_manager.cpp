@@ -215,6 +215,28 @@ int Memory_manager::get_by_code(string name, list<container_t>& container_list) 
 }
 
 
+int Memory_manager::update_by_index(int index, int population) {
+    
+    container_t container;
+
+    /* This Fails if the index is removed, do stuff in relation */
+    if (read_index((void *)&container, index, CONTAINER_LENGTH) == -1){
+        cout << __func__ << "(): get failed" << endl;
+        return -1;
+    }
+
+    container.population = population;
+    
+    /* write to database */
+    if (write((void *)&container, index*CONTAINER_LENGTH, CONTAINER_LENGTH) == -1) {
+        cout << __func__ << "(): write failure" << endl;
+        return -1;
+    }
+
+    return 0;
+}
+
+
 /* read an index from the database of container sizer*/
 int Memory_manager::read_index(void *buffer, int index, int length) {
     int offset = 0;

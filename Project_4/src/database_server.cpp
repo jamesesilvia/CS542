@@ -88,9 +88,12 @@ bool handleclient(const int socket) {
         else if (cmd == "update-population") {
             strstr >> percentage;
             printv("Updating with percentage: %s\n", percentage.c_str());
+            // Update city table
+            request_id = city_table->update(atoi(percentage.c_str()));
             // Call updater
             to_send.clear();
             // Wait for response
+            to_send = city_table->wait_for_service(request_id);
         }
         else if (cmd == "restore-log") {
             strstr >> log_file;

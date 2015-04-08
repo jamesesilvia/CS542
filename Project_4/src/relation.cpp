@@ -56,6 +56,20 @@ int Relation::query(int percentage) {
     return id;
 }
 
+int Relation::update(int percentage) {
+
+    int id = get_next_request_id();
+
+    // Create req
+    request_t req = { 0, percentage, "", id, UPDATE };
+
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        return -1;
+
+    return id;
+}
+
 bool Relation::add_to_queue(pthread_mutex_t *lock, 
                                         request_t req,
                                         list <request_t> *queue) {
@@ -182,6 +196,10 @@ string Relation::wait_for_service(int req_id) {
             switch (req->action) {
                 case(QUERY):
                     to_send << "Query: " << data_len << 
+                                " " << req->data << endl;
+                    break;
+                case(UPDATE):
+                    to_send << "Update: " << data_len << 
                                 " " << req->data << endl;
                     break;
                 // Bogus action, do it again.
@@ -395,6 +413,38 @@ bool Relation::isolation_manager() {
                     req.data = ss.str();                                     
                     
                     req.action = QUERY;                    
+                    next_index = 0;
+                    break;
+                }
+                case(UPDATE):
+                // Need brackets for scope
+                {
+                    stringstream ss;
+                    list<container_t> data;
+                    container_t val;                    
+                    float percentage = req.percentage;
+                    int count = 0;
+                                        
+                    city_table->open();
+                    country_table->open();
+
+                    //Get the next city, only continue as long as there is one left to get
+                    while(city_table->get_next(val)) {
+                        val.population *= (1 + (percentage*.01));
+                        city_table->db.update_by_index(val.index, val.population);
+                    }
+                    //Get the next country, only continue as long as there is one left to get
+                    while(country_table->get_next(val)) {
+                        val.population *= (1 + (percentage*.01));
+                        country_table->db.update_by_index(val.index, val.population);
+                    }
+                    country_table->close();
+                    city_table->close();                    
+                    
+                    ss << "Populations updated by " << percentage << "%" << endl;
+                    req.data = ss.str();                                     
+                    
+                    req.action = UPDATE;                    
                     next_index = 0;
                     break;
                 }

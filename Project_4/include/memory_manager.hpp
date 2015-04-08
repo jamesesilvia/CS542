@@ -66,6 +66,7 @@ public:
     bool index_exist(int index);
     void write_to_table(int index);
     int get_by_code(string name, list<container_t>& container_list);
+    int update_by_index(int index, int population);
     int read_index(void *buffer, int index, int length);
     int put(int pop, const char *location);
     int write_index(container_t *container);
