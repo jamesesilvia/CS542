@@ -254,25 +254,7 @@ string handle_user_interaction(int sock) {
         }
         /* Restore log command */
         else if (cmd == "restore-log") {
-            // Get file name to restore data with
-            done = false;
-            while (!done) {
-                str.clear();
-                cout << "Please enter log file name to restore data with: ";
-                cout.flush();
-                getline(cin, str);
-                if (str.empty()) {
-                    continue;
-                }
-		if (str.length() > 100) {
-		    cout << "Please enter a string no longer than 100 characters!" << endl;
-		    continue;
-		}
-                // Build string to send
-                to_send = cmd + " " + str;
-                done = true;               
-            }
-            // All done
+            to_send = cmd;
             break;
         }
         /* Remove command, debug only */
@@ -298,7 +280,7 @@ string handle_user_interaction(int sock) {
             cout << "                       of the country population" << endl;
             cout << "   update-population - change population of all data " << endl;
             cout << "                       by a specified percentage " << endl;
-            cout << "   restore-log       - restore data from a logfile " << endl;
+            cout << "   restore-log       - restore data from all logfiles " << endl;
             cout << "   quit              - exit the application" << endl;
             continue;
         }

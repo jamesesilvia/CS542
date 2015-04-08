@@ -41,7 +41,7 @@ void printv(char *format, ...) {
 bool handleclient(const int socket) {
     char buffer[BUFFER_LEN + 1] = {0}; //Allow for null.
     int len, request_id, start, end;
-    string cmd, percentage, log_file, to_send;
+    string cmd, percentage, to_send;
 
     Relation *city_table = Relation::instance_city();
     Relation *country_table = Relation::instance_country();
@@ -50,7 +50,6 @@ bool handleclient(const int socket) {
         //Clear strings
         cmd.clear();
         percentage.clear();
-        log_file.clear();
         to_send.clear();
         
         //Clear receive buffer
@@ -96,11 +95,12 @@ bool handleclient(const int socket) {
             to_send = city_table->wait_for_service(request_id);
         }
         else if (cmd == "restore-log") {
-            strstr >> log_file;
-            printv("Restoring log: %s\n", log_file.c_str());
+            fprintf(stderr, "Restoring log files\n");
+            request_id = city_table->import();
             // Call logger
             to_send.clear();
             // Wait for response
+            to_send = city_table->wait_for_service(request_id);
         }
         /* Smoothly close socket, will slam all clients */
         else if (cmd == "close") {

@@ -28,7 +28,7 @@ void Logger::start_commit() {
     log_file.open(fileName.c_str(), ios_base::app);
     
     // write to log file, starting transaction
-    out << "START " << transaction << endl;
+    out << "START," << transaction << endl;
     log_file << out.str();
 
     // cleanup
@@ -45,8 +45,8 @@ void Logger::update_entry(int ID, int old_val, int new_val) {
     log_file.open(fileName.c_str(), ios_base::app);
     
     // write to log file, updating entry
-    out << transaction << " " << ID << " " << 
-            " " << old_val << " " << new_val << endl;
+    out << transaction << "," << ID << "," << 
+            old_val << "," << new_val << endl;
     log_file << out.str();
     
     // cleanup
@@ -63,7 +63,7 @@ void Logger::end_commit() {
     log_file.open(fileName.c_str(), ios_base::app);
     
     // write to log file, ending transaction
-    out << "END " << transaction << endl;
+    out << "END," << transaction << endl;
     log_file << out.str();
 
     // cleanup

@@ -29,6 +29,7 @@ using namespace std;
 // Actions for queue
 #define QUERY     		    1
 #define UPDATE     		    2
+#define IMPORT              3
 
 // Parse schema information
 #define MAX_CHARS           1024
@@ -61,6 +62,7 @@ public:
     int get_next_request_id();
     int query(int percentage);
     int update(int percentage);
+    int import();
     string wait_for_service(int req_id);
     void print_queues();
     bool init_db();

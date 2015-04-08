@@ -33,3 +33,7 @@ clean:
 	rm -rf *.dat
 	rm -rf *.txt
 	rm -rf *.log
+
+restore:
+	rm -rf *.dat
+	rm -rf *.txt

@@ -70,6 +70,21 @@ int Relation::update(int percentage) {
     return id;
 }
 
+int Relation::import() {
+
+    int id = get_next_request_id();
+
+    // Create req
+    request_t req = { 0, 0, "", id, IMPORT };
+
+    // Add to service queue
+    if (!add_to_queue(&s_lock, req, &service_queue))
+        return -1;
+
+    return id;
+
+}
+
 bool Relation::add_to_queue(pthread_mutex_t *lock, 
                                         request_t req,
                                         list <request_t> *queue) {
@@ -179,7 +194,6 @@ bool Relation::req_service_done(request_t req) {
 }
 
 
-
 string Relation::wait_for_service(int req_id) {
     
     request_t *req = NULL;
@@ -200,6 +214,10 @@ string Relation::wait_for_service(int req_id) {
                     break;
                 case(UPDATE):
                     to_send << "Update: " << data_len << 
+                                " " << req->data << endl;
+                    break;
+                case(IMPORT):
+                    to_send << "Import: " << data_len <<
                                 " " << req->data << endl;
                     break;
                 // Bogus action, do it again.
@@ -451,6 +469,90 @@ bool Relation::isolation_manager() {
                     city_table->next_index = 0;
                     break;
                 }
+                case(IMPORT):
+                // Need brackets for scope
+                {
+                    stringstream ss;
+                    ifstream fin;
+                    int current_transaction, index, old_val, new_val;
+                    bool revert = true;                    
+                    
+                    /* City Table Import */
+                    fin.open("city.log");
+                    city_table->open();
+                    if (!fin.good()) {
+                        cout << __func__ << "(): could not open city.log" << endl;
+                    }
+                    // Parse file and update entries by index
+                    else {
+                        char buffer[MAX_CHARS];
+                        while(fin.getline(buffer, MAX_CHARS)) {
+                            string _transaction;
+                            _transaction = strtok(buffer, DELIMITER);
+                            if (_transaction == "START") {
+                                current_transaction = atoi(strtok(0, DELIMITER));
+                                memset(buffer, 0, MAX_CHARS);
+                                continue;
+                            }
+                            else if (_transaction == "END") {
+                                if (current_transaction == atoi(strtok(0, DELIMITER))) {
+                                    revert = false;
+                                }
+                                continue;
+                            }
+                            else {
+                                index = atoi(strtok(0, DELIMITER));
+                                old_val = atoi(strtok(0, DELIMITER));
+                                new_val = atoi(strtok(0, DELIMITER));
+                                
+                                city_table->db.update_by_index(index, new_val);
+                            }
+                        }
+                        ss << "City Table updated! ";
+                    }
+                    city_table->close();
+                    fin.close();
+                    
+                    /* City Table Import */
+                    fin.open("country.log");
+                    country_table->open();
+                    if (!fin.good()) {
+                        cout << __func__ << "(): could not open city.log" << endl;
+                    }
+                    // Parse file and update entries by index
+                    else {
+                        char buffer[MAX_CHARS];
+                        while(fin.getline(buffer, MAX_CHARS)) {
+                            string _transaction;
+                            _transaction = strtok(buffer, DELIMITER);
+                            if (_transaction == "START") {
+                                current_transaction = atoi(strtok(0, DELIMITER));
+                                memset(buffer, 0, MAX_CHARS);
+                                continue;
+                            }
+                            else if (_transaction == "END") {
+                                continue;
+                            }
+                            else {
+                                index = atoi(strtok(0, DELIMITER));
+                                old_val = atoi(strtok(0, DELIMITER));
+                                new_val = atoi(strtok(0, DELIMITER));
+
+                                country_table->db.update_by_index(index, new_val);
+                            }
+                        }
+                        ss << "Country Table updated! ";
+                    }
+                    country_table->close();
+                    fin.close();
+                    
+                    ss << "Success!" << endl;
+                    req.data = ss.str();                                     
+                    
+                    req.action = IMPORT;
+                    break;
+                }
+
                 default:
                     continue;
             }
