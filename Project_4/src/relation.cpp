@@ -423,7 +423,6 @@ bool Relation::isolation_manager() {
                 // Need brackets for scope
                 {
                     stringstream ss;
-                    list<container_t> data;
                     container_t val;                    
                     float percentage = req.percentage;
                     int new_population;
@@ -475,13 +474,17 @@ bool Relation::isolation_manager() {
                     stringstream ss;
                     ifstream fin;
                     int current_transaction, index, old_val, new_val;
-                    bool revert = true;                    
+                    bool revert = false;
+                    // list for reverting
+                    list<container_t> revert_list;
+                    container_t item;               
                     
                     /* City Table Import */
                     fin.open("city.log");
                     city_table->open();
                     if (!fin.good()) {
                         cout << __func__ << "(): could not open city.log" << endl;
+                        ss << "No city.log to import." << endl;
                     }
                     // Parse file and update entries by index
                     else {
@@ -490,8 +493,18 @@ bool Relation::isolation_manager() {
                             string _transaction;
                             _transaction = strtok(buffer, DELIMITER);
                             if (_transaction == "START") {
+                                // We never hit an end
+                                if (revert) {
+                                    list<container_t>::iterator it;
+                                    for (it = revert_list.begin(); it != revert_list.end(); it++) {
+                                        city_table->db.update_by_index(it->index, it->population);
+                                    }
+                                }
                                 current_transaction = atoi(strtok(0, DELIMITER));
                                 memset(buffer, 0, MAX_CHARS);
+                                // clear lists
+                                revert_list.clear();
+                                revert = true;
                                 continue;
                             }
                             else if (_transaction == "END") {
@@ -506,9 +519,14 @@ bool Relation::isolation_manager() {
                                 new_val = atoi(strtok(0, DELIMITER));
                                 
                                 city_table->db.update_by_index(index, new_val);
+                                
+                                // add to revert list incase we dont hit an end
+                                item.index = index;
+                                item.population = old_val;
+                                revert_list.push_back(item);
                             }
                         }
-                        ss << "City Table updated! ";
+                        ss << "City Table updated!" << endl;
                     }
                     city_table->close();
                     fin.close();
@@ -516,8 +534,12 @@ bool Relation::isolation_manager() {
                     /* City Table Import */
                     fin.open("country.log");
                     country_table->open();
+                    // clear stuff
+                    revert_list.clear();
+                    revert = false;
                     if (!fin.good()) {
-                        cout << __func__ << "(): could not open city.log" << endl;
+                        cout << __func__ << "(): could not open country.log" << endl;
+                        ss << "No country.log to import." << endl;
                     }
                     // Parse file and update entries by index
                     else {
@@ -526,11 +548,24 @@ bool Relation::isolation_manager() {
                             string _transaction;
                             _transaction = strtok(buffer, DELIMITER);
                             if (_transaction == "START") {
+                                // We never hit an end
+                                if (revert) {
+                                    list<container_t>::iterator it;
+                                    for (it = revert_list.begin(); it != revert_list.end(); it++) {
+                                        city_table->db.update_by_index(it->index, it->population);
+                                    }
+                                }
                                 current_transaction = atoi(strtok(0, DELIMITER));
                                 memset(buffer, 0, MAX_CHARS);
+                                // clear lists
+                                revert_list.clear();
+                                revert = true;
                                 continue;
                             }
                             else if (_transaction == "END") {
+                                if (current_transaction == atoi(strtok(0, DELIMITER))) {
+                                    revert = false;
+                                }
                                 continue;
                             }
                             else {
@@ -539,14 +574,18 @@ bool Relation::isolation_manager() {
                                 new_val = atoi(strtok(0, DELIMITER));
 
                                 country_table->db.update_by_index(index, new_val);
+                                
+                                // add to revert list incase we dont hit an end
+                                item.index = index;
+                                item.population = old_val;
+                                revert_list.push_back(item);
                             }
                         }
-                        ss << "Country Table updated! ";
+                        ss << "Country Table updated!" << endl;
                     }
                     country_table->close();
                     fin.close();
                     
-                    ss << "Success!" << endl;
                     req.data = ss.str();                                     
                     
                     req.action = IMPORT;
