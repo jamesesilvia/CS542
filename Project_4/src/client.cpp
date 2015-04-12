@@ -224,7 +224,7 @@ string handle_user_interaction(int sock) {
                 }
                 fail = false;
                 for (i = 0; i < str.length(); i++) {
-                    if (!isdigit(str[i])) {
+                    if (!isdigit(str[i]) && str[i] != '-') {
                         cout << "Please enter integers from -10 to -1 or 1 to 10 only!" << endl;
                         fail = true;
                         break;
