@@ -1,0 +1,51 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./build/server" from the Project_4 folder
+#server and client are both on the same CCCWORK machine
+#server is freshly initialized with no changes to base data
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#client shows query as expected below
+
+set timeout 120
+
+#start the client
+spawn ./../build/client localhost
+
+#update population
+expect ">" {send "update-population\r"}
+expect "Please enter percentage of population change:" {send "2\r"}
+
+#query for data (expect 19 records returned)
+expect ">" {send "query\r"}
+expect "Please enter percentage of country population to use in query:" {send "40\r"}
+
+#make sure data is updated properly
+expect "147 BHS Nassau 175440" {}
+expect "552 CYM George Town 19992" {}
+expect "582 COK Avarua 12138" {}
+expect "584 DJI Djibouti 390660" {}
+expect "762 FLK Stanley 1668" {}
+expect "914 GIB Gibraltar 27565" {}
+expect "937 SJM Longyearbyen 1466" {}
+expect "2315 CCK Bantam 513" {}
+expect "2452 ESH El-Aaiún 172380" {}
+expect "2453 MAC Macao 446250" {}
+expect "2506 MHL Dalap-Uliga-Darrit 28560" {}
+expect "2805 NFK Kingston 816" {}
+expect "2880 PLW Koror 12240" {}
+expect "2911 PCN Adamstown 42" {}
+expect "2972 QAT Doha 362100" {}
+expect "3066 SPM Saint-Pierre 5924" {}
+expect "3205 SYC Victoria 41820" {}
+expect "3207 SGP Singapore 4098087" {}
+expect "3537 VAT Città del Vaticano 464" {}
+expect "Records returned: 19" {}
+
+interact
+
+#If the test gets here, it was successful
