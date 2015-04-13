@@ -1,0 +1,29 @@
+#!./expect -f 
+
+#PREREQUISITES AND ASSUMPTIONS:
+#all testing is done through putty
+#there is already a server started manually in another putty instance
+#command to start server is "./build/server" from the Project_4 folder
+#server and client are both on the same CCCWORK machine
+#log files do not exist
+
+#SUCCESS CRITERIA:
+#server shows commands from client
+#client shows failed command as expected below without locking up the server or client
+
+set timeout 120
+
+#start the client
+spawn ./../build/client localhost
+
+#restore log
+expect ">" {send "restore-log\r"}
+
+#make command fails properly
+expect "No city.log to import." {}
+expect "No country.log to import." {}
+expect ">" {}
+
+interact
+
+#if the test gets here, it was successful
