@@ -1,16 +1,19 @@
 # Project 4
 A Value Store with Indexing and Query Execution
 
-Project 3 uses a client/server model to represent users interacting with a database.
+Project 4 uses a client/server model to represent users interacting with a database.
 
 The server is multi-threaded and uses a serial access isolation manager to maintain
 the integrity of user requests.
 
 B+ Trees have been implemented to index the stored data for efficient lookup times.
 
-The application offers a single command 'query' that accepts a percentage. The query
+The application offers three commands. The first command 'query' accepts a percentage. The query
 will return a list of cities and corresponding country where the cities population
-makes up the given percentage of the country.
+makes up the given percentage of the country. The second command 'update-population' accepts
+a percentage and will update all populations in the database according to that percentage.
+The third command 'restore-log' will take a change log from another instance of the database
+and apply it to the current database.
 
 The DB is loaded with data on first initialization, and can be lengthy. Once loaded,
 the data will remain persistent on shutdown.
@@ -38,12 +41,17 @@ docs/
 - design document
 
 ## Usage
-While in Project_3 directory:
+While in Project_4 directory:
 
 make clean
 
 - removes build/ directory
-- removes database files (all dat and txt files)
+- removes database files (all dat, txt and log files)
+
+make restore
+
+- removes database files except for logs (all dat and txt files)
+- leaves build/ directory and log files so log can be applied to new instance of database
 
 make
 
@@ -72,6 +80,15 @@ query
 - return list of cities, countries that match the query...
 - if the city size makes up the given percentage of country
 
+update-population
+
+- accepts a percentage as input
+- increases or decreases all populations in the database by the given percentage
+
+restore-log
+
+- applies all commits of a change log from past instance of database to current database
+
 ## Server
 The server is currently configured in verbose mode. It will print actions
 that it receives from the client, but will not display any data.
@@ -81,6 +98,8 @@ The database is persistent if the server is ever closed.
 Do not alter any database assocated files, otherwise bad things can happen.
 
 make clean WILL remove the database.
+
+make restore WILL remove the database but leave the change log so it can be applied to a future instance.
 
 ## Tests
 The test/ directory contains the output from our client application as well as
