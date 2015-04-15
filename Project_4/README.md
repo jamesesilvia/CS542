@@ -1,5 +1,5 @@
 # Project 4
-A Value Store with Indexing and Query Execution
+A Database with Indexing, Query Execution and Undo/Redo Logging
 
 Project 4 uses a client/server model to represent users interacting with a database.
 
